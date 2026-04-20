@@ -677,6 +677,135 @@
   }
   .meta-price { color: var(--gold) !important; font-weight: 700; }
 
+  /* NOTES SECTION */
+  .notes-section, .spot-edit-section {
+    margin-top: 18px;
+    border-top: 1px dashed rgba(201,136,42,0.25);
+    padding-top: 14px;
+  }
+  .notes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .notes-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .notes-add-btn {
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .notes-add-btn:hover { background: #a8701f; }
+  .notes-empty {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    padding: 10px;
+    font-style: italic;
+  }
+  .note-item {
+    background: #fffbf0;
+    border: 1px solid rgba(201,136,42,0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .note-meta { display: flex; gap: 10px; margin-bottom: 5px; align-items: center; }
+  .note-author { font-size: 12px; font-weight: 600; color: var(--gold); }
+  .note-time { font-size: 11px; color: #bbb; }
+  .note-text { font-size: 13px; color: var(--ink); line-height: 1.6; margin-bottom: 8px; white-space: pre-wrap; }
+  .note-actions { display: flex; gap: 6px; }
+  .note-btn {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  .edit-btn { background: #e8f4fd; color: var(--river); border-color: #bde0f7; }
+  .edit-btn:hover { background: #cce6f9; }
+  .del-btn { background: #fdecea; color: var(--red); border-color: #f7bcb8; }
+  .del-btn:hover { background: #fabeb9; }
+
+  /* CUSTOM SPOTS */
+  .custom-spot-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #f3fbf3;
+    border: 1px solid #b6ddb6;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .cs-time { font-size: 11px; font-weight: 700; color: var(--moss); min-width: 38px; padding-top: 2px; }
+  .cs-body { flex: 1; }
+  .cs-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .cs-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .cs-actions { display: flex; flex-direction: column; gap: 4px; }
+
+  /* PACK ADD BUTTON */
+  .pack-add-btn {
+    width: 100%;
+    margin: 6px 0 4px;
+    padding: 8px;
+    background: transparent;
+    border: 1.5px dashed rgba(201,136,42,0.4);
+    border-radius: 8px;
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .pack-add-btn:hover { background: rgba(201,136,42,0.08); }
+  .custom-pack { position: relative; }
+  .pack-del-btn {
+    position: absolute;
+    top: 4px; right: 4px;
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .pack-del-btn:hover { color: var(--red); background: #fdecea; }
+
+  /* MODAL FIELDS */
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .modal-field input, .modal-field textarea {
+    width: 100%;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+    resize: vertical;
+  }
+  .modal-field input:focus, .modal-field textarea:focus { border-color: var(--gold); }
+
   /* Footer */
   .footer { text-align: center; padding: 32px 16px 16px; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
 
@@ -699,6 +828,9 @@
     <span class="tag">🏯 成都</span>
     <span class="tag">🏔️ 黃龍</span>
     <span class="tag">🏞️ 九寨溝</span>
+  </div>
+  <div style="margin-top:12px;">
+    <span id="sync-badge" style="display:inline-block;font-size:11px;padding:4px 14px;border-radius:20px;border:1px solid rgba(201,136,42,0.4);color:var(--gold-light);letter-spacing:1px;">🔄 即時同步中</span>
   </div>
 </div>
 
@@ -1410,7 +1542,9 @@
 </div>川渝·九黃 8天7晚 · 2026年4月26日—5月3日<br>出發前請再次確認各景區最新開放資訊</div>
 
 <script>
-// Tab switching
+// ═══════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════
 function showTab(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -1418,13 +1552,291 @@ function showTab(id) {
   event.target.classList.add('active');
 }
 
-// Day accordion
+// ═══════════════════════════════════════════
+// DAY ACCORDION
+// ═══════════════════════════════════════════
 function toggleDay(id) {
-  const card = document.getElementById(id);
-  card.classList.toggle('open');
+  document.getElementById(id).classList.toggle('open');
 }
 
-// Packing list data  { label, done }
+// ═══════════════════════════════════════════
+// FIREBASE REALTIME DATABASE (共同編輯)
+// ═══════════════════════════════════════════
+// 使用 Firebase REST API（無需 SDK，純 fetch）
+const FB_URL = 'https://trip-2026-95b77-default-rtdb.asia-southeast1.firebasedatabase.app';
+const TRIP_KEY = 'trip2026-chuanyu'; // 行程唯一識別碼
+
+// 本地快取（離線時備用）
+const localCache = {};
+
+async function dbGet(path, def = null) {
+  try {
+    const r = await fetch(`${FB_URL}/${TRIP_KEY}/${path}.json`);
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    if (data === null) return def;
+    localCache[path] = data;
+    return data;
+  } catch {
+    // 離線時用 localCache 或 localStorage
+    if (localCache[path] !== undefined) return localCache[path];
+    try { const v = localStorage.getItem(path); return v ? JSON.parse(v) : def; } catch { return def; }
+  }
+}
+
+async function dbSet(path, val) {
+  localCache[path] = val;
+  try { localStorage.setItem(path, JSON.stringify(val)); } catch {}
+  try {
+    await fetch(`${FB_URL}/${TRIP_KEY}/${path}.json`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(val)
+    });
+    showSyncBadge('✓ 已同步');
+  } catch {
+    showSyncBadge('⚠ 離線中', true);
+  }
+}
+
+// 同步狀態指示
+function showSyncBadge(msg, warn = false) {
+  const b = document.getElementById('sync-badge');
+  if (!b) return;
+  b.textContent = msg;
+  b.style.background = warn ? '#fef3c7' : '#dcfce7';
+  b.style.color = warn ? '#92400e' : '#166534';
+  b.style.borderColor = warn ? '#fcd34d' : '#86efac';
+  clearTimeout(b._t);
+  b._t = setTimeout(() => { b.textContent = '🔄 即時同步中'; b.style.background=''; b.style.color=''; b.style.borderColor=''; }, 3000);
+}
+
+// 輪詢同步（每15秒抓最新資料）
+let pollInterval = null;
+function startPolling() {
+  if (pollInterval) return;
+  pollInterval = setInterval(async () => {
+    // 重新渲染備註與景點（如有其他人更新）
+    document.querySelectorAll('.day-card').forEach(card => {
+      renderNotes(card.id);
+      renderSpots(card.id);
+    });
+    Object.keys(packingData).forEach(sid => renderCustomPackItems(sid));
+    updateProgress();
+  }, 15000);
+}
+
+// ═══════════════════════════════════════════
+// STORAGE HELPERS (wrapped over Firebase)
+// ═══════════════════════════════════════════
+async function lsGet(key, def) {
+  return await dbGet(key.replace(/\//g, '-'), def);
+}
+async function lsSet(key, val) {
+  await dbSet(key.replace(/\//g, '-'), val);
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function openModal(html, onConfirm) {
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal-overlay').style.display = 'flex';
+  document.getElementById('modal-confirm').onclick = () => { onConfirm(); closeModal(); };
+}
+function closeModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════
+// ITINERARY NOTES (per day)
+// ═══════════════════════════════════════════
+function initDayNotes() {
+  document.querySelectorAll('.day-card').forEach(card => {
+    const id = card.id;
+    const body = card.querySelector('.day-body');
+    if (!body) return;
+    const section = document.createElement('div');
+    section.className = 'notes-section';
+    section.id = 'notes-' + id;
+    section.innerHTML = `
+      <div class="notes-header">
+        <span class="notes-title">💬 備註與留言</span>
+        <button class="notes-add-btn" onclick="addNote('${id}')">＋ 新增</button>
+      </div>
+      <div class="notes-list" id="noteslist-${id}"><div class="notes-empty">載入中…</div></div>
+    `;
+    body.appendChild(section);
+    renderNotes(id);
+  });
+}
+
+async function renderNotes(dayId) {
+  const notes = await lsGet('notes-' + dayId, []);
+  const list = document.getElementById('noteslist-' + dayId);
+  if (!list) return;
+  if (!notes || notes.length === 0) {
+    list.innerHTML = '<div class="notes-empty">尚無備註，點擊「＋ 新增」添加</div>';
+    return;
+  }
+  list.innerHTML = notes.map((n, i) => `
+    <div class="note-item">
+      <div class="note-meta">
+        <span class="note-author">${escHtml(n.author || '匿名')}</span>
+        <span class="note-time">${n.time || ''}</span>
+      </div>
+      <div class="note-text">${escHtml(n.text)}</div>
+      <div class="note-actions">
+        <button class="note-btn edit-btn" onclick="editNote('${dayId}', ${i})">✏️ 編輯</button>
+        <button class="note-btn del-btn" onclick="deleteNote('${dayId}', ${i})">🗑️ 刪除</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function addNote(dayId) {
+  openModal(`
+    <div class="modal-field"><label>您的名字</label><input id="m-author" placeholder="例如：小明" maxlength="20"></div>
+    <div class="modal-field"><label>備註內容</label><textarea id="m-text" rows="4" placeholder="新增備註、修改建議、或任何想法…"></textarea></div>
+  `, async () => {
+    const author = document.getElementById('m-author').value.trim() || '匿名';
+    const text = document.getElementById('m-text').value.trim();
+    if (!text) return;
+    const notes = await lsGet('notes-' + dayId, []);
+    notes.push({ author, text, time: nowStr() });
+    await lsSet('notes-' + dayId, notes);
+    renderNotes(dayId);
+  });
+  setTimeout(() => document.getElementById('m-author').focus(), 50);
+}
+
+async function editNote(dayId, idx) {
+  const notes = await lsGet('notes-' + dayId, []);
+  const n = notes[idx];
+  openModal(`
+    <div class="modal-field"><label>您的名字</label><input id="m-author" value="${escHtml(n.author || '')}" maxlength="20"></div>
+    <div class="modal-field"><label>備註內容</label><textarea id="m-text" rows="4">${escHtml(n.text)}</textarea></div>
+  `, async () => {
+    const author = document.getElementById('m-author').value.trim() || '匿名';
+    const text = document.getElementById('m-text').value.trim();
+    if (!text) return;
+    notes[idx] = { author, text, time: n.time + '（已編輯）' };
+    await lsSet('notes-' + dayId, notes);
+    renderNotes(dayId);
+  });
+  setTimeout(() => document.getElementById('m-text').focus(), 50);
+}
+
+async function deleteNote(dayId, idx) {
+  if (!confirm('確定刪除此備註？')) return;
+  const notes = await lsGet('notes-' + dayId, []);
+  notes.splice(idx, 1);
+  await lsSet('notes-' + dayId, notes);
+  renderNotes(dayId);
+}
+
+// ═══════════════════════════════════════════
+// CUSTOM ITINERARY SPOTS (per day)
+// ═══════════════════════════════════════════
+function initDaySpotEditors() {
+  document.querySelectorAll('.day-card').forEach(card => {
+    const id = card.id;
+    const body = card.querySelector('.day-body');
+    if (!body) return;
+    const section = document.createElement('div');
+    section.className = 'spot-edit-section';
+    section.innerHTML = `
+      <div class="notes-header" style="margin-top:16px;">
+        <span class="notes-title">📌 自訂景點</span>
+        <button class="notes-add-btn" onclick="addSpot('${id}')">＋ 新增景點</button>
+      </div>
+      <div id="customspots-${id}"></div>
+    `;
+    const notesSection = body.querySelector('.notes-section');
+    body.insertBefore(section, notesSection);
+    renderSpots(id);
+  });
+}
+
+async function renderSpots(dayId) {
+  const spots = await lsGet('spots-' + dayId, []);
+  const container = document.getElementById('customspots-' + dayId);
+  if (!container) return;
+  if (!spots || spots.length === 0) {
+    container.innerHTML = '<div class="notes-empty">尚無自訂景點</div>';
+    return;
+  }
+  container.innerHTML = spots.map((s, i) => `
+    <div class="custom-spot-item">
+      <div class="cs-time">${escHtml(s.time || '')}</div>
+      <div class="cs-body">
+        <div class="cs-title">${escHtml(s.title)}</div>
+        ${s.desc ? `<div class="cs-desc">${escHtml(s.desc)}</div>` : ''}
+        ${s.link ? `<a class="tl-link" href="${escHtml(s.link)}" target="_blank">🔗 連結</a>` : ''}
+      </div>
+      <div class="cs-actions">
+        <button class="note-btn edit-btn" onclick="editSpot('${dayId}', ${i})">✏️</button>
+        <button class="note-btn del-btn" onclick="deleteSpot('${dayId}', ${i})">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function addSpot(dayId) {
+  openModal(`
+    <div class="modal-field"><label>時間</label><input id="m-time" placeholder="例如：14:00"></div>
+    <div class="modal-field"><label>景點名稱 *</label><input id="m-title" placeholder="例如：解放碑廣場"></div>
+    <div class="modal-field"><label>說明</label><textarea id="m-desc" rows="3" placeholder="交通方式、注意事項…"></textarea></div>
+    <div class="modal-field"><label>連結（選填）</label><input id="m-link" placeholder="https://…"></div>
+  `, async () => {
+    const title = document.getElementById('m-title').value.trim();
+    if (!title) return;
+    const spots = await lsGet('spots-' + dayId, []);
+    spots.push({
+      time: document.getElementById('m-time').value.trim(),
+      title,
+      desc: document.getElementById('m-desc').value.trim(),
+      link: document.getElementById('m-link').value.trim(),
+    });
+    await lsSet('spots-' + dayId, spots);
+    renderSpots(dayId);
+  });
+  setTimeout(() => document.getElementById('m-title').focus(), 50);
+}
+
+async function editSpot(dayId, idx) {
+  const spots = await lsGet('spots-' + dayId, []);
+  const s = spots[idx];
+  openModal(`
+    <div class="modal-field"><label>時間</label><input id="m-time" value="${escHtml(s.time||'')}"></div>
+    <div class="modal-field"><label>景點名稱 *</label><input id="m-title" value="${escHtml(s.title)}"></div>
+    <div class="modal-field"><label>說明</label><textarea id="m-desc" rows="3">${escHtml(s.desc||'')}</textarea></div>
+    <div class="modal-field"><label>連結（選填）</label><input id="m-link" value="${escHtml(s.link||'')}"></div>
+  `, async () => {
+    const title = document.getElementById('m-title').value.trim();
+    if (!title) return;
+    spots[idx] = {
+      time: document.getElementById('m-time').value.trim(),
+      title,
+      desc: document.getElementById('m-desc').value.trim(),
+      link: document.getElementById('m-link').value.trim(),
+    };
+    await lsSet('spots-' + dayId, spots);
+    renderSpots(dayId);
+  });
+}
+
+async function deleteSpot(dayId, idx) {
+  if (!confirm('確定刪除此景點？')) return;
+  const spots = await lsGet('spots-' + dayId, []);
+  spots.splice(idx, 1);
+  await lsSet('spots-' + dayId, spots);
+  renderSpots(dayId);
+}
+
+// ═══════════════════════════════════════════
+// PACKING LIST
+// ═══════════════════════════════════════════
 const packingData = {
   'pack-prep': [
     { label: '機場接送', done: true },
@@ -1468,7 +1880,8 @@ const packingData = {
   ]
 };
 
-let allItems = [];
+// Custom items added by user (stored in Firebase)
+let allItemKeys = [];
 
 function initPacking() {
   for (const [containerId, items] of Object.entries(packingData)) {
@@ -1476,45 +1889,153 @@ function initPacking() {
     if (!container) continue;
     items.forEach((item, index) => {
       const key = containerId + '-' + index;
-      allItems.push(key);
-      const label = typeof item === 'object' ? item.label : item;
-      const defaultDone = typeof item === 'object' ? item.done : false;
-      // Use localStorage if touched before, else use default
+      allItemKeys.push(key);
+      const label = item.label;
+      const defaultDone = item.done;
       const storedVal = localStorage.getItem('pack-' + key);
       const isChecked = storedVal !== null ? storedVal === '1' : defaultDone;
-      if (storedVal === null && defaultDone) {
-        localStorage.setItem('pack-' + key, '1');
-      }
-      const div = document.createElement('div');
-      div.className = 'pack-item' + (isChecked ? ' checked' : '');
-      div.dataset.key = key;
-      const badge = defaultDone ? '<span class="pack-done-badge">已完成</span>' : '';
-      div.innerHTML = `<div class="pack-cb">${isChecked ? '✓' : ''}</div><span>${label}${badge}</span>`;
-      div.addEventListener('click', () => togglePack(div, key));
-      container.appendChild(div);
+      if (storedVal === null && defaultDone) localStorage.setItem('pack-' + key, '1');
+      container.appendChild(makePackItem(key, label, isChecked, defaultDone, false));
     });
+    renderCustomPackItems(containerId);
+    const addBtn = document.createElement('button');
+    addBtn.className = 'pack-add-btn';
+    addBtn.textContent = '＋ 新增項目';
+    addBtn.onclick = () => addPackItem(containerId);
+    container.parentElement.insertBefore(addBtn, container.nextSibling);
   }
+  // Load checked states from Firebase
+  loadPackStatesFromDB();
   updateProgress();
 }
 
-function togglePack(el, key) {
+async function loadPackStatesFromDB() {
+  try {
+    const states = await dbGet('pack-states', {});
+    if (!states) return;
+    allItemKeys.forEach(key => {
+      if (states[key] !== undefined) {
+        const el = document.querySelector(`[data-key="${key}"]`);
+        if (!el) return;
+        const checked = states[key] === 1;
+        el.classList.toggle('checked', checked);
+        el.querySelector('.pack-cb').textContent = checked ? '✓' : '';
+        localStorage.setItem('pack-' + key, checked ? '1' : '0');
+      }
+    });
+    updateProgress();
+  } catch {}
+}
+
+function makePackItem(key, label, isChecked, isDefault, isCustom) {
+  const div = document.createElement('div');
+  div.className = 'pack-item' + (isChecked ? ' checked' : '') + (isCustom ? ' custom-pack' : '');
+  div.dataset.key = key;
+  const badge = isDefault ? '<span class="pack-done-badge">已完成</span>' : '';
+  const delBtn = isCustom ? `<button class="pack-del-btn" onclick="deletePackItem(event,'${key}')">✕</button>` : '';
+  div.innerHTML = `<div class="pack-cb">${isChecked ? '✓' : ''}</div><span>${escHtml(label)}${badge}</span>${delBtn}`;
+  div.addEventListener('click', (e) => {
+    if (e.target.classList.contains('pack-del-btn')) return;
+    togglePack(div, key);
+  });
+  return div;
+}
+
+async function renderCustomPackItems(sectionId) {
+  const container = document.getElementById(sectionId);
+  if (!container) return;
+  container.querySelectorAll('.custom-pack').forEach(el => el.remove());
+  const customs = await lsGet('custom-pack-' + sectionId, []);
+  if (!customs) return;
+  customs.forEach((item, i) => {
+    const key = 'custom-' + sectionId + '-' + i;
+    if (!allItemKeys.includes(key)) allItemKeys.push(key);
+    const storedVal = localStorage.getItem('pack-' + key);
+    const isChecked = storedVal === '1';
+    container.appendChild(makePackItem(key, item.label, isChecked, false, true));
+  });
+  updateProgress();
+}
+
+async function addPackItem(sectionId) {
+  openModal(`
+    <div class="modal-field"><label>項目名稱 *</label><input id="m-pack-label" placeholder="例如：護唇膏"></div>
+  `, async () => {
+    const label = document.getElementById('m-pack-label').value.trim();
+    if (!label) return;
+    const customs = await lsGet('custom-pack-' + sectionId, []);
+    customs.push({ label });
+    await lsSet('custom-pack-' + sectionId, customs);
+    renderCustomPackItems(sectionId);
+  });
+  setTimeout(() => document.getElementById('m-pack-label').focus(), 50);
+}
+
+async function deletePackItem(e, key) {
+  e.stopPropagation();
+  if (!confirm('刪除此項目？')) return;
+  const parts = key.replace('custom-', '').split('-');
+  const idx = parseInt(parts[parts.length - 1]);
+  const sectionId = parts.slice(0, -1).join('-');
+  const customs = await lsGet('custom-pack-' + sectionId, []);
+  customs.splice(idx, 1);
+  await lsSet('custom-pack-' + sectionId, customs);
+  allItemKeys = allItemKeys.filter(k => !k.startsWith('custom-' + sectionId));
+  renderCustomPackItems(sectionId);
+}
+
+async function togglePack(el, key) {
   const isChecked = el.classList.toggle('checked');
   el.querySelector('.pack-cb').textContent = isChecked ? '✓' : '';
   localStorage.setItem('pack-' + key, isChecked ? '1' : '0');
+  // Sync to DB
+  const states = await dbGet('pack-states', {});
+  states[key] = isChecked ? 1 : 0;
+  await dbSet('pack-states', states);
   updateProgress();
 }
 
 function updateProgress() {
-  const total = allItems.length;
+  const total = allItemKeys.length;
   let done = 0;
-  allItems.forEach(key => {
+  allItemKeys.forEach(key => {
     if (localStorage.getItem('pack-' + key) === '1') done++;
   });
-  document.getElementById('progressBar').style.width = (done / total * 100) + '%';
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = done + ' / ' + total;
 }
 
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function nowStr() {
+  const d = new Date();
+  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
 initPacking();
+initDayNotes();
+initDaySpotEditors();
+startPolling();
 </script>
+<!-- MODAL -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <div style="background:var(--ink);color:#fff;padding:16px 20px;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:600;">✏️ 編輯</div>
+    <div id="modal-body" style="padding:20px;"></div>
+    <div style="display:flex;gap:10px;padding:0 20px 20px;">
+      <button id="modal-confirm" style="flex:1;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;">✓ 確認</button>
+      <button onclick="closeModal()" style="flex:1;background:#f1f1f1;color:#555;border:none;border-radius:8px;padding:12px;font-size:14px;cursor:pointer;">✕ 取消</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

@@ -282,6 +282,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
+<div id="app-shell" style="display:none">
 <div class="header">
   <div class="h-sub">高端品质游 · 2026</div>
   <div class="h-title">川渝·九黃 旅遊行程</div>
@@ -403,6 +404,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 
 </div><!-- .main -->
 <div class="footer">川渝·九黃 8天7晚 · 2026年4月26日—5月3日<br>出發前請再次確認各景區最新開放資訊</div>
+</div><!-- #app-shell -->
 
 <!-- MODAL -->
 <div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:999;align-items:center;justify-content:center;padding:13px;">
@@ -804,7 +806,10 @@ function guestLogin(){
 function setCurrentUser(u){
   currentUser=u;
   localStorage.setItem('trip-user',JSON.stringify(u));
+  // Hide login, show app
   document.getElementById('login-screen').classList.remove('show');
+  document.getElementById('app-shell').style.display='block';
+  // Update user bar in header
   document.getElementById('user-bar').classList.add('show');
   document.getElementById('user-avatar-hdr').textContent=avatarInitial(u.name);
   document.getElementById('user-avatar-hdr').style.background=u.color;
@@ -822,6 +827,7 @@ function doLogout(){
   currentUser=null;
   localStorage.removeItem('trip-user');
   document.getElementById('login-screen').classList.add('show');
+  document.getElementById('app-shell').style.display='none';
   document.getElementById('user-bar').classList.remove('show');
   document.getElementById('acc-add-btn').style.display='none';
 }

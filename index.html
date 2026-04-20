@@ -6,2036 +6,1064 @@
 <title>川渝·九黃 旅遊行程規劃</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1008;
-    --parchment: #f5efe6;
-    --cream: #fdf8f0;
-    --red: #c0392b;
-    --gold: #c9882a;
-    --gold-light: #e8b84b;
-    --moss: #4a6741;
-    --river: #2980b9;
-    --muted: #8b7355;
-    --card-bg: #fffdf8;
-    --shadow: 0 4px 24px rgba(26,16,8,0.10);
-  }
+:root {
+  --ink:#1a1008;--parchment:#f5efe6;--cream:#fdf8f0;
+  --red:#c0392b;--gold:#c9882a;--gold-light:#e8b84b;
+  --moss:#4a6741;--river:#2980b9;--muted:#8b7355;
+  --card:#fffdf8;--shadow:0 4px 24px rgba(26,16,8,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;}
+.header{background:var(--ink);color:var(--parchment);padding:26px 18px 18px;text-align:center;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 38px,rgba(201,136,42,.06) 38px,rgba(201,136,42,.06) 39px);}
+.h-sub{font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-light);font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;}
+.h-title{font-family:'Noto Serif TC',serif;font-size:clamp(20px,5vw,34px);font-weight:700;color:#fff;}
+.h-dates{margin-top:7px;color:var(--gold-light);font-size:13px;letter-spacing:2px;}
+.h-tags{margin-top:10px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
+.tag{background:rgba(201,136,42,.18);border:1px solid rgba(201,136,42,.4);color:var(--gold-light);font-size:11px;padding:2px 9px;border-radius:20px;}
+#sync-badge{display:inline-block;margin-top:9px;font-size:11px;padding:3px 13px;border-radius:20px;border:1px solid rgba(201,136,42,.4);color:var(--gold-light);letter-spacing:1px;transition:all .3s;}
+.nav{display:flex;background:var(--ink);border-top:1px solid rgba(201,136,42,.25);overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex:none;padding:11px 16px;font-size:13px;color:rgba(245,239,230,.55);background:none;border:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;font-weight:500;transition:color .2s;}
+.nav-btn.active,.nav-btn:hover{color:var(--gold-light);border-bottom-color:var(--gold);}
+.main{max-width:860px;margin:0 auto;padding:22px 13px 60px;}
+.section{display:none;}.section.active{display:block;}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.toolbar h2{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:600;}
+.btn-add{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.btn-add:hover{background:#a8701f;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* DAY CARDS */
+.day-card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;border:1px solid rgba(201,136,42,.15);}
+.day-hdr{display:flex;align-items:center;cursor:pointer;}
+.day-num{background:var(--gold);color:#fff;font-family:'Playfair Display',serif;font-size:19px;font-weight:700;width:55px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.day-num small{font-size:9px;font-family:'Noto Sans TC',sans-serif;font-weight:400;opacity:.8;letter-spacing:1px;margin-top:2px;}
+.day-info{flex:1;padding:11px 13px;}
+.day-date{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:2px;}
+.day-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;line-height:1.35;}
+.day-loc{font-size:11px;color:var(--river);margin-top:3px;}
+.day-acts{display:flex;gap:4px;padding:0 8px;flex-shrink:0;}
+.day-chev{padding:13px 9px;color:var(--muted);font-size:17px;transition:transform .25s;}
+.day-card.open .day-chev{transform:rotate(90deg);}
+.day-body{display:none;padding:0 14px 14px;}
+.day-card.open .day-body{display:block;}
+.icon-btn{background:none;border:none;cursor:pointer;padding:3px 5px;border-radius:4px;font-size:13px;}
+.icon-btn:hover{background:rgba(0,0,0,.07);}
+.info-row{display:flex;gap:7px;margin:9px 0;flex-wrap:wrap;}
+.pill{display:flex;align-items:center;gap:4px;background:var(--parchment);border-radius:20px;padding:3px 11px;font-size:12px;color:var(--muted);}
 
-  body {
-    font-family: 'Noto Sans TC', sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    min-height: 100vh;
-  }
+/* SPOTS */
+.spot-list{list-style:none;margin-top:8px;}
+.spot-item{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed rgba(201,136,42,.2);font-size:13px;}
+.spot-item:last-child{border-bottom:none;}
+.s-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+.s-body{flex:1;line-height:1.5;}
+.s-time{font-size:11px;font-weight:700;color:var(--gold);margin-right:5px;}
+.s-acts{display:flex;gap:2px;flex-shrink:0;}
+.spot-add-btn{width:100%;margin-top:7px;padding:6px;background:transparent;border:1.5px dashed rgba(201,136,42,.4);border-radius:7px;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;}
+.spot-add-btn:hover{background:rgba(201,136,42,.08);}
 
-  /* HEADER */
-  .header {
-    background: var(--ink);
-    color: var(--parchment);
-    padding: 32px 24px 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      45deg, transparent, transparent 40px,
-      rgba(201,136,42,0.06) 40px, rgba(201,136,42,0.06) 41px
-    );
-  }
-  .header-subtitle {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    color: var(--gold-light);
-    font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .header-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(24px, 5vw, 40px);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-  }
-  .header-dates {
-    margin-top: 10px;
-    color: var(--gold-light);
-    font-size: 14px;
-    letter-spacing: 2px;
-  }
-  .header-tags {
-    margin-top: 14px;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .tag {
-    background: rgba(201,136,42,0.18);
-    border: 1px solid rgba(201,136,42,0.4);
-    color: var(--gold-light);
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
+/* NOTES */
+.notes-wrap{margin-top:12px;border-top:1px dashed rgba(201,136,42,.2);padding-top:11px;}
+.notes-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.notes-lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.notes-add{background:var(--gold);color:#fff;border:none;border-radius:5px;padding:3px 11px;font-size:11px;font-weight:600;cursor:pointer;}
+.note-item{background:#fffbf0;border:1px solid rgba(201,136,42,.2);border-radius:7px;padding:8px 10px;margin-bottom:6px;}
+.note-meta{display:flex;gap:8px;align-items:center;margin-bottom:4px;}
+.note-author{font-size:11px;font-weight:700;color:var(--gold);}
+.note-time{font-size:10px;color:#bbb;}
+.note-text{font-size:13px;line-height:1.6;white-space:pre-wrap;margin-bottom:5px;}
+.note-acts{display:flex;gap:5px;}
+.nbtn{font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid transparent;cursor:pointer;}
+.ebtn{background:#e8f4fd;color:var(--river);border-color:#bde0f7;}
+.dbtn{background:#fdecea;color:var(--red);border-color:#f7bcb8;}
+.empty{font-size:12px;color:#bbb;font-style:italic;text-align:center;padding:8px;}
 
-  /* NAV TABS */
-  .nav {
-    display: flex;
-    background: var(--ink);
-    border-top: 1px solid rgba(201,136,42,0.25);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .nav::-webkit-scrollbar { display: none; }
-  .nav-btn {
-    flex: none;
-    padding: 12px 20px;
-    font-family: 'Noto Sans TC', sans-serif;
-    font-size: 13px;
-    color: rgba(245,239,230,0.55);
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.2s;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    font-weight: 500;
-  }
-  .nav-btn.active, .nav-btn:hover {
-    color: var(--gold-light);
-    border-bottom-color: var(--gold);
-  }
+/* PACKING */
+.pack-prog{background:var(--parchment);border-radius:8px;padding:11px 15px;margin-bottom:13px;display:flex;align-items:center;gap:11px;}
+.pack-bar-wrap{flex:1;background:rgba(201,136,42,.15);border-radius:20px;height:7px;overflow:hidden;}
+.pack-bar{height:7px;background:var(--gold);border-radius:20px;transition:width .4s;}
+.pack-lbl{font-size:12px;color:var(--muted);white-space:nowrap;min-width:50px;text-align:right;}
+.psec-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;margin:16px 0 7px;display:flex;align-items:center;justify-content:space-between;}
+.psec-btns{display:flex;gap:4px;}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-bottom:3px;}
+.pitem{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:7px;padding:7px 10px;font-size:13px;cursor:pointer;border:1.5px solid transparent;user-select:none;box-shadow:0 1px 4px rgba(26,16,8,.06);position:relative;}
+.pitem:hover{border-color:rgba(201,136,42,.3);}
+.pitem.chk{background:#f0f7ee;border-color:var(--moss);color:var(--moss);}
+.pcb{width:16px;height:16px;border-radius:3px;border:1.5px solid #ccc;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;}
+.pitem.chk .pcb{background:var(--moss);border-color:var(--moss);color:#fff;}
+.pbadge{font-size:10px;background:rgba(74,103,65,.12);color:var(--moss);border-radius:3px;padding:1px 5px;margin-left:3px;font-weight:500;}
+.pdel{position:absolute;top:2px;right:2px;background:none;border:none;color:#ccc;font-size:10px;cursor:pointer;padding:2px 3px;border-radius:3px;}
+.pdel:hover{color:var(--red);background:#fdecea;}
+.padd{width:100%;margin:4px 0 2px;padding:6px;background:transparent;border:1.5px dashed rgba(201,136,42,.4);border-radius:7px;color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;}
+.padd:hover{background:rgba(201,136,42,.07);}
 
-  /* MAIN */
-  .main { max-width: 860px; margin: 0 auto; padding: 28px 16px 48px; }
+/* WEATHER/OUTFIT */
+.wnote{background:#fff8e8;border-left:3px solid var(--gold);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:13px;line-height:1.7;}
+.wgrid,.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:11px;margin-bottom:16px;}
+.wcard,.ocard{background:var(--card);border-radius:11px;padding:14px;box-shadow:var(--shadow);border:1px solid rgba(201,136,42,.15);}
+.wcity,.ocity{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;margin-bottom:2px;}
+.wper,.osub{font-size:11px;color:var(--muted);margin-bottom:8px;}
+.wicon{font-size:30px;margin-bottom:5px;}
+.wtemp{font-size:17px;font-weight:600;color:var(--gold);margin-bottom:3px;}
+.wdesc{font-size:12px;color:var(--muted);}
+.olist{list-style:none;}
+.olist li{font-size:12px;padding:2px 0;display:flex;gap:6px;line-height:1.5;}
+.olist li::before{content:'·';color:var(--gold);font-size:15px;line-height:0;margin-top:2px;}
 
-  /* SECTION */
-  .section { display: none; }
-  .section.active { display: block; }
+/* DRIVER */
+.driver-hero{background:var(--ink);border-radius:12px;padding:17px;display:flex;align-items:center;gap:11px;margin-bottom:11px;position:relative;overflow:hidden;}
+.driver-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 27px,rgba(201,136,42,.07) 27px,rgba(201,136,42,.07) 28px);}
+.d-badge{font-size:32px;flex-shrink:0;z-index:1;}
+.d-info{flex:1;z-index:1;}
+.d-name{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:#fff;}
+.d-sub{font-size:11px;color:var(--gold-light);margin-top:2px;}
+.d-right{display:flex;flex-direction:column;gap:5px;z-index:1;}
+.d-status{background:#16a34a;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.d-editbtn{background:rgba(201,136,42,.25);color:var(--gold-light);border:1px solid rgba(201,136,42,.4);font-size:11px;padding:3px 11px;border-radius:5px;cursor:pointer;white-space:nowrap;}
+.plate-banner{background:#1e293b;color:#fff;border-radius:9px;padding:11px 16px;display:flex;align-items:center;gap:11px;margin-bottom:11px;flex-wrap:wrap;}
+.plate-lbl{font-size:10px;color:#94a3b8;letter-spacing:1px;}
+.plate-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:4px;border:2px solid rgba(255,255,255,.3);padding:2px 12px;border-radius:5px;}
+.plate-color{font-size:12px;color:#94a3b8;}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px;margin-bottom:16px;}
+.dcard{background:var(--card);border-radius:10px;padding:13px;border:1px solid rgba(201,136,42,.15);box-shadow:var(--shadow);}
+.dcard.hl{border-color:rgba(201,136,42,.45);background:#fffbf0;}
+.dc-icon{font-size:19px;margin-bottom:4px;}
+.dc-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.dc-val{font-size:13px;font-weight:600;line-height:1.3;}
+.dc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.dsec-title{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:600;margin:16px 0 8px;display:flex;align-items:center;gap:7px;}
+.dsec-title::after{content:'';flex:1;height:1px;background:rgba(201,136,42,.25);}
+.crow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.cbtn{display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:10px;text-decoration:none;border:1px solid transparent;transition:filter .15s;}
+.cbtn:hover{filter:brightness(.93);}
+.cbtn.tel{background:#dcfce7;border-color:#86efac;color:#15803d;}
+.cbtn.sms{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8;}
+.c-ico{font-size:22px;flex-shrink:0;}
+.c-lbl{font-size:10px;opacity:.7;}
+.c-val{font-size:13px;font-weight:600;}
+.ocard2{background:var(--card);border-radius:10px;border:1px solid rgba(201,136,42,.15);overflow:hidden;box-shadow:var(--shadow);}
+.orow{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid rgba(201,136,42,.1);gap:9px;}
+.orow:last-of-type{border-bottom:none;}
+.okey{font-size:12px;color:var(--muted);white-space:nowrap;}
+.oval{font-size:12px;font-weight:500;text-align:right;}
+.oval.mono{font-family:monospace;color:var(--river);}
+.qbtn{display:block;background:var(--ink);color:var(--gold-light);text-align:center;padding:12px;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;}
+.qbtn:hover{background:#2d1f0e;}
+.tblock{border-radius:12px;border:2px solid transparent;padding:15px;margin-top:14px;box-shadow:var(--shadow);}
+.tblock.pickup{background:#f0f7ff;border-color:#93c5fd;}
+.tblock.dropoff{background:#fffbeb;border-color:#fcd34d;}
+.thdr{display:flex;align-items:center;gap:9px;margin-bottom:13px;flex-wrap:wrap;}
+.tbadge{font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px;}
+.tbadge.p{background:#1d4ed8;color:#fff;}
+.tbadge.d{background:#d97706;color:#fff;}
+.tdt{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;}
+.troute{background:rgba(255,255,255,.7);border-radius:8px;padding:11px 13px;margin-bottom:9px;}
+.tpt{display:flex;align-items:center;gap:9px;}
+.tdot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.tplbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.tpplace{font-size:13px;font-weight:600;}
+.tarrow{font-size:17px;color:var(--muted);padding:3px 0 3px 21px;}
+.tmeta{display:flex;flex-wrap:wrap;gap:5px;font-size:12px;color:var(--muted);}
+.tmeta span{background:rgba(255,255,255,.8);border-radius:5px;padding:2px 8px;border:1px solid rgba(0,0,0,.08);}
+.mprice{color:var(--gold)!important;font-weight:700;}
+.rblock{background:var(--card);border-radius:10px;border:1px solid rgba(201,136,42,.15);overflow:hidden;box-shadow:var(--shadow);margin-top:11px;}
+.rtitle{background:var(--parchment);font-size:12px;font-weight:600;color:var(--muted);padding:8px 14px;border-bottom:1px solid rgba(201,136,42,.15);}
+.rlist{padding:9px 14px 9px 32px;margin:0;}
+.rlist li{font-size:12px;color:#4a3c28;line-height:1.75;padding:2px 0;}
+.rlist li strong{color:var(--red);}
 
-  /* ITINERARY */
-  .day-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
-    overflow: hidden;
-    border: 1px solid rgba(201,136,42,0.15);
-    transition: box-shadow 0.2s;
-  }
-  .day-card:hover { box-shadow: 0 8px 32px rgba(26,16,8,0.14); }
-  .day-header {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    cursor: pointer;
-    padding: 0;
-  }
-  .day-num {
-    background: var(--gold);
-    color: #fff;
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 700;
-    width: 64px;
-    min-height: 70px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    line-height: 1;
-  }
-  .day-num small { font-size: 10px; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; opacity: 0.8; letter-spacing: 1px; margin-top: 2px; }
-  .day-info { flex: 1; padding: 14px 16px; }
-  .day-date { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 3px; }
-  .day-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.4; }
-  .day-location { font-size: 12px; color: var(--river); margin-top: 4px; }
-  .day-chevron { padding: 14px 16px; color: var(--muted); font-size: 18px; transition: transform 0.25s; }
-  .day-card.open .day-chevron { transform: rotate(90deg); }
+/* MODAL */
+#modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:999;align-items:center;justify-content:center;padding:13px;}
+.mbox{background:#fff;border-radius:15px;width:100%;max-width:500px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:92vh;display:flex;flex-direction:column;}
+.mhead{background:var(--ink);color:#fff;padding:13px 17px;font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;flex-shrink:0;}
+.mbody{padding:17px;overflow-y:auto;flex:1;}
+.mfoot{display:flex;gap:8px;padding:0 17px 17px;flex-shrink:0;}
+.mfield{margin-bottom:12px;}
+.mfield label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
+.mfield input,.mfield textarea,.mfield select{width:100%;border:1.5px solid #ddd;border-radius:7px;padding:8px 10px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);outline:none;transition:border-color .15s;resize:vertical;}
+.mfield input:focus,.mfield textarea:focus{border-color:var(--gold);}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+#mconfirm{flex:1;background:var(--gold);color:#fff;border:none;border-radius:7px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;}
+#mcancel{flex:1;background:#f1f1f1;color:#555;border:none;border-radius:7px;padding:10px;font-size:13px;cursor:pointer;}
 
-  .day-body { display: none; padding: 0 20px 20px; }
-  .day-card.open .day-body { display: block; }
-
-  .info-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-  }
-  .info-pill {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: var(--parchment);
-    border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .info-pill.hotel { color: var(--moss); }
-  .info-pill.meal { color: var(--red); }
-
-  .spots-title { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .spots-list { list-style: none; }
-  .spots-list li {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 7px 0;
-    border-bottom: 1px dashed rgba(201,136,42,0.2);
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  .spots-list li:last-child { border-bottom: none; }
-  .spot-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-
-  /* WEATHER */
-  .weather-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
-  }
-  .weather-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(201,136,42,0.15);
-    text-align: center;
-  }
-  .weather-city { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-  .weather-period { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
-  .weather-icon { font-size: 36px; margin-bottom: 6px; }
-  .weather-temp { font-size: 20px; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
-  .weather-desc { font-size: 12px; color: var(--muted); }
-  .weather-note {
-    background: #fff8e8;
-    border-left: 3px solid var(--gold);
-    border-radius: 6px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 16px;
-    line-height: 1.7;
-  }
-
-  /* OUTFIT */
-  .outfit-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-  }
-  .outfit-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 18px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(201,136,42,0.15);
-  }
-  .outfit-city { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-  .outfit-subtitle { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
-  .outfit-list { list-style: none; }
-  .outfit-list li { font-size: 13px; padding: 4px 0; display: flex; gap: 8px; align-items: center; line-height: 1.5; }
-  .outfit-list li::before { content: '·'; color: var(--gold); font-size: 18px; line-height: 0; margin-top: 2px; }
-
-  /* PACKING */
-  .packing-section-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 20px 0 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .packing-section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(201,136,42,0.25);
-  }
-  .packing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .pack-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--card-bg);
-    border-radius: 8px;
-    padding: 9px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    border: 1.5px solid transparent;
-    transition: border-color 0.18s, background 0.18s;
-    user-select: none;
-    box-shadow: 0 1px 4px rgba(26,16,8,0.06);
-  }
-  .pack-item:hover { border-color: rgba(201,136,42,0.3); }
-  .pack-item.checked { background: #f0f7ee; border-color: var(--moss); color: var(--moss); }
-  .pack-cb {
-    width: 18px; height: 18px;
-    border-radius: 4px;
-    border: 1.5px solid #ccc;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 12px;
-    transition: background 0.15s, border-color 0.15s;
-  }
-  .pack-item.checked .pack-cb { background: var(--moss); border-color: var(--moss); color: #fff; }
-  .pack-done-badge {
-    display: inline-block;
-    font-size: 10px;
-    background: rgba(74,103,65,0.12);
-    color: var(--moss);
-    border-radius: 4px;
-    padding: 1px 6px;
-    margin-left: 6px;
-    font-weight: 500;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-  .pack-progress {
-    background: var(--parchment);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .pack-progress-bar-wrap { flex: 1; background: rgba(201,136,42,0.15); border-radius: 20px; height: 8px; overflow: hidden; }
-  .pack-progress-bar { height: 8px; background: var(--gold); border-radius: 20px; transition: width 0.4s; }
-  .pack-progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; min-width: 60px; text-align: right; }
-
-  /* TIPS */
-  .tip-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 18px 20px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(201,136,42,0.15);
-    margin-bottom: 14px;
-  }
-  .tip-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .tip-body { font-size: 13px; color: #4a3c28; line-height: 1.8; }
-
-  /* TIMELINE */
-  .timeline { position: relative; padding-left: 0; margin-top: 4px; }
-  .tl-block {
-    display: grid;
-    grid-template-columns: 44px 20px 1fr;
-    gap: 0 10px;
-    margin-bottom: 0;
-    position: relative;
-  }
-  .tl-block::before {
-    content: '';
-    position: absolute;
-    left: 52px;
-    top: 20px;
-    bottom: -4px;
-    width: 2px;
-    background: rgba(201,136,42,0.18);
-  }
-  .tl-block:last-child::before { display: none; }
-  .tl-time {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--gold);
-    text-align: right;
-    padding-top: 5px;
-    letter-spacing: 0.5px;
-    line-height: 1.2;
-  }
-  .tl-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    margin-top: 5px;
-    flex-shrink: 0;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 2px currentColor;
-    align-self: start;
-  }
-  .tl-dot.arrived { color: var(--river); background: var(--river); }
-  .tl-dot.spot { color: var(--gold); background: var(--gold); }
-  .tl-dot.transport { color: var(--muted); background: var(--muted); }
-  .tl-dot.food { color: var(--red); background: var(--red); }
-  .tl-dot.night { color: #7c3aed; background: #7c3aed; }
-  .tl-dot.alt { color: #aaa; background: #aaa; }
-  .tl-content {
-    padding: 4px 0 16px;
-  }
-  .tl-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.4;
-    margin-bottom: 3px;
-  }
-  .tl-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 5px;
-  }
-  .tl-link {
-    display: inline-block;
-    font-size: 11px;
-    color: var(--river);
-    text-decoration: none;
-    background: rgba(41,128,185,0.08);
-    border-radius: 4px;
-    padding: 2px 8px;
-    margin: 2px 4px 2px 0;
-    border: 1px solid rgba(41,128,185,0.2);
-    transition: background 0.15s;
-  }
-  .tl-link:hover { background: rgba(41,128,185,0.18); }
-
-  /* DRIVER */
-  .driver-hero {
-    background: var(--ink);
-    border-radius: 14px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-  .driver-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      -45deg, transparent, transparent 30px,
-      rgba(201,136,42,0.07) 30px, rgba(201,136,42,0.07) 31px
-    );
-  }
-  .driver-badge {
-    font-size: 36px;
-    flex-shrink: 0;
-    z-index: 1;
-  }
-  .driver-hero-info { flex: 1; z-index: 1; }
-  .driver-hero-name {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .driver-hero-sub { font-size: 12px; color: var(--gold-light); margin-top: 3px; }
-  .driver-status {
-    background: #16a34a;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 20px;
-    z-index: 1;
-    white-space: nowrap;
-  }
-
-  .driver-plate-banner {
-    background: #1e293b;
-    color: #fff;
-    border-radius: 10px;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-  }
-  .plate-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; }
-  .plate-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 4px;
-    border: 2px solid rgba(255,255,255,0.3);
-    padding: 2px 14px;
-    border-radius: 6px;
-  }
-  .plate-color { font-size: 13px; color: #94a3b8; }
-
-  .driver-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-  .driver-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid rgba(201,136,42,0.15);
-    box-shadow: var(--shadow);
-  }
-  .driver-card.highlight { border-color: rgba(201,136,42,0.45); background: #fffbf0; }
-  .dc-icon { font-size: 22px; margin-bottom: 6px; }
-  .dc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .dc-value { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.3; }
-  .dc-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
-
-  .driver-section-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink);
-    margin: 20px 0 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .driver-section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(201,136,42,0.25);
-  }
-
-  .driver-contact-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 4px;
-  }
-  .contact-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: filter 0.15s;
-    border: 1px solid transparent;
-  }
-  .contact-btn:hover { filter: brightness(0.93); }
-  .contact-btn.tel { background: #dcfce7; border-color: #86efac; color: #15803d; }
-  .contact-btn.sms { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
-  .contact-icon { font-size: 26px; flex-shrink: 0; }
-  .contact-label { font-size: 11px; opacity: 0.7; }
-  .contact-val { font-size: 15px; font-weight: 600; }
-
-  .order-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    border: 1px solid rgba(201,136,42,0.15);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .order-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 11px 18px;
-    border-bottom: 1px solid rgba(201,136,42,0.10);
-    gap: 12px;
-  }
-  .order-row:last-of-type { border-bottom: none; }
-  .order-key { font-size: 12px; color: var(--muted); white-space: nowrap; }
-  .order-val { font-size: 13px; font-weight: 500; color: var(--ink); text-align: right; }
-  .order-val.mono { font-family: monospace; font-size: 14px; letter-spacing: 0.5px; color: var(--river); }
-  .query-btn {
-    display: block;
-    background: var(--ink);
-    color: var(--gold-light);
-    text-align: center;
-    padding: 14px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    transition: background 0.15s;
-  }
-  .query-btn:hover { background: #2d1f0e; }
-
-  .rules-block {
-    background: var(--card-bg);
-    border-radius: 12px;
-    border: 1px solid rgba(201,136,42,0.15);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-  .rules-title {
-    background: var(--parchment);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--muted);
-    padding: 10px 18px;
-    border-bottom: 1px solid rgba(201,136,42,0.15);
-    letter-spacing: 0.5px;
-  }
-  .rules-list {
-    padding: 12px 18px 12px 36px;
-    margin: 0;
-  }
-  .rules-list li {
-    font-size: 13px;
-    color: #4a3c28;
-    line-height: 1.75;
-    padding: 3px 0;
-  }
-  .rules-list li strong { color: var(--red); }
-
-  /* TRANSFER BLOCKS */
-  .transfer-block {
-    border-radius: 14px;
-    border: 2px solid transparent;
-    padding: 18px;
-    margin-top: 20px;
-    box-shadow: var(--shadow);
-  }
-  .transfer-block.pickup {
-    background: #f0f7ff;
-    border-color: #93c5fd;
-  }
-  .transfer-block.dropoff {
-    background: #fffbeb;
-    border-color: #fcd34d;
-  }
-  .transfer-block-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-  .transfer-type-badge {
-    font-size: 13px;
-    font-weight: 700;
-    padding: 4px 14px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-  }
-  .pickup-badge { background: #1d4ed8; color: #fff; }
-  .dropoff-badge { background: #d97706; color: #fff; }
-  .transfer-datetime {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .transfer-route {
-    background: rgba(255,255,255,0.7);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-  }
-  .transfer-point {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .tp-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .tp-from { background: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.2); }
-  .tp-to { background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.2); }
-  .tp-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  .tp-place { font-size: 15px; font-weight: 600; color: var(--ink); }
-  .transfer-arrow {
-    font-size: 20px;
-    color: var(--muted);
-    padding: 4px 0 4px 26px;
-    line-height: 1;
-  }
-  .transfer-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .transfer-meta span {
-    background: rgba(255,255,255,0.8);
-    border-radius: 6px;
-    padding: 3px 10px;
-    border: 1px solid rgba(0,0,0,0.08);
-  }
-  .meta-price { color: var(--gold) !important; font-weight: 700; }
-
-  /* NOTES SECTION */
-  .notes-section, .spot-edit-section {
-    margin-top: 18px;
-    border-top: 1px dashed rgba(201,136,42,0.25);
-    padding-top: 14px;
-  }
-  .notes-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .notes-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .notes-add-btn {
-    background: var(--gold);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .notes-add-btn:hover { background: #a8701f; }
-  .notes-empty {
-    font-size: 12px;
-    color: #bbb;
-    text-align: center;
-    padding: 10px;
-    font-style: italic;
-  }
-  .note-item {
-    background: #fffbf0;
-    border: 1px solid rgba(201,136,42,0.2);
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
-  }
-  .note-meta { display: flex; gap: 10px; margin-bottom: 5px; align-items: center; }
-  .note-author { font-size: 12px; font-weight: 600; color: var(--gold); }
-  .note-time { font-size: 11px; color: #bbb; }
-  .note-text { font-size: 13px; color: var(--ink); line-height: 1.6; margin-bottom: 8px; white-space: pre-wrap; }
-  .note-actions { display: flex; gap: 6px; }
-  .note-btn {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.15s;
-  }
-  .edit-btn { background: #e8f4fd; color: var(--river); border-color: #bde0f7; }
-  .edit-btn:hover { background: #cce6f9; }
-  .del-btn { background: #fdecea; color: var(--red); border-color: #f7bcb8; }
-  .del-btn:hover { background: #fabeb9; }
-
-  /* CUSTOM SPOTS */
-  .custom-spot-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    background: #f3fbf3;
-    border: 1px solid #b6ddb6;
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
-  }
-  .cs-time { font-size: 11px; font-weight: 700; color: var(--moss); min-width: 38px; padding-top: 2px; }
-  .cs-body { flex: 1; }
-  .cs-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
-  .cs-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .cs-actions { display: flex; flex-direction: column; gap: 4px; }
-
-  /* PACK ADD BUTTON */
-  .pack-add-btn {
-    width: 100%;
-    margin: 6px 0 4px;
-    padding: 8px;
-    background: transparent;
-    border: 1.5px dashed rgba(201,136,42,0.4);
-    border-radius: 8px;
-    color: var(--gold);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .pack-add-btn:hover { background: rgba(201,136,42,0.08); }
-  .custom-pack { position: relative; }
-  .pack-del-btn {
-    position: absolute;
-    top: 4px; right: 4px;
-    background: none;
-    border: none;
-    color: #ccc;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 2px 4px;
-    line-height: 1;
-    border-radius: 4px;
-    transition: color 0.15s, background 0.15s;
-  }
-  .pack-del-btn:hover { color: var(--red); background: #fdecea; }
-
-  /* MODAL FIELDS */
-  .modal-field { margin-bottom: 14px; }
-  .modal-field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .modal-field input, .modal-field textarea {
-    width: 100%;
-    border: 1.5px solid #ddd;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
-    font-family: 'Noto Sans TC', sans-serif;
-    color: var(--ink);
-    outline: none;
-    transition: border-color 0.15s;
-    resize: vertical;
-  }
-  .modal-field input:focus, .modal-field textarea:focus { border-color: var(--gold); }
-
-  /* Footer */
-  .footer { text-align: center; padding: 32px 16px 16px; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
-
-  @media (max-width: 480px) {
-    .day-title { font-size: 14px; }
-    .day-num { width: 52px; font-size: 18px; }
-  }
+.footer{text-align:center;padding:26px 13px 13px;font-size:11px;color:var(--muted);letter-spacing:1px;}
+@media(max-width:480px){.day-title{font-size:13px;}.day-num{width:48px;font-size:16px;}.mrow{grid-template-columns:1fr;}.crow{grid-template-columns:1fr;}}
+/* ═══ USER / LOGIN ═══ */
+#login-screen.show{display:flex;}
+.login-box{background:var(--card);border-radius:18px;padding:32px 28px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.login-logo{text-align:center;font-size:36px;margin-bottom:8px;}
+.login-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;text-align:center;margin-bottom:4px;}
+.login-sub{font-size:12px;color:var(--muted);text-align:center;margin-bottom:22px;}
+.login-tabs{display:flex;gap:0;margin-bottom:20px;border:1.5px solid #e0d5c5;border-radius:8px;overflow:hidden;}
+.login-tab{flex:1;padding:9px;font-size:13px;font-weight:600;border:none;cursor:pointer;background:#f5efe6;color:var(--muted);transition:all .2s;}
+.login-tab.active{background:var(--gold);color:#fff;}
+.lfield{margin-bottom:14px;}
+.lfield label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;}
+.lfield input{width:100%;border:1.5px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'Noto Sans TC',sans-serif;outline:none;transition:border-color .15s;}
+.lfield input:focus{border-color:var(--gold);}
+.lbtn{width:100%;padding:12px;background:var(--gold);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;transition:background .15s;}
+.lbtn:hover{background:#a8701f;}
+.lerr{font-size:12px;color:var(--red);text-align:center;margin-top:8px;min-height:18px;}
+/* user badge in header */
+#user-bar{display:none;margin-top:10px;align-items:center;justify-content:center;gap:10px;}
+#user-bar.show{display:flex;}
+.user-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.user-name-badge{font-size:12px;color:var(--gold-light);font-weight:600;}
+.logout-btn{font-size:11px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);border-radius:5px;padding:3px 10px;cursor:pointer;}
+/* ═══ ACCOUNTING ═══ */
+.acc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.acc-header h2{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:600;}
+.acc-login-hint{background:#fff8e8;border:1px solid rgba(201,136,42,.3);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--muted);text-align:center;margin-bottom:16px;}
+/* summary cards */
+.acc-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:20px;}
+.acc-sum-card{background:var(--card);border-radius:11px;padding:14px;box-shadow:var(--shadow);border:1px solid rgba(201,136,42,.15);text-align:center;}
+.acc-sum-card.total{border-color:var(--gold);background:#fffbf0;}
+.acc-sum-icon{font-size:22px;margin-bottom:4px;}
+.acc-sum-name{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600;}
+.acc-sum-amt{font-size:18px;font-weight:700;color:var(--ink);}
+.acc-sum-cnt{font-size:11px;color:var(--muted);margin-top:2px;}
+/* expense list */
+.exp-filters{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.exp-filter{padding:5px 14px;border-radius:20px;font-size:12px;border:1px solid #ddd;background:#fff;cursor:pointer;transition:all .15s;}
+.exp-filter.active{background:var(--gold);color:#fff;border-color:var(--gold);}
+.exp-item{background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);border:1px solid rgba(201,136,42,.12);display:flex;align-items:center;gap:12px;}
+.exp-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.exp-body{flex:1;min-width:0;}
+.exp-desc{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.exp-tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:600;margin-right:4px;}
+.exp-right{text-align:right;flex-shrink:0;}
+.exp-amt{font-size:16px;font-weight:700;}
+.exp-currency{font-size:11px;color:var(--muted);}
+.exp-acts{display:flex;gap:3px;margin-top:4px;justify-content:flex-end;}
+.exp-empty{text-align:center;padding:30px;color:#bbb;font-size:13px;font-style:italic;}
+/* split bar */
+.split-section{background:var(--card);border-radius:11px;padding:16px;box-shadow:var(--shadow);border:1px solid rgba(201,136,42,.15);margin-bottom:16px;}
+.split-title{font-family:'Noto Serif TC',serif;font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.split-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.split-name{font-size:13px;font-weight:600;min-width:60px;}
+.split-bar-wrap{flex:1;background:#f0ebe3;border-radius:10px;height:10px;overflow:hidden;}
+.split-bar{height:10px;border-radius:10px;transition:width .5s;}
+.split-pct{font-size:12px;color:var(--muted);min-width:36px;text-align:right;}
+.split-amt-txt{font-size:12px;font-weight:600;min-width:70px;text-align:right;}
+/* category colors */
+.cat-food{background:#ef4444;}.cat-transport{background:#3b82f6;}.cat-ticket{background:#8b5cf6;}
+.cat-hotel{background:#f59e0b;}.cat-shop{background:#10b981;}.cat-other{background:#6b7280;}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-subtitle">高端品质游 · 2026</div>
-  <div class="header-title">川渝·九黃 旅遊行程</div>
-  <div class="header-dates">4月26日 — 5月3日 · 8天7晚</div>
-  <div class="header-tags">
-    <span class="tag">🏙️ 重慶</span>
-    <span class="tag">⛰️ 武隆</span>
-    <span class="tag">🌊 乌江</span>
-    <span class="tag">🏯 成都</span>
-    <span class="tag">🏔️ 黃龍</span>
-    <span class="tag">🏞️ 九寨溝</span>
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="show">
+  <div class="login-box">
+    <div class="login-logo">🏔️</div>
+    <div class="login-title">川渝·九黃 旅遊行程</div>
+    <div class="login-sub">請登入或註冊以使用完整功能</div>
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchAuthTab('login')">登入</button>
+      <button class="login-tab" onclick="switchAuthTab('register')">註冊</button>
+    </div>
+    <div id="auth-login">
+      <div class="lfield"><label>帳號（暱稱）</label><input id="l-user" placeholder="例如：小明" maxlength="12"></div>
+      <div class="lfield"><label>密碼</label><input id="l-pass" type="password" placeholder="輸入密碼"></div>
+      <button class="lbtn" onclick="doLogin()">登入</button>
+    </div>
+    <div id="auth-register" style="display:none">
+      <div class="lfield"><label>暱稱（顯示名字）</label><input id="r-name" placeholder="例如：小明" maxlength="12"></div>
+      <div class="lfield"><label>帳號</label><input id="r-user" placeholder="自訂帳號，英數字" maxlength="20"></div>
+      <div class="lfield"><label>密碼</label><input id="r-pass" type="password" placeholder="設定密碼（至少4字）"></div>
+      <button class="lbtn" onclick="doRegister()">註冊</button>
+    </div>
+    <div id="auth-err" class="lerr"></div>
+    <div style="text-align:center;margin-top:14px;">
+      <button onclick="guestLogin()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline;">以訪客身份瀏覽（無法新增消費）</button>
+    </div>
   </div>
-  <div style="margin-top:12px;">
-    <span id="sync-badge" style="display:inline-block;font-size:11px;padding:4px 14px;border-radius:20px;border:1px solid rgba(201,136,42,0.4);color:var(--gold-light);letter-spacing:1px;">🔄 即時同步中</span>
+</div>
+
+<div class="header">
+  <div class="h-sub">高端品质游 · 2026</div>
+  <div class="h-title">川渝·九黃 旅遊行程</div>
+  <div class="h-dates">4月26日 — 5月3日 · 8天7晚</div>
+  <div class="h-tags">
+    <span class="tag">🏙️ 重慶</span><span class="tag">⛰️ 武隆</span><span class="tag">🌊 乌江</span>
+    <span class="tag">🏯 成都</span><span class="tag">🏔️ 黃龍</span><span class="tag">🏞️ 九寨溝</span>
+  </div>
+  <div><span id="sync-badge">🔄 連線中…</span></div>
+  <div id="user-bar">
+    <div class="user-avatar" id="user-avatar-hdr"></div>
+    <span class="user-name-badge" id="user-name-hdr"></span>
+    <button class="logout-btn" onclick="doLogout()">登出</button>
   </div>
 </div>
 
 <div class="nav">
-  <button class="nav-btn active" onclick="showTab('itinerary')">📅 行程規劃</button>
-  <button class="nav-btn" onclick="showTab('weather')">🌤️ 天氣預報</button>
-  <button class="nav-btn" onclick="showTab('outfit')">👗 穿搭建議</button>
-  <button class="nav-btn" onclick="showTab('packing')">🧳 攜帶清單</button>
-  <button class="nav-btn" onclick="showTab('tips')">💡 旅遊貼士</button>
-  <button class="nav-btn" onclick="showTab('driver')">🚗 接送司機</button>
+  <button class="nav-btn active" onclick="showTab('itinerary',this)">📅 行程</button>
+  <button class="nav-btn" onclick="showTab('weather',this)">🌤️ 天氣</button>
+  <button class="nav-btn" onclick="showTab('outfit',this)">👗 穿搭</button>
+  <button class="nav-btn" onclick="showTab('packing',this)">🧳 清單</button>
+  <button class="nav-btn" onclick="showTab('driver',this)">🚗 接送</button>
+  <button class="nav-btn" onclick="showTab('tips',this)">💡 貼士</button>
+  <button class="nav-btn" onclick="showTab('accounting',this)">💳 記帳</button>
 </div>
 
 <div class="main">
 
-  <!-- ITINERARY TAB -->
-  <div id="tab-itinerary" class="section active">
+<!-- ITINERARY -->
+<div id="tab-itinerary" class="section active">
+  <div class="toolbar"><h2>📅 旅遊行程</h2><button class="btn-add" onclick="openDayModal()">＋ 新增天數</button></div>
+  <div id="days-wrap"><div class="empty" style="padding:30px">載入中…</div></div>
+</div>
 
-    <div class="day-card open" id="day1">
-      <div class="day-header" onclick="toggleDay('day1')">
-        <div class="day-num">1<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">4月26日（日）</div>
-          <div class="day-title">抵達重慶 · 山城探索 · 兩江夜遊</div>
-          <div class="day-location">📍 重慶市區（自由行詳細版）</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 重慶市區酒店</span>
-          <span class="info-pill meal">🍱 自由用餐</span>
-        </div>
-
-        <!-- Timeline -->
-        <div class="timeline">
-
-          <div class="tl-block">
-            <div class="tl-time">13:50</div>
-            <div class="tl-dot arrived"></div>
-            <div class="tl-content">
-              <div class="tl-title">✈️ 重慶江北國際機場抵達</div>
-              <div class="tl-desc">出關後打車前往飯店，車程約 30–40 分鐘</div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">14:50</div>
-            <div class="tl-dot spot"></div>
-            <div class="tl-content">
-              <div class="tl-title">🏮 洪崖洞（白天先看外觀）</div>
-              <div class="tl-desc">距解放碑僅 3 分鐘步行 → 166m → 八一路美食街</div>
-              <a class="tl-link" href="https://surl.amap.com/klibbA21od7b" target="_blank">📍 高德地圖導航</a>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">15:00</div>
-            <div class="tl-dot spot"></div>
-            <div class="tl-content">
-              <div class="tl-title">🏙️ 解放碑 → 打車6分鐘 → 山城巷</div>
-              <div class="tl-desc">山城步道（領事巷）→ 山城步道（山城巷）→ 佳實養老院出發路線<br>全程下坡路，步行約 10 分鐘至十八梯，再步行 10 分鐘至長江索道北站</div>
-              <a class="tl-link" href="https://surl.amap.com/tr3TtoO4De" target="_blank">📍 山城巷地圖</a>
-              <a class="tl-link" href="https://www.instagram.com/reel/DBnJn_GzyhJ/?igsh=MWExb3NiN3drZDUwMQ==" target="_blank">🎬 山城步道 Reel 1</a>
-              <a class="tl-link" href="https://www.instagram.com/reel/DIs5v2YTLki/?igsh=MXg3emViYXg0bGIwNQ==" target="_blank">🎬 山城步道 Reel 2</a>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">16:00</div>
-            <div class="tl-dot transport"></div>
-            <div class="tl-content">
-              <div class="tl-title">🚠 長江索道北站 → 南站（5分鐘）</div>
-              <div class="tl-desc">步行 724m 至北站 → 搭乘長江索道 → 抵達南站<br>白象居 — 24F 無電梯公寓打卡</div>
-              <a class="tl-link" href="https://surl.amap.com/wCSVjA43mg" target="_blank">📍 長江索道北站</a>
-              <a class="tl-link" href="https://www.instagram.com/reel/DWn_aX6DTIR/?igsh=aDU3Y29vcG42d3Fk" target="_blank">🎬 上新街南站 Reel</a>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">16:05</div>
-            <div class="tl-dot spot"></div>
-            <div class="tl-content">
-              <div class="tl-title">🏘️ 龍門浩老街 → 步行5分鐘 → 下浩里</div>
-              <div class="tl-desc">「這很重慶」機位打卡 · 雲悅南濱圍爐煮茶體驗</div>
-              <a class="tl-link" href="https://www.instagram.com/reel/DV9n3d4klcA/?igsh=MXNobWozNjF0NjY3ZQ==" target="_blank">🎬 圍爐煮茶 Reel</a>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">16:40</div>
-            <div class="tl-dot transport"></div>
-            <div class="tl-content">
-              <div class="tl-title">🚕 打車15分鐘 → 枇杷園食為鮮火鍋（總店）</div>
-              <div class="tl-desc">離一棵樹觀景台最近、夜景最強的火鍋店！</div>
-              <a class="tl-link" href="https://surl.amap.com/cV77hw5apG" target="_blank">📍 火鍋店地圖</a>
-              <a class="tl-link" href="https://www.instagram.com/reel/DBBQ9E1vlJt/?igsh=ejJ1djBwZWdvemdi" target="_blank">🎬 枇杷園介紹 Reel</a>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">17:00</div>
-            <div class="tl-dot food"></div>
-            <div class="tl-content">
-              <div class="tl-title">🍲 枇杷園食為鮮火鍋 — 晚餐</div>
-              <div class="tl-desc">夜景火鍋體驗，預計用餐至 19:00<br>⚠️ 洪崖洞 18:30 開始點燈，用餐完可直接前往</div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">19:00</div>
-            <div class="tl-dot transport"></div>
-            <div class="tl-content">
-              <div class="tl-title">🚕 打車23分鐘 → 洪崖洞碼頭兩江輪渡站</div>
-              <a class="tl-link" href="https://surl.amap.com/amo3Bgx7vR" target="_blank">📍 洪崖洞碼頭地圖</a>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">19:30</div>
-            <div class="tl-dot night"></div>
-            <div class="tl-content">
-              <div class="tl-title">🚢 洪崖洞兩江夜遊（遊船約1小時）</div>
-              <div class="tl-desc">夜晚在江上欣賞洪崖洞燈火輝煌全景，為D1畫上完美句號！</div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">備選</div>
-            <div class="tl-dot alt"></div>
-            <div class="tl-content">
-              <div class="tl-title">🥩 黃玉明烤肉（備選方案）</div>
-              <div class="tl-desc">若時間充裕或改換火鍋，距長江索道南站僅 741m</div>
-              <a class="tl-link" href="https://surl.amap.com/BKhGySnbXt" target="_blank">📍 黃玉明地圖</a>
-              <a class="tl-link" href="https://www.instagram.com/reel/DXEbtuEkxzC/?igsh=MXRxenUyand1NGpoag==" target="_blank">🎬 黃玉明 Reel</a>
-            </div>
-          </div>
-
-        </div><!-- end timeline -->
-
-        <div class="weather-note" style="margin-top:16px;">
-          💡 <strong>D1 小提醒：</strong>山城步道全程下坡，建議穿防滑鞋。長江索道人氣高，週末建議提早排隊。兩江夜遊建議提前現場購票或查詢官方訂票管道。
-        </div>
-      </div>
-    </div>
-
-    <div class="day-card" id="day2">
-      <div class="day-header" onclick="toggleDay('day2')">
-        <div class="day-num">2<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">4月27日（一）</div>
-          <div class="day-title">仙女山 · 天生三橋</div>
-          <div class="day-location">📍 武隆</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 武隆住宿</span>
-          <span class="info-pill meal">🍱 早中晚餐</span>
-        </div>
-        <ul class="spots-list">
-          <li><span class="spot-icon">🌲</span>仙女山國家森林公園（5A景區）— 重慶的天然草原</li>
-          <li><span class="spot-icon">🌉</span>天生三橋（5A世界自然遺産）— 《變形金剛4》、《滿城盡帶黃金甲》取景地</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="day-card" id="day3">
-      <div class="day-header" onclick="toggleDay('day3')">
-        <div class="day-num">3<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">4月28日（二）</div>
-          <div class="day-title">蚩尤九黎城 · 烏江畫廊</div>
-          <div class="day-location">📍 長壽</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 長壽住宿</span>
-          <span class="info-pill meal">🍱 早中晚餐</span>
-        </div>
-        <ul class="spots-list">
-          <li><span class="spot-icon">🗺️</span>蚩尤九黎城 — 苗族文化特色景區</li>
-          <li><span class="spot-icon">🌊</span>千里烏江百里畫廊 — 峽谷山水絕景</li>
-          <li><span class="spot-icon">🛶</span>烏江畫廊遊覽</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="day-card" id="day4">
-      <div class="day-header" onclick="toggleDay('day4')">
-        <div class="day-num">4<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">4月29日（三）</div>
-          <div class="day-title">磁器口 · 洪崖洞 → 成都</div>
-          <div class="day-location">📍 重慶 → 成都市區</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 成都市區酒店</span>
-          <span class="info-pill meal">🍱 早中餐</span>
-        </div>
-        <ul class="spots-list">
-          <li><span class="spot-icon">🏛️</span>磁器口千年古鎮 — 重慶歷史文化名鎮</li>
-          <li><span class="spot-icon">🚇</span>李子壩輕軌穿樓 — 空中列車穿樓而過奇景</li>
-          <li><span class="spot-icon">🏮</span>洪崖洞 — 現實版「千與千尋」懸崖吊腳樓</li>
-          <li><span class="spot-icon">🚄</span>乘坐高鐵前往成都，安排接站</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="day-card" id="day5">
-      <div class="day-header" onclick="toggleDay('day5')">
-        <div class="day-num">5<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">4月30日（四）</div>
-          <div class="day-title">黃龍景區 · 藏家體驗</div>
-          <div class="day-location">📍 阿壩州 → 川主寺</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 川主寺/九寨溝口酒店</span>
-          <span class="info-pill meal">🍱 早中晚餐</span>
-        </div>
-        <ul class="spots-list">
-          <li><span class="spot-icon">🏔️</span>黃龍景區（人間瑤池）— 海拔約3000-3400m</li>
-          <li><span class="spot-icon">🌈</span>精華景點：迎賓彩池、飛瀑流輝、金沙鋪底地、爭艷池、明鏡倒影、梭羅映彩、黃龍寺、五彩池</li>
-          <li><span class="spot-icon">🎵</span>藏家歡樂頌心靈盛宴 — 體驗藏族生活方式與飲食文化</li>
-        </ul>
-        <div class="weather-note" style="margin-top:10px;">⚠️ 高海拔注意：黃龍景區海拔3000m以上，建議備好高原反應藥物，行動放慢，多補水。</div>
-      </div>
-    </div>
-
-    <div class="day-card" id="day6">
-      <div class="day-header" onclick="toggleDay('day6')">
-        <div class="day-num">6<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">5月1日（五）</div>
-          <div class="day-title">九寨溝全天遊覽</div>
-          <div class="day-location">📍 九寨溝</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 九寨溝住宿</span>
-          <span class="info-pill meal">🍱 早晚餐</span>
-        </div>
-        <ul class="spots-list">
-          <li><span class="spot-icon">🌊</span>樹正景區、日則景區、長海景區</li>
-          <li><span class="spot-icon">🌲</span>寶鏡岩景區、原始森林生態景區</li>
-          <li><span class="spot-icon">💧</span>精華景點：諾日朗瀑布、扎如寺、五彩池、珍珠灘瀑布</li>
-          <li><span class="spot-icon">🏞️</span>樹正群海、五花海、長海等標誌性景觀</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="day-card" id="day7">
-      <div class="day-header" onclick="toggleDay('day7')">
-        <div class="day-num">7<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">5月2日（六）</div>
-          <div class="day-title">藏寨文化 · 川主寺 → 成都</div>
-          <div class="day-location">📍 成都市區</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill hotel">🏨 成都市區住宿</span>
-          <span class="info-pill meal">🍱 早中餐</span>
-        </div>
-        <ul class="spots-list">
-          <li><span class="spot-icon">🏕️</span>藏文化村寨 — 解說員導覽，少數民族飾品欣賞</li>
-          <li><span class="spot-icon">🎭</span>觀賞藏族表演、飄揚的經幡、屹立的白塔</li>
-          <li><span class="spot-icon">🪡</span>藏族老工匠絕世手工藝體驗</li>
-          <li><span class="spot-icon">🚌</span>川主寺民族小鎮 → 返回成都</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="day-card" id="day8">
-      <div class="day-header" onclick="toggleDay('day8')">
-        <div class="day-num">8<small>DAY</small></div>
-        <div class="day-info">
-          <div class="day-date">5月3日（日）</div>
-          <div class="day-title">返程 · 機場接送回台</div>
-          <div class="day-location">📍 成都 → 桃園機場 → 新竹新豐</div>
-        </div>
-        <div class="day-chevron">›</div>
-      </div>
-      <div class="day-body">
-        <div class="info-row">
-          <span class="info-pill meal">🍱 早餐</span>
-          <span class="info-pill" style="color:#7c3aed;">🛫 返台日</span>
-        </div>
-
-        <div class="timeline">
-
-          <div class="tl-block">
-            <div class="tl-time">早上</div>
-            <div class="tl-dot spot"></div>
-            <div class="tl-content">
-              <div class="tl-title">😴 一覺睡到自然醒</div>
-              <div class="tl-desc">輕鬆收行李，享用早餐，整理行程回憶</div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">依班機</div>
-            <div class="tl-dot transport"></div>
-            <div class="tl-content">
-              <div class="tl-title">🚕 送站服務 → 成都機場出發</div>
-              <div class="tl-desc">依返程班機時間安排送站，請提前確認航班時刻</div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">飛行中</div>
-            <div class="tl-dot transport"></div>
-            <div class="tl-content">
-              <div class="tl-title">✈️ 成都 → 臺灣桃園國際機場</div>
-              <div class="tl-desc">飛行約 3–3.5 小時，保持手機暢通準備入境</div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time" style="color:#7c3aed;font-weight:700;">21:40</div>
-            <div class="tl-dot night"></div>
-            <div class="tl-content">
-              <div class="tl-title">🚗 機場快綫接機 — 林胤強師傅</div>
-              <div class="tl-desc">桃園機場出口等候 · 黑色舒適九人座 · 車牌 <strong>RFB-9267</strong><br>6人 / 6件行李 / 嬰兒座椅（0–1歲）× 1</div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
-                <a class="tl-link" href="tel:0932031624">📱 司機 0932-031-624</a>
-                <a class="tl-link" href="https://airportfrstcar.com/zh-TW//Reserve/GetOrderSearchDriver?Id=TD3439" target="_blank">🔗 即時查詢司機</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="tl-block">
-            <div class="tl-time">抵達</div>
-            <div class="tl-dot arrived"></div>
-            <div class="tl-content">
-              <div class="tl-title">🏠 送達新竹縣新豐鄉埔頂</div>
-              <div class="tl-desc">愉快的川渝·九黃之旅圓滿結束！</div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="weather-note" style="margin-top:12px;">
-          ⚠️ <strong>接機提醒：</strong>入境後立即開機，司機將主動聯繫。若班機延誤超過60分鐘，請確認是否更換司機（點上方即時查詢）。如有問題請聯繫客服 <strong>0906-146-632</strong>。
-        </div>
-      </div>
-    </div>
-
+<!-- WEATHER -->
+<div id="tab-weather" class="section">
+  <div class="wnote">📅 以下為 <strong>4月下旬至5月初</strong> 各地平均氣候參考。本次行程海拔落差大，請特別注意高原地區保暖！</div>
+  <div class="wgrid">
+    <div class="wcard"><div class="wcity">重慶</div><div class="wper">4/26–4/29</div><div class="wicon">🌦️</div><div class="wtemp">19–26°C</div><div class="wdesc">多雲間陰，偶有小雨<br>濕度高，悶熱感強</div></div>
+    <div class="wcard"><div class="wcity">武隆</div><div class="wper">4/27</div><div class="wicon">🌧️</div><div class="wtemp">15–22°C</div><div class="wdesc">山區多雨霧，比市區涼爽</div></div>
+    <div class="wcard"><div class="wcity">長壽 / 烏江</div><div class="wper">4/28</div><div class="wicon">⛅</div><div class="wtemp">18–25°C</div><div class="wdesc">多雲，偶有降雨，江邊濕潤</div></div>
+    <div class="wcard"><div class="wcity">成都</div><div class="wper">4/29, 5/3</div><div class="wicon">🌦️</div><div class="wtemp">18–24°C</div><div class="wdesc">陰天為主，小雨頻繁</div></div>
+    <div class="wcard" style="border-color:rgba(41,128,185,.4)"><div class="wcity">黃龍景區</div><div class="wper">4/30</div><div class="wicon">🌨️</div><div class="wtemp">4–14°C</div><div class="wdesc">⚠️ 海拔3000–3400m<br>早晚極冷，可能降雪</div></div>
+    <div class="wcard"><div class="wcity">九寨溝</div><div class="wper">5/1–5/2</div><div class="wicon">⛅</div><div class="wtemp">8–18°C</div><div class="wdesc">日夜溫差大，晴天湖色最美</div></div>
   </div>
-
-  <!-- WEATHER TAB -->
-  <div id="tab-weather" class="section">
-    <div class="weather-note">
-      📅 以下為 <strong>4月下旬至5月初</strong> 各地平均氣候參考（即時天氣請出發前查詢天氣APP）。本次行程海拔落差大，請特別注意高原地區保暖！
-    </div>
-
-    <div class="weather-grid">
-      <div class="weather-card">
-        <div class="weather-city">重慶</div>
-        <div class="weather-period">4/26–4/29</div>
-        <div class="weather-icon">🌦️</div>
-        <div class="weather-temp">19–26°C</div>
-        <div class="weather-desc">多雲間陰，偶有小雨<br>濕度高，悶熱感強</div>
-      </div>
-      <div class="weather-card">
-        <div class="weather-city">武隆</div>
-        <div class="weather-period">4/27</div>
-        <div class="weather-icon">🌧️</div>
-        <div class="weather-temp">15–22°C</div>
-        <div class="weather-desc">山區多雨霧<br>比市區涼爽</div>
-      </div>
-      <div class="weather-card">
-        <div class="weather-city">長壽 / 烏江</div>
-        <div class="weather-period">4/30</div>
-        <div class="weather-icon">⛅</div>
-        <div class="weather-temp">18–25°C</div>
-        <div class="weather-desc">多雲，偶有降雨<br>江邊濕潤</div>
-      </div>
-      <div class="weather-card">
-        <div class="weather-city">成都</div>
-        <div class="weather-period">4/29, 5/3</div>
-        <div class="weather-icon">🌦️</div>
-        <div class="weather-temp">18–24°C</div>
-        <div class="weather-desc">陰天為主，小雨頻繁<br>「蜀犬吠日」多雲</div>
-      </div>
-      <div class="weather-card">
-        <div class="weather-city">黃龍景區</div>
-        <div class="weather-period">4/30</div>
-        <div class="weather-icon">🌨️</div>
-        <div class="weather-temp">4–14°C</div>
-        <div class="weather-desc">⚠️ 海拔3000–3400m<br>早晚極冷，可能降雪</div>
-      </div>
-      <div class="weather-card">
-        <div class="weather-city">九寨溝</div>
-        <div class="weather-period">5/1–5/2</div>
-        <div class="weather-icon">⛅</div>
-        <div class="weather-temp">8–18°C</div>
-        <div class="weather-desc">日夜溫差大<br>晴天湖色最美</div>
-      </div>
-    </div>
-
-    <div class="weather-note">
-      🌡️ <strong>溫差警告：</strong>本次行程最大溫差可達 <strong>22°C</strong>（成都26°C vs 黃龍4°C）。請務必採用「洋蔥式穿搭」，備齊厚薄各式衣物。
-    </div>
-  </div>
-
-  <!-- OUTFIT TAB -->
-  <div id="tab-outfit" class="section">
-    <div class="weather-note" style="margin-bottom:20px;">
-      👗 建議採用 <strong>洋蔥式穿搭法</strong>：基礎層 + 保暖中間層 + 防水外層，便於依據各地天氣自由增減。
-    </div>
-
-    <div class="outfit-grid">
-      <div class="outfit-card">
-        <div class="outfit-city">🏙️ 重慶</div>
-        <div class="outfit-subtitle">4/26–4/29 · 19–26°C</div>
-        <ul class="outfit-list">
-          <li>短袖T恤或薄長袖</li>
-          <li>薄款長褲或牛仔褲</li>
-          <li>輕薄防風外套（備雨用）</li>
-          <li>運動鞋或休閒鞋</li>
-          <li>摺疊小雨傘（必備）</li>
-          <li>防曬乳 + 墨鏡</li>
-        </ul>
-      </div>
-
-      <div class="outfit-card">
-        <div class="outfit-city">⛰️ 武隆山區</div>
-        <div class="outfit-subtitle">4/27 · 15–22°C</div>
-        <ul class="outfit-list">
-          <li>長袖上衣 + 薄外套</li>
-          <li>防潑水長褲</li>
-          <li>包覆性運動鞋（防滑）</li>
-          <li>摺疊雨衣（景區多雨霧）</li>
-          <li>登山杖（可選）</li>
-        </ul>
-      </div>
-
-      <div class="outfit-card">
-        <div class="outfit-city">🏯 成都</div>
-        <div class="outfit-subtitle">4/29 + 5/3 · 18–24°C</div>
-        <ul class="outfit-list">
-          <li>輕薄長袖或外套</li>
-          <li>舒適長褲</li>
-          <li>防雨外套或雨衣</li>
-          <li>舒適步行鞋</li>
-          <li>傘（成都常陰雨）</li>
-        </ul>
-      </div>
-
-      <div class="outfit-card" style="border-color: rgba(41,128,185,0.4);">
-        <div class="outfit-city" style="color:#2980b9;">🏔️ 黃龍景區</div>
-        <div class="outfit-subtitle">4/30 · ⚠️ 4–14°C 高海拔</div>
-        <ul class="outfit-list">
-          <li>保暖內衣褲（必備）</li>
-          <li>羽絨外套或厚夾克（必備）</li>
-          <li>防風防水衝鋒衣</li>
-          <li>手套、毛帽、圍巾</li>
-          <li>保暖登山褲</li>
-          <li>防滑登山鞋或厚底鞋</li>
-          <li>護唇膏 + 防曬（紫外線強）</li>
-        </ul>
-      </div>
-
-      <div class="outfit-card">
-        <div class="outfit-city">🏞️ 九寨溝</div>
-        <div class="outfit-subtitle">5/1–5/2 · 8–18°C</div>
-        <ul class="outfit-list">
-          <li>長袖保暖上衣</li>
-          <li>中厚外套或薄羽絨</li>
-          <li>舒適步行長褲</li>
-          <li>運動鞋（景區步道多）</li>
-          <li>隨身防水背包</li>
-          <li>防曬用品（高海拔必備）</li>
-        </ul>
-      </div>
-
-      <div class="outfit-card">
-        <div class="outfit-city">🎭 藏寨文化村</div>
-        <div class="outfit-subtitle">5/2 · 觀光活動</div>
-        <ul class="outfit-list">
-          <li>舒適輕鬆穿著</li>
-          <li>可穿藏族體驗服（景區提供）</li>
-          <li>好走的平底鞋</li>
-          <li>防曬帽</li>
-          <li>相機 / 手機（拍照）</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- PACKING TAB -->
-  <div id="tab-packing" class="section">
-
-    <div class="pack-progress">
-      <div style="font-size:13px;color:var(--muted);white-space:nowrap;">打包進度</div>
-      <div class="pack-progress-bar-wrap">
-        <div class="pack-progress-bar" id="progressBar" style="width:0%"></div>
-      </div>
-      <div class="pack-progress-label" id="progressLabel">0 / 0</div>
-    </div>
-
-    <div class="packing-section-title">✅ 出發前準備</div>
-    <div class="packing-grid" id="pack-prep"></div>
-
-    <div class="packing-section-title">🎒 隨身攜帶</div>
-    <div class="packing-grid" id="pack-carry"></div>
-
-    <div class="packing-section-title">💊 醫藥保健</div>
-    <div class="packing-grid" id="pack-med"></div>
-
-    <div class="packing-section-title">👗 衣物</div>
-    <div class="packing-grid" id="pack-clothes2"></div>
-
-    <div class="packing-section-title">👶 妹妹專區</div>
-    <div class="packing-grid" id="pack-baby"></div>
-
-  </div>
-
-  <!-- TIPS TAB -->
-  <div id="tab-tips" class="section">
-
-    <div class="tip-card">
-      <div class="tip-title">🏔️ 高原反應注意事項</div>
-      <div class="tip-body">黃龍景區海拔約3000–3400m，九寨溝溝口約2000m。初次到高海拔地區的人，建議：抵達前一晚充分休息，當天行動放緩，不要跑跳；自備高原反應藥（紅景天建議提前3天服用）；景區備有吸氧站，不適請立即就醫。有高血壓、心肺疾病者建議諮詢醫生。</div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-title">🌧️ 應對多雨氣候</div>
-      <div class="tip-body">重慶、成都4–5月為多雨季節，濕度高。建議攜帶輕便摺疊雨衣（比雨傘更適合景區步行）。山區景點（武隆、黃龍）霧氣重，早上更易起霧，可以提早出發或晚些再進景區。</div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-title">🍜 飲食注意</div>
-      <div class="tip-body">重慶火鍋以麻辣著稱，初次嘗試建議選擇鴛鴦鍋（一半清湯）。四川料理辣度不一，可請店家「微辣」或「不辣」。藏區飲食以酥油茶、糌粑為主，口味特殊可先小嚐。注意飲用水最好選擇瓶裝水。</div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-title">💰 消費與支付</div>
-      <div class="tip-body">中國大陸主要以微信支付和支付寶為主，建議出發前綁定銀行卡開通境外版。部分景區及餐廳接受現金，建議換取適量人民幣備用。九寨溝、黃龍景區門票需提前在官方平台預訂（身分驗證）。</div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-title">📱 通訊與網路</div>
-      <div class="tip-body">中國大陸網路需使用VPN才能訪問Google、LINE等台灣常用APP，建議出發前安裝好VPN（在台灣先設定完成，到陸後無法直接下載）。也可考慮購買當地電話卡或境外上網卡。偏遠景區（九寨溝、黃龍）訊號可能不穩，請事先下載離線地圖。</div>
-    </div>
-
-    <div class="tip-card">
-      <div class="tip-title">📷 拍攝技巧</div>
-      <div class="tip-body">洪崖洞夜景最美，建議傍晚6–8點前往。九寨溝五花海等彩色湖泊在晴天正午陽光下最為鮮豔。黃龍五彩池建議上午前往避開人潮。磁器口古鎮拍照最好在早上9點前或下午4點後光線較柔和。</div>
-    </div>
-
-  <!-- DRIVER TAB -->
-  <div id="tab-driver" class="section">
-
-    <!-- 司機資訊 -->
-    <div class="driver-hero">
-      <div class="driver-badge">🚗</div>
-      <div class="driver-hero-info">
-        <div class="driver-hero-name">林胤強 師傅</div>
-        <div class="driver-hero-sub">機場快綫 · 5月3日 接機</div>
-      </div>
-      <div class="driver-status">已預約</div>
-    </div>
-
-    <div class="driver-plate-banner">
-      <span class="plate-label">車牌號碼</span>
-      <span class="plate-num">RFB-9267</span>
-      <span class="plate-color">● 黑色 舒適九人座</span>
-    </div>
-
-    <!-- 聯絡按鈕 -->
-    <div class="driver-contact-row">
-      <a class="contact-btn tel" href="tel:0932031624">
-        <span class="contact-icon">📱</span>
-        <div><div class="contact-label">司機直撥</div><div class="contact-val">0932-031-624</div></div>
-      </a>
-      <a class="contact-btn sms" href="sms:0932031624">
-        <span class="contact-icon">💬</span>
-        <div><div class="contact-label">傳送簡訊</div><div class="contact-val">0932-031-624</div></div>
-      </a>
-    </div>
-    <div class="driver-contact-row" style="margin-top:10px;">
-      <a class="contact-btn" style="background:#fef9c3;border-color:#fde047;color:#854d0e;" href="tel:0906146632">
-        <span class="contact-icon">🎧</span>
-        <div><div class="contact-label">客服（手機）</div><div class="contact-val">0906-146-632</div></div>
-      </a>
-      <a class="contact-btn" style="background:#fef9c3;border-color:#fde047;color:#854d0e;" href="tel:033857180">
-        <span class="contact-icon">☎️</span>
-        <div><div class="contact-label">客服（市話）</div><div class="contact-val">03-3857180</div></div>
-      </a>
-    </div>
-    <div style="margin-top:10px;">
-      <a class="contact-btn" style="background:#dcfce7;border-color:#86efac;color:#15803d;display:flex;width:100%;" href="https://line.me/ti/p/@airportcar" target="_blank">
-        <span class="contact-icon">💚</span>
-        <div><div class="contact-label">LINE 官方客服</div><div class="contact-val">@airportcar</div></div>
-      </a>
-    </div>
-
-    <!-- ═══════════════════════════════ -->
-    <!-- 接機區塊 -->
-    <!-- ═══════════════════════════════ -->
-    <div class="transfer-block pickup">
-      <div class="transfer-block-header">
-        <span class="transfer-type-badge pickup-badge">✈️ 接機</span>
-        <span class="transfer-datetime">2026年5月3日　21:40</span>
-      </div>
-
-      <div class="transfer-route">
-        <div class="transfer-point">
-          <div class="tp-dot tp-from"></div>
-          <div>
-            <div class="tp-label">上車地點</div>
-            <div class="tp-place">臺灣桃園國際機場</div>
-          </div>
-        </div>
-        <div class="transfer-arrow">↓</div>
-        <div class="transfer-point">
-          <div class="tp-dot tp-to"></div>
-          <div>
-            <div class="tp-label">送達地點</div>
-            <div class="tp-place">新竹縣新豐鄉埔頂</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="transfer-meta">
-        <span>👥 6人</span>
-        <span>🧳 6件行李</span>
-        <span>👶 嬰兒座椅 × 1</span>
-        <span class="meta-price">💰 NT$1,650</span>
-      </div>
-      <div class="transfer-meta" style="margin-top:6px;">
-        <span>📋 AR12260402518EE</span>
-        <span>🔑 TD3439</span>
-        <span style="color:#ef4444;">⚠️ 勞動節加成</span>
-      </div>
-
-      <a class="query-btn" style="margin-top:14px;border-radius:8px;display:block;text-align:center;text-decoration:none;" href="https://airportfrstcar.com/zh-TW//Reserve/GetOrderSearchDriver?Id=TD3439" target="_blank">
-        🔗 即時查詢司機資訊
-      </a>
-
-      <div class="rules-block" style="margin-top:14px;">
-        <div class="rules-title">✈️ 接機注意事項</div>
-        <ol class="rules-list">
-          <li>飛機抵達後保持手機暢通，司機將主動聯繫。</li>
-          <li>本次為<strong>『依航班時間』</strong>接機，預約時間依實際抵達調整，無需聯繫客服。</li>
-          <li>司機等待超過 <strong>60 分鐘</strong>，可能更換司機，請再次確認司機資訊。</li>
-          <li>臨時更換目的地，請通知客服重新計費。</li>
-          <li>司機遲到，請立即通知客服確認狀態。</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════ -->
-    <!-- 送機區塊（出發時備用參考） -->
-    <!-- ═══════════════════════════════ -->
-    <div class="transfer-block dropoff">
-      <div class="transfer-block-header">
-        <span class="transfer-type-badge dropoff-badge">🛫 送機</span>
-        <span class="transfer-datetime">出發日　依班機時間</span>
-      </div>
-
-      <div class="transfer-route">
-        <div class="transfer-point">
-          <div class="tp-dot tp-from" style="background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,0.2);"></div>
-          <div>
-            <div class="tp-label">出發地點</div>
-            <div class="tp-place">新竹縣新豐鄉埔頂</div>
-          </div>
-        </div>
-        <div class="transfer-arrow">↓</div>
-        <div class="transfer-point">
-          <div class="tp-dot tp-to" style="background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,0.2);"></div>
-          <div>
-            <div class="tp-label">目的地</div>
-            <div class="tp-place">臺灣桃園國際機場</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="rules-block" style="margin-top:14px;">
-        <div class="rules-title">🚗 送機注意事項</div>
-        <ol class="rules-list">
-          <li>司機抵達後將主動聯繫，亦可主動憑司機資訊聯繫。</li>
-          <li>等待超過 <strong>30 分鐘</strong>，每逾半小時加收 <strong>$100 元</strong>。</li>
-          <li>等待 30 分鐘仍無法聯繫，視為空趟，酌收 <strong>空趟費 $200 元</strong>。</li>
-          <li>臨時更換地點請上車後告知司機，依新地點重新計費。</li>
-          <li>司機遲到，請盡快通知客服聯繫車行。</li>
-        </ol>
-      </div>
-    </div>
-
-  </div>
-
-</div>川渝·九黃 8天7晚 · 2026年4月26日—5月3日<br>出發前請再次確認各景區最新開放資訊</div>
-
-<script>
-// ═══════════════════════════════════════════
-// TAB SWITCHING
-// ═══════════════════════════════════════════
-function showTab(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  event.target.classList.add('active');
-}
-
-// ═══════════════════════════════════════════
-// DAY ACCORDION
-// ═══════════════════════════════════════════
-function toggleDay(id) {
-  document.getElementById(id).classList.toggle('open');
-}
-
-// ═══════════════════════════════════════════
-// FIREBASE REALTIME DATABASE (共同編輯)
-// ═══════════════════════════════════════════
-// 使用 Firebase REST API（無需 SDK，純 fetch）
-const FB_URL = 'https://trip-2026-95b77-default-rtdb.asia-southeast1.firebasedatabase.app';
-const TRIP_KEY = 'trip2026-chuanyu'; // 行程唯一識別碼
-
-// 本地快取（離線時備用）
-const localCache = {};
-
-async function dbGet(path, def = null) {
-  try {
-    const r = await fetch(`${FB_URL}/${TRIP_KEY}/${path}.json`);
-    if (!r.ok) throw new Error();
-    const data = await r.json();
-    if (data === null) return def;
-    localCache[path] = data;
-    return data;
-  } catch {
-    // 離線時用 localCache 或 localStorage
-    if (localCache[path] !== undefined) return localCache[path];
-    try { const v = localStorage.getItem(path); return v ? JSON.parse(v) : def; } catch { return def; }
-  }
-}
-
-async function dbSet(path, val) {
-  localCache[path] = val;
-  try { localStorage.setItem(path, JSON.stringify(val)); } catch {}
-  try {
-    await fetch(`${FB_URL}/${TRIP_KEY}/${path}.json`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(val)
-    });
-    showSyncBadge('✓ 已同步');
-  } catch {
-    showSyncBadge('⚠ 離線中', true);
-  }
-}
-
-// 同步狀態指示
-function showSyncBadge(msg, warn = false) {
-  const b = document.getElementById('sync-badge');
-  if (!b) return;
-  b.textContent = msg;
-  b.style.background = warn ? '#fef3c7' : '#dcfce7';
-  b.style.color = warn ? '#92400e' : '#166534';
-  b.style.borderColor = warn ? '#fcd34d' : '#86efac';
-  clearTimeout(b._t);
-  b._t = setTimeout(() => { b.textContent = '🔄 即時同步中'; b.style.background=''; b.style.color=''; b.style.borderColor=''; }, 3000);
-}
-
-// 輪詢同步（每15秒抓最新資料）
-let pollInterval = null;
-function startPolling() {
-  if (pollInterval) return;
-  pollInterval = setInterval(async () => {
-    // 重新渲染備註與景點（如有其他人更新）
-    document.querySelectorAll('.day-card').forEach(card => {
-      renderNotes(card.id);
-      renderSpots(card.id);
-    });
-    Object.keys(packingData).forEach(sid => renderCustomPackItems(sid));
-    updateProgress();
-  }, 15000);
-}
-
-// ═══════════════════════════════════════════
-// STORAGE HELPERS (wrapped over Firebase)
-// ═══════════════════════════════════════════
-async function lsGet(key, def) {
-  return await dbGet(key.replace(/\//g, '-'), def);
-}
-async function lsSet(key, val) {
-  await dbSet(key.replace(/\//g, '-'), val);
-}
-
-// ═══════════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════════
-function openModal(html, onConfirm) {
-  document.getElementById('modal-body').innerHTML = html;
-  document.getElementById('modal-overlay').style.display = 'flex';
-  document.getElementById('modal-confirm').onclick = () => { onConfirm(); closeModal(); };
-}
-function closeModal() {
-  document.getElementById('modal-overlay').style.display = 'none';
-}
-
-// ═══════════════════════════════════════════
-// ITINERARY NOTES (per day)
-// ═══════════════════════════════════════════
-function initDayNotes() {
-  document.querySelectorAll('.day-card').forEach(card => {
-    const id = card.id;
-    const body = card.querySelector('.day-body');
-    if (!body) return;
-    const section = document.createElement('div');
-    section.className = 'notes-section';
-    section.id = 'notes-' + id;
-    section.innerHTML = `
-      <div class="notes-header">
-        <span class="notes-title">💬 備註與留言</span>
-        <button class="notes-add-btn" onclick="addNote('${id}')">＋ 新增</button>
-      </div>
-      <div class="notes-list" id="noteslist-${id}"><div class="notes-empty">載入中…</div></div>
-    `;
-    body.appendChild(section);
-    renderNotes(id);
-  });
-}
-
-async function renderNotes(dayId) {
-  const notes = await lsGet('notes-' + dayId, []);
-  const list = document.getElementById('noteslist-' + dayId);
-  if (!list) return;
-  if (!notes || notes.length === 0) {
-    list.innerHTML = '<div class="notes-empty">尚無備註，點擊「＋ 新增」添加</div>';
-    return;
-  }
-  list.innerHTML = notes.map((n, i) => `
-    <div class="note-item">
-      <div class="note-meta">
-        <span class="note-author">${escHtml(n.author || '匿名')}</span>
-        <span class="note-time">${n.time || ''}</span>
-      </div>
-      <div class="note-text">${escHtml(n.text)}</div>
-      <div class="note-actions">
-        <button class="note-btn edit-btn" onclick="editNote('${dayId}', ${i})">✏️ 編輯</button>
-        <button class="note-btn del-btn" onclick="deleteNote('${dayId}', ${i})">🗑️ 刪除</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-async function addNote(dayId) {
-  openModal(`
-    <div class="modal-field"><label>您的名字</label><input id="m-author" placeholder="例如：小明" maxlength="20"></div>
-    <div class="modal-field"><label>備註內容</label><textarea id="m-text" rows="4" placeholder="新增備註、修改建議、或任何想法…"></textarea></div>
-  `, async () => {
-    const author = document.getElementById('m-author').value.trim() || '匿名';
-    const text = document.getElementById('m-text').value.trim();
-    if (!text) return;
-    const notes = await lsGet('notes-' + dayId, []);
-    notes.push({ author, text, time: nowStr() });
-    await lsSet('notes-' + dayId, notes);
-    renderNotes(dayId);
-  });
-  setTimeout(() => document.getElementById('m-author').focus(), 50);
-}
-
-async function editNote(dayId, idx) {
-  const notes = await lsGet('notes-' + dayId, []);
-  const n = notes[idx];
-  openModal(`
-    <div class="modal-field"><label>您的名字</label><input id="m-author" value="${escHtml(n.author || '')}" maxlength="20"></div>
-    <div class="modal-field"><label>備註內容</label><textarea id="m-text" rows="4">${escHtml(n.text)}</textarea></div>
-  `, async () => {
-    const author = document.getElementById('m-author').value.trim() || '匿名';
-    const text = document.getElementById('m-text').value.trim();
-    if (!text) return;
-    notes[idx] = { author, text, time: n.time + '（已編輯）' };
-    await lsSet('notes-' + dayId, notes);
-    renderNotes(dayId);
-  });
-  setTimeout(() => document.getElementById('m-text').focus(), 50);
-}
-
-async function deleteNote(dayId, idx) {
-  if (!confirm('確定刪除此備註？')) return;
-  const notes = await lsGet('notes-' + dayId, []);
-  notes.splice(idx, 1);
-  await lsSet('notes-' + dayId, notes);
-  renderNotes(dayId);
-}
-
-// ═══════════════════════════════════════════
-// CUSTOM ITINERARY SPOTS (per day)
-// ═══════════════════════════════════════════
-function initDaySpotEditors() {
-  document.querySelectorAll('.day-card').forEach(card => {
-    const id = card.id;
-    const body = card.querySelector('.day-body');
-    if (!body) return;
-    const section = document.createElement('div');
-    section.className = 'spot-edit-section';
-    section.innerHTML = `
-      <div class="notes-header" style="margin-top:16px;">
-        <span class="notes-title">📌 自訂景點</span>
-        <button class="notes-add-btn" onclick="addSpot('${id}')">＋ 新增景點</button>
-      </div>
-      <div id="customspots-${id}"></div>
-    `;
-    const notesSection = body.querySelector('.notes-section');
-    body.insertBefore(section, notesSection);
-    renderSpots(id);
-  });
-}
-
-async function renderSpots(dayId) {
-  const spots = await lsGet('spots-' + dayId, []);
-  const container = document.getElementById('customspots-' + dayId);
-  if (!container) return;
-  if (!spots || spots.length === 0) {
-    container.innerHTML = '<div class="notes-empty">尚無自訂景點</div>';
-    return;
-  }
-  container.innerHTML = spots.map((s, i) => `
-    <div class="custom-spot-item">
-      <div class="cs-time">${escHtml(s.time || '')}</div>
-      <div class="cs-body">
-        <div class="cs-title">${escHtml(s.title)}</div>
-        ${s.desc ? `<div class="cs-desc">${escHtml(s.desc)}</div>` : ''}
-        ${s.link ? `<a class="tl-link" href="${escHtml(s.link)}" target="_blank">🔗 連結</a>` : ''}
-      </div>
-      <div class="cs-actions">
-        <button class="note-btn edit-btn" onclick="editSpot('${dayId}', ${i})">✏️</button>
-        <button class="note-btn del-btn" onclick="deleteSpot('${dayId}', ${i})">🗑️</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-async function addSpot(dayId) {
-  openModal(`
-    <div class="modal-field"><label>時間</label><input id="m-time" placeholder="例如：14:00"></div>
-    <div class="modal-field"><label>景點名稱 *</label><input id="m-title" placeholder="例如：解放碑廣場"></div>
-    <div class="modal-field"><label>說明</label><textarea id="m-desc" rows="3" placeholder="交通方式、注意事項…"></textarea></div>
-    <div class="modal-field"><label>連結（選填）</label><input id="m-link" placeholder="https://…"></div>
-  `, async () => {
-    const title = document.getElementById('m-title').value.trim();
-    if (!title) return;
-    const spots = await lsGet('spots-' + dayId, []);
-    spots.push({
-      time: document.getElementById('m-time').value.trim(),
-      title,
-      desc: document.getElementById('m-desc').value.trim(),
-      link: document.getElementById('m-link').value.trim(),
-    });
-    await lsSet('spots-' + dayId, spots);
-    renderSpots(dayId);
-  });
-  setTimeout(() => document.getElementById('m-title').focus(), 50);
-}
-
-async function editSpot(dayId, idx) {
-  const spots = await lsGet('spots-' + dayId, []);
-  const s = spots[idx];
-  openModal(`
-    <div class="modal-field"><label>時間</label><input id="m-time" value="${escHtml(s.time||'')}"></div>
-    <div class="modal-field"><label>景點名稱 *</label><input id="m-title" value="${escHtml(s.title)}"></div>
-    <div class="modal-field"><label>說明</label><textarea id="m-desc" rows="3">${escHtml(s.desc||'')}</textarea></div>
-    <div class="modal-field"><label>連結（選填）</label><input id="m-link" value="${escHtml(s.link||'')}"></div>
-  `, async () => {
-    const title = document.getElementById('m-title').value.trim();
-    if (!title) return;
-    spots[idx] = {
-      time: document.getElementById('m-time').value.trim(),
-      title,
-      desc: document.getElementById('m-desc').value.trim(),
-      link: document.getElementById('m-link').value.trim(),
-    };
-    await lsSet('spots-' + dayId, spots);
-    renderSpots(dayId);
-  });
-}
-
-async function deleteSpot(dayId, idx) {
-  if (!confirm('確定刪除此景點？')) return;
-  const spots = await lsGet('spots-' + dayId, []);
-  spots.splice(idx, 1);
-  await lsSet('spots-' + dayId, spots);
-  renderSpots(dayId);
-}
-
-// ═══════════════════════════════════════════
-// PACKING LIST
-// ═══════════════════════════════════════════
-const packingData = {
-  'pack-prep': [
-    { label: '機場接送', done: true },
-    { label: '羿潔高鐵票', done: true },
-    { label: '護照／台胞證效期確認', done: true },
-    { label: '機票', done: true },
-    { label: '支付寶／微信認證', done: true },
-    { label: '人民幣兌換', done: true },
-    { label: '旅遊保險', done: false },
-    { label: 'SIM 卡', done: true },
-  ],
-  'pack-carry': [
-    { label: '充電寶 × 每人2顆（隨身）', done: true },
-    { label: '夾鏈袋', done: true },
-    { label: '電火布（膠帶）', done: true },
-    { label: '購物袋', done: true },
-    { label: '雨衣', done: true },
-    { label: '雨具（雨傘）', done: false },
-    { label: '剪刀', done: false },
-  ],
-  'pack-med': [
-    { label: '退燒藥', done: false },
-    { label: '喉嚨痛藥', done: false },
-    { label: '止瀉藥／腹瀉用藥', done: false },
-    { label: '高原反應藥（紅景天）', done: false },
-    { label: '暈車藥', done: false },
-    { label: 'OK繃／創可貼', done: false },
-  ],
-  'pack-clothes2': [
-    { label: '衣物（各式）', done: false },
-  ],
-  'pack-baby': [
-    { label: '奶粉罐', done: false },
-    { label: '奶粉外出分裝罐', done: false },
-    { label: '尿布（足量）', done: false },
-    { label: '餐具', done: false },
-    { label: '食物剪', done: false },
-    { label: '車上哄騙糖果餅乾', done: false },
-    { label: '背巾', done: false },
-    { label: '被被', done: false },
-  ]
-};
-
-// Custom items added by user (stored in Firebase)
-let allItemKeys = [];
-
-function initPacking() {
-  for (const [containerId, items] of Object.entries(packingData)) {
-    const container = document.getElementById(containerId);
-    if (!container) continue;
-    items.forEach((item, index) => {
-      const key = containerId + '-' + index;
-      allItemKeys.push(key);
-      const label = item.label;
-      const defaultDone = item.done;
-      const storedVal = localStorage.getItem('pack-' + key);
-      const isChecked = storedVal !== null ? storedVal === '1' : defaultDone;
-      if (storedVal === null && defaultDone) localStorage.setItem('pack-' + key, '1');
-      container.appendChild(makePackItem(key, label, isChecked, defaultDone, false));
-    });
-    renderCustomPackItems(containerId);
-    const addBtn = document.createElement('button');
-    addBtn.className = 'pack-add-btn';
-    addBtn.textContent = '＋ 新增項目';
-    addBtn.onclick = () => addPackItem(containerId);
-    container.parentElement.insertBefore(addBtn, container.nextSibling);
-  }
-  // Load checked states from Firebase
-  loadPackStatesFromDB();
-  updateProgress();
-}
-
-async function loadPackStatesFromDB() {
-  try {
-    const states = await dbGet('pack-states', {});
-    if (!states) return;
-    allItemKeys.forEach(key => {
-      if (states[key] !== undefined) {
-        const el = document.querySelector(`[data-key="${key}"]`);
-        if (!el) return;
-        const checked = states[key] === 1;
-        el.classList.toggle('checked', checked);
-        el.querySelector('.pack-cb').textContent = checked ? '✓' : '';
-        localStorage.setItem('pack-' + key, checked ? '1' : '0');
-      }
-    });
-    updateProgress();
-  } catch {}
-}
-
-function makePackItem(key, label, isChecked, isDefault, isCustom) {
-  const div = document.createElement('div');
-  div.className = 'pack-item' + (isChecked ? ' checked' : '') + (isCustom ? ' custom-pack' : '');
-  div.dataset.key = key;
-  const badge = isDefault ? '<span class="pack-done-badge">已完成</span>' : '';
-  const delBtn = isCustom ? `<button class="pack-del-btn" onclick="deletePackItem(event,'${key}')">✕</button>` : '';
-  div.innerHTML = `<div class="pack-cb">${isChecked ? '✓' : ''}</div><span>${escHtml(label)}${badge}</span>${delBtn}`;
-  div.addEventListener('click', (e) => {
-    if (e.target.classList.contains('pack-del-btn')) return;
-    togglePack(div, key);
-  });
-  return div;
-}
-
-async function renderCustomPackItems(sectionId) {
-  const container = document.getElementById(sectionId);
-  if (!container) return;
-  container.querySelectorAll('.custom-pack').forEach(el => el.remove());
-  const customs = await lsGet('custom-pack-' + sectionId, []);
-  if (!customs) return;
-  customs.forEach((item, i) => {
-    const key = 'custom-' + sectionId + '-' + i;
-    if (!allItemKeys.includes(key)) allItemKeys.push(key);
-    const storedVal = localStorage.getItem('pack-' + key);
-    const isChecked = storedVal === '1';
-    container.appendChild(makePackItem(key, item.label, isChecked, false, true));
-  });
-  updateProgress();
-}
-
-async function addPackItem(sectionId) {
-  openModal(`
-    <div class="modal-field"><label>項目名稱 *</label><input id="m-pack-label" placeholder="例如：護唇膏"></div>
-  `, async () => {
-    const label = document.getElementById('m-pack-label').value.trim();
-    if (!label) return;
-    const customs = await lsGet('custom-pack-' + sectionId, []);
-    customs.push({ label });
-    await lsSet('custom-pack-' + sectionId, customs);
-    renderCustomPackItems(sectionId);
-  });
-  setTimeout(() => document.getElementById('m-pack-label').focus(), 50);
-}
-
-async function deletePackItem(e, key) {
-  e.stopPropagation();
-  if (!confirm('刪除此項目？')) return;
-  const parts = key.replace('custom-', '').split('-');
-  const idx = parseInt(parts[parts.length - 1]);
-  const sectionId = parts.slice(0, -1).join('-');
-  const customs = await lsGet('custom-pack-' + sectionId, []);
-  customs.splice(idx, 1);
-  await lsSet('custom-pack-' + sectionId, customs);
-  allItemKeys = allItemKeys.filter(k => !k.startsWith('custom-' + sectionId));
-  renderCustomPackItems(sectionId);
-}
-
-async function togglePack(el, key) {
-  const isChecked = el.classList.toggle('checked');
-  el.querySelector('.pack-cb').textContent = isChecked ? '✓' : '';
-  localStorage.setItem('pack-' + key, isChecked ? '1' : '0');
-  // Sync to DB
-  const states = await dbGet('pack-states', {});
-  states[key] = isChecked ? 1 : 0;
-  await dbSet('pack-states', states);
-  updateProgress();
-}
-
-function updateProgress() {
-  const total = allItemKeys.length;
-  let done = 0;
-  allItemKeys.forEach(key => {
-    if (localStorage.getItem('pack-' + key) === '1') done++;
-  });
-  const pct = total ? Math.round(done / total * 100) : 0;
-  document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = done + ' / ' + total;
-}
-
-// ═══════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function nowStr() {
-  const d = new Date();
-  return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
-
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-initPacking();
-initDayNotes();
-initDaySpotEditors();
-startPolling();
-</script>
-<!-- MODAL -->
-<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;padding:16px;">
-  <div style="background:#fff;border-radius:16px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-    <div style="background:var(--ink);color:#fff;padding:16px 20px;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:600;">✏️ 編輯</div>
-    <div id="modal-body" style="padding:20px;"></div>
-    <div style="display:flex;gap:10px;padding:0 20px 20px;">
-      <button id="modal-confirm" style="flex:1;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;">✓ 確認</button>
-      <button onclick="closeModal()" style="flex:1;background:#f1f1f1;color:#555;border:none;border-radius:8px;padding:12px;font-size:14px;cursor:pointer;">✕ 取消</button>
-    </div>
+  <div class="wnote">🌡️ <strong>溫差警告：</strong>本次行程最大溫差可達 <strong>22°C</strong>（成都26°C vs 黃龍4°C）。請務必採用洋蔥式穿搭。</div>
+</div>
+
+<!-- OUTFIT -->
+<div id="tab-outfit" class="section">
+  <div class="wnote">👗 建議採用 <strong>洋蔥式穿搭法</strong>：基礎層 + 保暖中間層 + 防水外層。</div>
+  <div class="ogrid">
+    <div class="ocard"><div class="ocity">🏙️ 重慶</div><div class="osub">4/26–4/29 · 19–26°C</div><ul class="olist"><li>短袖T恤或薄長袖</li><li>薄款長褲或牛仔褲</li><li>輕薄防風外套</li><li>運動鞋或休閒鞋</li><li>摺疊小雨傘（必備）</li><li>防曬乳 + 墨鏡</li></ul></div>
+    <div class="ocard"><div class="ocity">⛰️ 武隆山區</div><div class="osub">4/27 · 15–22°C</div><ul class="olist"><li>長袖上衣 + 薄外套</li><li>防潑水長褲</li><li>包覆性運動鞋（防滑）</li><li>摺疊雨衣</li><li>登山杖（可選）</li></ul></div>
+    <div class="ocard"><div class="ocity">🏯 成都</div><div class="osub">4/29 + 5/3 · 18–24°C</div><ul class="olist"><li>輕薄長袖或外套</li><li>舒適長褲</li><li>防雨外套或雨衣</li><li>舒適步行鞋</li><li>傘（成都常陰雨）</li></ul></div>
+    <div class="ocard" style="border-color:rgba(41,128,185,.4)"><div class="ocity" style="color:#2980b9">🏔️ 黃龍景區</div><div class="osub">4/30 · ⚠️ 4–14°C 高海拔</div><ul class="olist"><li>保暖內衣褲（必備）</li><li>羽絨外套（必備）</li><li>防風防水衝鋒衣</li><li>手套、毛帽、圍巾</li><li>防滑登山鞋</li><li>護唇膏 + 防曬</li></ul></div>
+    <div class="ocard"><div class="ocity">🏞️ 九寨溝</div><div class="osub">5/1–5/2 · 8–18°C</div><ul class="olist"><li>長袖保暖上衣</li><li>中厚外套或薄羽絨</li><li>舒適步行長褲</li><li>運動鞋</li><li>防曬用品（高海拔）</li></ul></div>
+    <div class="ocard"><div class="ocity">🎭 藏寨文化村</div><div class="osub">5/2 · 觀光活動</div><ul class="olist"><li>舒適輕鬆穿著</li><li>好走的平底鞋</li><li>防曬帽</li><li>相機 / 手機</li></ul></div>
   </div>
 </div>
 
+<!-- PACKING -->
+<div id="tab-packing" class="section">
+  <div class="pack-prog">
+    <div style="font-size:12px;color:var(--muted);white-space:nowrap">打包進度</div>
+    <div class="pack-bar-wrap"><div class="pack-bar" id="progressBar" style="width:0%"></div></div>
+    <div class="pack-lbl" id="progressLabel">0 / 0</div>
+  </div>
+  <div id="packing-wrap"><div class="empty" style="padding:20px">載入中…</div></div>
+  <div style="margin-top:14px"><button class="btn-add" onclick="openPackSecModal()" style="width:100%;justify-content:center">＋ 新增分類</button></div>
+</div>
+
+<!-- DRIVER -->
+<div id="tab-driver" class="section">
+  <div id="driver-wrap"><div class="empty" style="padding:30px">載入中…</div></div>
+</div>
+
+<!-- TIPS -->
+<div id="tab-tips" class="section">
+  <div class="wnote" style="background:#fff0f0;border-color:var(--red)">🏔️ <strong>高原反應：</strong>黃龍海拔3000–3400m。行動放緩、自備紅景天（提前3天服用）、景區備有吸氧站。</div>
+  <div class="wnote">🌧️ <strong>多雨氣候：</strong>重慶、成都4–5月多雨，建議攜帶輕便摺疊雨衣。山區霧氣重，提早出發。</div>
+  <div class="wnote">🍜 <strong>飲食：</strong>火鍋建議選鴛鴦鍋，可請「微辣」。藏區酥油茶口味特殊可先小嚐。飲用瓶裝水。</div>
+  <div class="wnote">💰 <strong>支付：</strong>以微信支付和支付寶為主。換取適量人民幣備用。景區門票需提前預訂。</div>
+  <div class="wnote">📱 <strong>網路：</strong>大陸需VPN，出發前在台灣設定完成。偏遠景區訊號不穩，下載離線地圖。</div>
+  <div class="wnote">📷 <strong>拍照：</strong>洪崖洞夜景18:30點燈最美。九寨溝晴天正午湖色最鮮豔。黃龍上午前往避開人潮。</div>
+</div>
+
+<!-- ACCOUNTING -->
+<div id="tab-accounting" class="section">
+  <div class="acc-header">
+    <h2>💳 旅遊記帳</h2>
+    <button class="btn-add" id="acc-add-btn" onclick="openExpenseModal()" style="display:none">＋ 新增消費</button>
+  </div>
+  <div id="acc-login-hint" class="acc-login-hint" style="display:none">請先登入才能新增消費記錄</div>
+
+  <!-- Summary -->
+  <div id="acc-summary"></div>
+
+  <!-- Split chart -->
+  <div id="acc-split" class="split-section" style="display:none">
+    <div class="split-title">📊 個人消費佔比</div>
+    <div id="split-bars"></div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="exp-filters" id="acc-filters">
+    <button class="exp-filter active" onclick="filterExp('all',this)">全部</button>
+    <button class="exp-filter" onclick="filterExp('food',this)">🍜 餐飲</button>
+    <button class="exp-filter" onclick="filterExp('transport',this)">🚌 交通</button>
+    <button class="exp-filter" onclick="filterExp('ticket',this)">🎫 門票</button>
+    <button class="exp-filter" onclick="filterExp('hotel',this)">🏨 住宿</button>
+    <button class="exp-filter" onclick="filterExp('shop',this)">🛍️ 購物</button>
+    <button class="exp-filter" onclick="filterExp('other',this)">📦 其他</button>
+  </div>
+
+  <!-- Expense list -->
+  <div id="acc-list"><div class="exp-empty">載入中…</div></div>
+</div>
+
+</div><!-- .main -->
+<div class="footer">川渝·九黃 8天7晚 · 2026年4月26日—5月3日<br>出發前請再次確認各景區最新開放資訊</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:999;align-items:center;justify-content:center;padding:13px;">
+  <div class="mbox">
+    <div class="mhead" id="mtitle">編輯</div>
+    <div class="mbody" id="mbody"></div>
+    <div class="mfoot"><button id="mconfirm">✓ 確認</button><button id="mcancel" onclick="closeModal()">✕ 取消</button></div>
+  </div>
+</div>
+
+<script>
+// ═══ FIREBASE ═══
+const FB='https://trip-2026-95b77-default-rtdb.asia-southeast1.firebasedatabase.app';
+const TK='trip2026';
+async function fbGet(p,def=null){try{const r=await fetch(`${FB}/${TK}/${p}.json`);const d=await r.json();return d??def;}catch{return def;}}
+async function fbSet(p,v){try{await fetch(`${FB}/${TK}/${p}.json`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(v)});badge('✓ 已同步',false);}catch{badge('⚠ 離線',true);}}
+function badge(msg,warn=false){const b=document.getElementById('sync-badge');b.textContent=msg;b.style.cssText=warn?'background:#fef3c7;color:#92400e;border-color:#fcd34d;':'background:#dcfce7;color:#166534;border-color:#86efac;';clearTimeout(b._t);b._t=setTimeout(()=>{b.textContent='🔄 即時同步中';b.style.cssText='';},3000);}
+
+// ═══ TABS ═══
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');if(btn)btn.classList.add('active');}
+
+// ═══ MODAL ═══
+function openModal(title,html,onOk){
+  document.getElementById('mtitle').textContent=title;
+  document.getElementById('mbody').innerHTML=html;
+  document.getElementById('modal-overlay').style.display='flex';
+  document.getElementById('mconfirm').onclick=async()=>{await onOk();closeModal();};
+  setTimeout(()=>{const f=document.querySelector('#mbody input,#mbody textarea');if(f)f.focus();},60);
+}
+function closeModal(){document.getElementById('modal-overlay').style.display='none';}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function now(){const d=new Date();return`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function val(id){return(document.getElementById(id)||{}).value?.trim()||'';}
+
+// ═══ ITINERARY ═══
+let days=[];
+async function loadDays(){days=await fbGet('days',null);if(!Array.isArray(days)||!days.length){days=defaultDays();await fbSet('days',days);}renderDays();}
+function renderDays(){
+  const c=document.getElementById('days-wrap');
+  if(!days.length){c.innerHTML='<div class="empty" style="padding:30px">尚無行程，點擊「＋ 新增天數」開始</div>';return;}
+  c.innerHTML=days.map((d,i)=>`
+    <div class="day-card ${d.open?'open':''}" id="dc-${d.id}">
+      <div class="day-hdr" onclick="toggleDay('${d.id}')">
+        <div class="day-num">${i+1}<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">${esc(d.date)}</div>
+          <div class="day-title">${esc(d.title)}</div>
+          <div class="day-loc">${d.loc?'📍 '+esc(d.loc):''}</div>
+        </div>
+        <div class="day-acts" onclick="event.stopPropagation()">
+          <button class="icon-btn" onclick="openDayModal('${d.id}')">✏️</button>
+          <button class="icon-btn" onclick="delDay('${d.id}')">🗑️</button>
+        </div>
+        <div class="day-chev">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          ${d.hotel?`<span class="pill">🏨 ${esc(d.hotel)}</span>`:''}
+          ${d.meal?`<span class="pill">🍱 ${esc(d.meal)}</span>`:''}
+        </div>
+        <ul class="spot-list">${renderSpots(d)}</ul>
+        <button class="spot-add-btn" onclick="openSpotModal('${d.id}')">＋ 新增景點 / 行程</button>
+        ${renderNotes(d)}
+      </div>
+    </div>`).join('');
+}
+function renderSpots(d){
+  if(!d.spots||!d.spots.length)return'<li class="empty">尚無景點，點擊下方新增</li>';
+  return d.spots.map((s,i)=>`
+    <li class="spot-item">
+      <span class="s-icon">${esc(s.icon||'📍')}</span>
+      <span class="s-body">
+        ${s.time?`<span class="s-time">${esc(s.time)}</span>`:''}
+        <strong>${esc(s.title)}</strong>
+        ${s.desc?`<br><span style="color:var(--muted);font-size:12px">${esc(s.desc)}</span>`:''}
+        ${s.link?`<br><a href="${esc(s.link)}" target="_blank" style="font-size:11px;color:var(--river)">🔗 連結</a>`:''}
+      </span>
+      <span class="s-acts">
+        <button class="icon-btn" onclick="openSpotModal('${d.id}',${i})">✏️</button>
+        <button class="icon-btn" onclick="delSpot('${d.id}',${i})">🗑️</button>
+      </span>
+    </li>`).join('');
+}
+function renderNotes(d){
+  const ns=d.notes||[];
+  return`<div class="notes-wrap">
+    <div class="notes-hdr"><span class="notes-lbl">💬 備註與留言</span><button class="notes-add" onclick="openNoteModal('${d.id}')">＋ 新增</button></div>
+    <div>${ns.length?ns.map((n,i)=>`
+      <div class="note-item">
+        <div class="note-meta"><span class="note-author">${esc(n.author||'匿名')}</span><span class="note-time">${esc(n.time||'')}</span></div>
+        <div class="note-text">${esc(n.text)}</div>
+        <div class="note-acts">
+          <button class="nbtn ebtn" onclick="openNoteModal('${d.id}',${i})">✏️ 編輯</button>
+          <button class="nbtn dbtn" onclick="delNote('${d.id}',${i})">🗑️ 刪除</button>
+        </div>
+      </div>`).join(''):'<div class="empty">尚無備註</div>'}
+    </div>
+  </div>`;
+}
+function toggleDay(id){const idx=days.findIndex(d=>d.id===id);if(idx<0)return;days[idx].open=!days[idx].open;document.getElementById('dc-'+id)?.classList.toggle('open',days[idx].open);}
+function getDay(id){return days.find(d=>d.id===id);}
+
+function openDayModal(id){
+  const d=id?getDay(id):null;
+  openModal(d?'✏️ 編輯天數':'➕ 新增天數',`
+    <div class="mrow">
+      <div class="mfield"><label>日期</label><input id="md" value="${esc(d?.date||'')}" placeholder="例：4月26日（日）"></div>
+      <div class="mfield"><label>地點</label><input id="ml" value="${esc(d?.loc||'')}" placeholder="例：重慶市區"></div>
+    </div>
+    <div class="mfield"><label>標題 *</label><input id="mt" value="${esc(d?.title||'')}" placeholder="例：抵達重慶・探索市區"></div>
+    <div class="mrow">
+      <div class="mfield"><label>住宿</label><input id="mh" value="${esc(d?.hotel||'')}" placeholder="例：重慶市區酒店"></div>
+      <div class="mfield"><label>餐食</label><input id="mm" value="${esc(d?.meal||'')}" placeholder="例：早中晚"></div>
+    </div>`,
+  async()=>{
+    const title=val('mt');if(!title)return;
+    if(d){Object.assign(d,{date:val('md'),loc:val('ml'),title,hotel:val('mh'),meal:val('mm')});}
+    else days.push({id:uid(),date:val('md'),loc:val('ml'),title,hotel:val('mh'),meal:val('mm'),spots:[],notes:[],open:false});
+    await fbSet('days',days);renderDays();
+  });
+}
+async function delDay(id){if(!confirm('確定刪除這一天的行程？'))return;days=days.filter(d=>d.id!==id);await fbSet('days',days);renderDays();}
+
+function openSpotModal(dayId,si){
+  const d=getDay(dayId);if(!d)return;
+  const s=si!==undefined?(d.spots||[])[si]:null;
+  openModal(s?'✏️ 編輯景點':'➕ 新增景點',`
+    <div class="mrow">
+      <div class="mfield"><label>時間</label><input id="mtime" value="${esc(s?.time||'')}" placeholder="例：14:00"></div>
+      <div class="mfield"><label>圖示</label><input id="micon" value="${esc(s?.icon||'📍')}" placeholder="📍"></div>
+    </div>
+    <div class="mfield"><label>景點名稱 *</label><input id="mtitle" value="${esc(s?.title||'')}" placeholder="例：洪崖洞"></div>
+    <div class="mfield"><label>說明</label><textarea id="mdesc" rows="3" placeholder="交通方式、注意事項…">${esc(s?.desc||'')}</textarea></div>
+    <div class="mfield"><label>連結（選填）</label><input id="mlink" value="${esc(s?.link||'')}" placeholder="https://…"></div>`,
+  async()=>{
+    const title=val('mtitle');if(!title)return;
+    if(!d.spots)d.spots=[];
+    const spot={time:val('mtime'),icon:val('micon')||'📍',title,desc:val('mdesc'),link:val('mlink')};
+    if(s)d.spots[si]=spot;else d.spots.push(spot);
+    await fbSet('days',days);renderDays();
+  });
+}
+async function delSpot(dayId,si){if(!confirm('確定刪除此景點？'))return;const d=getDay(dayId);d.spots.splice(si,1);await fbSet('days',days);renderDays();}
+
+function openNoteModal(dayId,ni){
+  const d=getDay(dayId);const n=ni!==undefined?(d?.notes||[])[ni]:null;
+  openModal(n?'✏️ 編輯備註':'💬 新增備註',`
+    <div class="mfield"><label>您的名字</label><input id="maut" value="${esc(n?.author||'')}" placeholder="例如：小明" maxlength="20"></div>
+    <div class="mfield"><label>備註內容 *</label><textarea id="mtxt" rows="4" placeholder="新增備註、修改建議…">${esc(n?.text||'')}</textarea></div>`,
+  async()=>{
+    const text=val('mtxt');if(!text)return;
+    if(!d.notes)d.notes=[];
+    const note={author:val('maut')||'匿名',text,time:n?(n.time+'（已編輯）'):now()};
+    if(n)d.notes[ni]=note;else d.notes.push(note);
+    await fbSet('days',days);renderDays();
+  });
+}
+async function delNote(dayId,ni){if(!confirm('確定刪除此備註？'))return;const d=getDay(dayId);d.notes.splice(ni,1);await fbSet('days',days);renderDays();}
+
+// ═══ PACKING ═══
+let packs=[];
+async function loadPacking(){packs=await fbGet('packing',null);if(!Array.isArray(packs)||!packs.length){packs=defaultPacking();await fbSet('packing',packs);}renderPacking();}
+function renderPacking(){
+  const c=document.getElementById('packing-wrap');
+  if(!packs.length){c.innerHTML='<div class="empty">尚無清單</div>';updateProg();return;}
+  c.innerHTML=packs.map(sec=>`
+    <div class="psec-title">
+      <span>${esc(sec.icon||'')} ${esc(sec.title)}</span>
+      <span class="psec-btns">
+        <button class="icon-btn" onclick="openPackSecModal('${sec.id}')">✏️</button>
+        <button class="icon-btn" onclick="delPackSec('${sec.id}')">🗑️</button>
+      </span>
+    </div>
+    <div class="pgrid">
+      ${(sec.items||[]).map((it,ii)=>`
+        <div class="pitem ${it.chk?'chk':''}" onclick="toggleItem('${sec.id}',${ii})">
+          <div class="pcb">${it.chk?'✓':''}</div>
+          <span>${esc(it.label)}${it.preset?'<span class="pbadge">預設</span>':''}</span>
+          <button class="pdel" onclick="event.stopPropagation();delPackItem('${sec.id}',${ii})">✕</button>
+        </div>`).join('')}
+    </div>
+    <button class="padd" onclick="openPackItemModal('${sec.id}')">＋ 新增項目</button>`).join('');
+  updateProg();
+}
+function updateProg(){let t=0,d=0;packs.forEach(s=>(s.items||[]).forEach(it=>{t++;if(it.chk)d++;}));const p=t?Math.round(d/t*100):0;document.getElementById('progressBar').style.width=p+'%';document.getElementById('progressLabel').textContent=d+' / '+t;}
+
+async function toggleItem(sid,ii){const s=packs.find(x=>x.id===sid);if(!s)return;s.items[ii].chk=!s.items[ii].chk;await fbSet('packing',packs);renderPacking();}
+
+function openPackSecModal(id){
+  const s=id?packs.find(x=>x.id===id):null;
+  openModal(s?'✏️ 編輯分類':'➕ 新增分類',`
+    <div class="mrow">
+      <div class="mfield"><label>圖示</label><input id="mico" value="${esc(s?.icon||'📦')}" placeholder="📦"></div>
+      <div class="mfield"><label>分類名稱 *</label><input id="mttl" value="${esc(s?.title||'')}" placeholder="例：隨身攜帶"></div>
+    </div>`,
+  async()=>{
+    const title=val('mttl');if(!title)return;
+    if(s){s.icon=val('mico');s.title=title;}
+    else packs.push({id:uid(),icon:val('mico')||'📦',title,items:[]});
+    await fbSet('packing',packs);renderPacking();
+  });
+}
+async function delPackSec(id){if(!confirm('確定刪除此分類及所有項目？'))return;packs=packs.filter(s=>s.id!==id);await fbSet('packing',packs);renderPacking();}
+
+function openPackItemModal(sid,ii){
+  const s=packs.find(x=>x.id===sid);const it=ii!==undefined?(s?.items||[])[ii]:null;
+  openModal(it?'✏️ 編輯項目':'➕ 新增項目',`
+    <div class="mfield"><label>項目名稱 *</label><input id="mlbl" value="${esc(it?.label||'')}" placeholder="例：護唇膏"></div>`,
+  async()=>{
+    const label=val('mlbl');if(!label)return;
+    if(!s.items)s.items=[];
+    if(it)s.items[ii].label=label;else s.items.push({label,chk:false});
+    await fbSet('packing',packs);renderPacking();
+  });
+}
+async function delPackItem(sid,ii){if(!confirm('刪除此項目？'))return;const s=packs.find(x=>x.id===sid);s.items.splice(ii,1);await fbSet('packing',packs);renderPacking();}
+
+// ═══ DRIVER ═══
+let drv=null;
+async function loadDriver(){drv=await fbGet('driver',null);if(!drv){drv=defaultDriver();await fbSet('driver',drv);}renderDriver();}
+function renderDriver(){
+  const d=drv;
+  document.getElementById('driver-wrap').innerHTML=`
+    <div class="driver-hero">
+      <div class="d-badge">🚗</div>
+      <div class="d-info"><div class="d-name">${esc(d.name)} 師傅</div><div class="d-sub">${esc(d.company)} · ${esc(d.datetime)}</div></div>
+      <div class="d-right"><div class="d-status">已預約</div><button class="d-editbtn" onclick="openDriverModal()">✏️ 編輯</button></div>
+    </div>
+    <div class="plate-banner">
+      <span class="plate-lbl">車牌號碼</span>
+      <span class="plate-num">${esc(d.plate)}</span>
+      <span class="plate-color">● ${esc(d.color)} ${esc(d.carType)}</span>
+    </div>
+    <div class="dgrid">
+      <div class="dcard hl"><div class="dc-icon">📅</div><div class="dc-lbl">接機時間</div><div class="dc-val">${esc(d.datetime)}</div><div class="dc-sub">${esc(d.type)}</div></div>
+      <div class="dcard"><div class="dc-icon">📍</div><div class="dc-lbl">路線</div><div class="dc-val" style="font-size:12px">${esc(d.from)}</div><div class="dc-sub">→ ${esc(d.to)}</div></div>
+      <div class="dcard"><div class="dc-icon">👥</div><div class="dc-lbl">乘車資訊</div><div class="dc-val">${esc(d.pax)}人·${esc(d.lug)}件</div><div class="dc-sub">${esc(d.extra)}</div></div>
+      <div class="dcard"><div class="dc-icon">💰</div><div class="dc-lbl">車資</div><div class="dc-val" style="color:var(--gold);font-size:19px">NT$ ${esc(d.fare)}</div><div class="dc-sub">${esc(d.fareNote)}</div></div>
+    </div>
+    <div class="dsec-title">📞 聯絡方式</div>
+    <div class="crow">
+      <a class="cbtn tel" href="tel:${esc(d.phone)}"><span class="c-ico">📱</span><div><div class="c-lbl">司機直撥</div><div class="c-val">${esc(d.phoneD||d.phone)}</div></div></a>
+      <a class="cbtn sms" href="sms:${esc(d.phone)}"><span class="c-ico">💬</span><div><div class="c-lbl">傳送簡訊</div><div class="c-val">${esc(d.phoneD||d.phone)}</div></div></a>
+    </div>
+    <div class="crow" style="margin-top:7px">
+      <a class="cbtn" style="background:#fef9c3;border-color:#fde047;color:#854d0e" href="tel:${esc(d.svcPhone)}"><span class="c-ico">🎧</span><div><div class="c-lbl">客服（手機）</div><div class="c-val">${esc(d.svcPhoneD||d.svcPhone)}</div></div></a>
+      <a class="cbtn" style="background:#fef9c3;border-color:#fde047;color:#854d0e" href="tel:${esc(d.svcLand)}"><span class="c-ico">☎️</span><div><div class="c-lbl">客服（市話）</div><div class="c-val">${esc(d.svcLandD||d.svcLand)}</div></div></a>
+    </div>
+    <div style="margin-top:7px">
+      <a class="cbtn" style="background:#dcfce7;border-color:#86efac;color:#15803d;display:flex;width:100%" href="${esc(d.lineUrl)}" target="_blank"><span class="c-ico">💚</span><div><div class="c-lbl">LINE 官方客服</div><div class="c-val">${esc(d.lineId)}</div></div></a>
+    </div>
+    <div class="dsec-title" style="margin-top:16px">🔍 訂單資訊</div>
+    <div class="ocard2">
+      <div class="orow"><span class="okey">訂單編號</span><span class="oval mono">${esc(d.orderId)}</span></div>
+      <div class="orow"><span class="okey">查詢簡碼</span><span class="oval mono">${esc(d.qcode)}</span></div>
+      <div class="orow"><span class="okey">預約類型</span><span class="oval">${esc(d.type)}</span></div>
+      <div class="orow"><span class="okey">車型 / 顏色</span><span class="oval">${esc(d.carType)} / ${esc(d.color)}</span></div>
+      <div class="orow"><span class="okey">乘客 / 行李</span><span class="oval">${esc(d.pax)} 人 / ${esc(d.lug)} 件</span></div>
+      <div class="orow"><span class="okey">特殊備注</span><span class="oval">${esc(d.extra)}</span></div>
+      <a class="qbtn" href="${esc(d.trackUrl)}" target="_blank">🔗 即時查詢司機資訊</a>
+    </div>
+    <div class="tblock pickup">
+      <div class="thdr"><span class="tbadge p">✈️ 接機</span><span class="tdt">${esc(d.datetime)}</span></div>
+      <div class="troute">
+        <div class="tpt"><div class="tdot" style="background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.2)"></div><div><div class="tplbl">上車地點</div><div class="tpplace">${esc(d.from)}</div></div></div>
+        <div class="tarrow">↓</div>
+        <div class="tpt"><div class="tdot" style="background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.2)"></div><div><div class="tplbl">送達地點</div><div class="tpplace">${esc(d.to)}</div></div></div>
+      </div>
+      <div class="tmeta"><span>${esc(d.pax)}人</span><span>${esc(d.lug)}件行李</span><span>${esc(d.extra)}</span><span class="mprice">NT$${esc(d.fare)}</span></div>
+      <div class="rblock"><div class="rtitle">✈️ 接機注意事項</div><ol class="rlist">
+        <li>飛機抵達後保持手機暢通，司機將主動聯繫。</li>
+        <li>本次為<strong>『依航班時間』</strong>接機，預約時間依實際抵達調整。</li>
+        <li>司機等待超過 <strong>60 分鐘</strong>，可能更換司機，請再次確認。</li>
+        <li>臨時更換目的地，請通知客服重新計費。</li>
+      </ol></div>
+    </div>
+    <div class="tblock dropoff">
+      <div class="thdr"><span class="tbadge d">🛫 送機</span><span class="tdt">出發日　依班機時間</span></div>
+      <div class="troute">
+        <div class="tpt"><div class="tdot" style="background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.2)"></div><div><div class="tplbl">出發地點</div><div class="tpplace">${esc(d.to)}</div></div></div>
+        <div class="tarrow">↓</div>
+        <div class="tpt"><div class="tdot" style="background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.2)"></div><div><div class="tplbl">目的地</div><div class="tpplace">${esc(d.from)}</div></div></div>
+      </div>
+      <div class="rblock"><div class="rtitle">🚗 送機注意事項</div><ol class="rlist">
+        <li>司機抵達後將主動聯繫。</li>
+        <li>等待超過 <strong>30 分鐘</strong>，每逾半小時加收 <strong>$100 元</strong>。</li>
+        <li>等待 30 分鐘仍無法聯繫，視為空趟，酌收 <strong>空趟費 $200 元</strong>。</li>
+        <li>臨時更換地點請上車後告知，依新地點重新計費。</li>
+      </ol></div>
+    </div>`;
+}
+function openDriverModal(){
+  const d=drv;
+  openModal('✏️ 編輯司機資訊',`
+    <div class="mrow"><div class="mfield"><label>司機姓名</label><input id="dn" value="${esc(d.name)}"></div><div class="mfield"><label>公司</label><input id="dco" value="${esc(d.company)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>接機日期時間</label><input id="ddt" value="${esc(d.datetime)}"></div><div class="mfield"><label>預約類型</label><input id="dty" value="${esc(d.type)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>上車地點</label><input id="dfr" value="${esc(d.from)}"></div><div class="mfield"><label>送達地點</label><input id="dto" value="${esc(d.to)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>車牌</label><input id="dpl" value="${esc(d.plate)}"></div><div class="mfield"><label>車型</label><input id="dct" value="${esc(d.carType)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>顏色</label><input id="dcl" value="${esc(d.color)}"></div><div class="mfield"><label>車資</label><input id="dfa" value="${esc(d.fare)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>乘客人數</label><input id="dpx" value="${esc(d.pax)}"></div><div class="mfield"><label>行李件數</label><input id="dlg" value="${esc(d.lug)}"></div></div>
+    <div class="mfield"><label>特殊備注</label><input id="dex" value="${esc(d.extra)}"></div>
+    <div class="mrow"><div class="mfield"><label>司機電話（撥打用）</label><input id="dph" value="${esc(d.phone)}"></div><div class="mfield"><label>電話顯示</label><input id="dphd" value="${esc(d.phoneD||d.phone)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>客服手機（撥打用）</label><input id="dsp" value="${esc(d.svcPhone)}"></div><div class="mfield"><label>客服市話（撥打用）</label><input id="dsl" value="${esc(d.svcLand)}"></div></div>
+    <div class="mrow"><div class="mfield"><label>訂單編號</label><input id="doi" value="${esc(d.orderId)}"></div><div class="mfield"><label>查詢簡碼</label><input id="dqc" value="${esc(d.qcode)}"></div></div>
+    <div class="mfield"><label>即時查詢連結</label><input id="dtu" value="${esc(d.trackUrl)}"></div>
+    <div class="mfield"><label>車資備注</label><input id="dfn" value="${esc(d.fareNote)}"></div>`,
+  async()=>{
+    Object.assign(drv,{name:val('dn'),company:val('dco'),datetime:val('ddt'),type:val('dty'),from:val('dfr'),to:val('dto'),plate:val('dpl'),carType:val('dct'),color:val('dcl'),fare:val('dfa'),pax:val('dpx'),lug:val('dlg'),extra:val('dex'),phone:val('dph'),phoneD:val('dphd'),svcPhone:val('dsp'),svcLand:val('dsl'),orderId:val('doi'),qcode:val('dqc'),trackUrl:val('dtu'),fareNote:val('dfn')});
+    await fbSet('driver',drv);renderDriver();
+  });
+}
+
+// ═══ DEFAULTS ═══
+function defaultDriver(){return{name:'林胤強',company:'機場快綫',datetime:'2026年5月3日 21:40',type:'接機',from:'臺灣桃園國際機場',to:'新竹縣新豐鄉埔頂',plate:'RFB-9267',carType:'舒適九人座',color:'黑色',fare:'1,650',fareNote:'勞動節加成：有',pax:'6',lug:'6',extra:'嬰兒座椅（0–1歲）× 1',phone:'0932031624',phoneD:'0932-031-624',svcPhone:'0906146632',svcPhoneD:'0906-146-632',svcLand:'033857180',svcLandD:'03-3857180',lineId:'@airportcar',lineUrl:'https://line.me/ti/p/@airportcar',orderId:'AR12260402518EE',qcode:'TD3439',trackUrl:'https://airportfrstcar.com/zh-TW//Reserve/GetOrderSearchDriver?Id=TD3439'};}
+function mk(label,chk=false){return{label,chk,preset:true};}
+function defaultPacking(){return[
+  {id:'prep',icon:'✅',title:'出發前準備',items:[mk('機場接送',true),mk('羿潔高鐵票',true),mk('護照／台胞證效期',true),mk('機票',true),mk('支付寶／微信認證',true),mk('人民幣兌換',true),mk('旅遊保險'),mk('SIM 卡',true)]},
+  {id:'carry',icon:'🎒',title:'隨身攜帶',items:[mk('充電寶 × 每人2顆',true),mk('夾鏈袋',true),mk('電火布',true),mk('購物袋',true),mk('雨衣',true),mk('雨具（雨傘）'),mk('剪刀')]},
+  {id:'med',icon:'💊',title:'醫藥保健',items:[mk('退燒藥'),mk('喉嚨痛藥'),mk('止瀉藥'),mk('高原反應藥'),mk('暈車藥'),mk('OK繃')]},
+  {id:'clothes',icon:'👗',title:'衣物',items:[mk('衣物（各式）')]},
+  {id:'baby',icon:'👶',title:'妹妹專區',items:[mk('奶粉罐'),mk('奶粉外出分裝罐'),mk('尿布（足量）'),mk('餐具'),mk('食物剪'),mk('車上糖果餅乾'),mk('背巾'),mk('被被')]},
+];}
+function defaultDays(){return[
+  {id:'day1',date:'4月26日（日）',title:'抵達重慶・山城探索・兩江夜遊',loc:'重慶市區',hotel:'重慶市區酒店',meal:'自由用餐',open:false,notes:[],spots:[
+    {time:'13:50',icon:'✈️',title:'重慶江北國際機場抵達',desc:'出關後打車前往飯店，車程約30–40分鐘'},
+    {time:'14:50',icon:'🏮',title:'洪崖洞（白天先看外觀）',link:'https://surl.amap.com/klibbA21od7b'},
+    {time:'15:00',icon:'🏙️',title:'解放碑 → 打車6分鐘 → 山城巷',desc:'山城步道（領事巷）→ 山城步道（山城巷），全程下坡',link:'https://surl.amap.com/tr3TtoO4De'},
+    {time:'16:00',icon:'🚠',title:'長江索道北站 → 南站',desc:'步行724m → 搭索道 → 白象居24F打卡',link:'https://surl.amap.com/wCSVjA43mg'},
+    {time:'16:05',icon:'🏘️',title:'龍門浩老街 → 下浩里',desc:'「這很重慶」機位打卡・雲悅南濱圍爐煮茶'},
+    {time:'16:40',icon:'🚕',title:'打車15分鐘 → 枇杷園食為鮮火鍋',link:'https://surl.amap.com/cV77hw5apG'},
+    {time:'17:00',icon:'🍲',title:'枇杷園食為鮮火鍋 — 晚餐',desc:'夜景火鍋，用餐至19:00 ⚠️ 洪崖洞18:30點燈'},
+    {time:'19:30',icon:'🚢',title:'洪崖洞兩江夜遊',desc:'遊船約1小時',link:'https://surl.amap.com/amo3Bgx7vR'},
+  ]},
+  {id:'day2',date:'4月27日（一）',title:'仙女山・天生三橋',loc:'武隆',hotel:'武隆住宿',meal:'早中晚',open:false,notes:[],spots:[{icon:'🌲',title:'仙女山國家森林公園（5A景區）'},{icon:'🌉',title:'天生三橋（5A世界自然遺産）',desc:'《變形金剛4》取景地'}]},
+  {id:'day3',date:'4月28日（二）',title:'蚩尤九黎城・烏江畫廊',loc:'長壽',hotel:'長壽住宿',meal:'早中晚',open:false,notes:[],spots:[{icon:'🗺️',title:'蚩尤九黎城'},{icon:'🌊',title:'千里烏江百里畫廊'}]},
+  {id:'day4',date:'4月29日（三）',title:'磁器口・洪崖洞 → 成都',loc:'重慶 → 成都',hotel:'成都市區酒店',meal:'早中',open:false,notes:[],spots:[{icon:'🏛️',title:'磁器口千年古鎮'},{icon:'🚇',title:'李子壩輕軌穿樓'},{icon:'🏮',title:'洪崖洞夜景'},{icon:'🚄',title:'高鐵前往成都'}]},
+  {id:'day5',date:'4月30日（四）',title:'黃龍景區・藏家體驗',loc:'阿壩州 → 川主寺',hotel:'川主寺/九寨溝口',meal:'早中晚',open:false,notes:[],spots:[{icon:'🏔️',title:'黃龍景區（人間瑤池）',desc:'海拔3000–3400m ⚠️ 注意高原反應'},{icon:'🌈',title:'五彩池、迎賓彩池等精華景點'},{icon:'🎵',title:'藏家歡樂頌',desc:'體驗藏族生活'}]},
+  {id:'day6',date:'5月1日（五）',title:'九寨溝全天遊覽',loc:'九寨溝',hotel:'九寨溝住宿',meal:'早晚',open:false,notes:[],spots:[{icon:'🌊',title:'樹正景區、日則景區、長海景區'},{icon:'💧',title:'諾日朗瀑布、五彩池、珍珠灘、五花海'}]},
+  {id:'day7',date:'5月2日（六）',title:'藏寨文化・川主寺 → 成都',loc:'成都市區',hotel:'成都市區住宿',meal:'早中',open:false,notes:[],spots:[{icon:'🏕️',title:'藏文化村寨',desc:'解說員導覽，觀賞藏族表演、經幡、白塔'},{icon:'🚌',title:'川主寺民族小鎮 → 返回成都'}]},
+  {id:'day8',date:'5月3日（日）',title:'返程・機場接送回台',loc:'成都 → 桃園 → 新竹新豐',hotel:'',meal:'早',open:false,notes:[],spots:[
+    {icon:'😴',title:'一覺睡到自然醒，輕鬆收行李'},
+    {icon:'🚕',title:'送站服務 → 成都機場',desc:'依返程班機時間'},
+    {time:'21:40',icon:'🚗',title:'機場快綫接機 — 林胤強師傅',desc:'桃園機場・黑色舒適九人座・RFB-9267'},
+    {icon:'🏠',title:'送達新竹縣新豐鄉埔頂',desc:'川渝·九黃之旅圓滿結束！'},
+  ]},
+];}
+
+// ═══ POLLING（每20秒） ═══
+function startPoll(){
+  setInterval(async()=>{
+    const nd=await fbGet('days',null);if(nd&&JSON.stringify(nd)!==JSON.stringify(days)){days=nd;renderDays();}
+    const np=await fbGet('packing',null);if(np&&JSON.stringify(np)!==JSON.stringify(packs)){packs=np;renderPacking();}
+    const ndr=await fbGet('driver',null);if(ndr&&JSON.stringify(ndr)!==JSON.stringify(drv)){drv=ndr;renderDriver();}
+    const ne=await fbGet('expenses',null);if(ne&&JSON.stringify(ne)!==JSON.stringify(expenses)){expenses=ne||[];renderExpenses();renderSummary();}
+  },20000);
+}
+
+
+// ═══ AUTH ═══
+const AVATARS=['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6','#ec4899','#06b6d4','#84cc16'];
+let currentUser=null;
+
+function avatarColor(name){let h=0;for(let c of name)h=(h*31+c.charCodeAt(0))%AVATARS.length;return AVATARS[h];}
+function avatarInitial(name){return name?name[0].toUpperCase():'?';}
+
+function switchAuthTab(tab){
+  document.getElementById('auth-login').style.display=tab==='login'?'':'none';
+  document.getElementById('auth-register').style.display=tab==='register'?'':'none';
+  document.querySelectorAll('.login-tab').forEach((b,i)=>b.classList.toggle('active',(tab==='login'&&i===0)||(tab==='register'&&i===1)));
+  document.getElementById('auth-err').textContent='';
+}
+
+async function doLogin(){
+  const user=val('l-user').toLowerCase(),pass=val('l-pass');
+  if(!user||!pass){setErr('請填寫帳號和密碼');return;}
+  const users=await fbGet('users',{});
+  if(!users[user]){setErr('帳號不存在，請先註冊');return;}
+  if(users[user].pass!==btoa(pass)){setErr('密碼錯誤');return;}
+  setCurrentUser({id:user,name:users[user].name,color:avatarColor(users[user].name)});
+}
+
+async function doRegister(){
+  const name=val('r-name'),user=val('r-user').toLowerCase(),pass=val('r-pass');
+  if(!name||!user||!pass){setErr('請填寫所有欄位');return;}
+  if(pass.length<4){setErr('密碼至少需要4個字元');return;}
+  if(!/^[a-z0-9_]+$/.test(user)){setErr('帳號只能使用英文、數字、底線');return;}
+  const users=await fbGet('users',{});
+  if(users[user]){setErr('此帳號已被使用');return;}
+  users[user]={name,pass:btoa(pass),color:avatarColor(name)};
+  await fbSet('users',users);
+  setCurrentUser({id:user,name,color:avatarColor(name)});
+}
+
+function guestLogin(){
+  setCurrentUser({id:'guest',name:'訪客',color:'#94a3b8',guest:true});
+}
+
+function setCurrentUser(u){
+  currentUser=u;
+  localStorage.setItem('trip-user',JSON.stringify(u));
+  document.getElementById('login-screen').classList.remove('show');
+  document.getElementById('user-bar').classList.add('show');
+  document.getElementById('user-avatar-hdr').textContent=avatarInitial(u.name);
+  document.getElementById('user-avatar-hdr').style.background=u.color;
+  document.getElementById('user-name-hdr').textContent=u.name;
+  if(!u.guest){
+    document.getElementById('acc-add-btn').style.display='flex';
+    document.getElementById('acc-login-hint').style.display='none';
+  } else {
+    document.getElementById('acc-login-hint').style.display='block';
+  }
+  loadExpenses();
+}
+
+function doLogout(){
+  currentUser=null;
+  localStorage.removeItem('trip-user');
+  document.getElementById('login-screen').classList.add('show');
+  document.getElementById('user-bar').classList.remove('show');
+  document.getElementById('acc-add-btn').style.display='none';
+}
+
+function setErr(msg){document.getElementById('auth-err').textContent=msg;}
+
+// ═══ ACCOUNTING ═══
+const CATS={food:{label:'🍜 餐飲',cls:'cat-food'},transport:{label:'🚌 交通',cls:'cat-transport'},ticket:{label:'🎫 門票',cls:'cat-ticket'},hotel:{label:'🏨 住宿',cls:'cat-hotel'},shop:{label:'🛍️ 購物',cls:'cat-shop'},other:{label:'📦 其他',cls:'cat-other'}};
+const CURRENCIES=['TWD（台幣）','CNY（人民幣）','USD（美元）'];
+let expenses=[];
+let expFilter='all';
+
+async function loadExpenses(){
+  expenses=await fbGet('expenses',[]);
+  if(!Array.isArray(expenses))expenses=[];
+  renderExpenses();
+  renderSummary();
+}
+
+function filterExp(cat,btn){
+  expFilter=cat;
+  document.querySelectorAll('.exp-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderExpenses();
+}
+
+function renderExpenses(){
+  const list=document.getElementById('acc-list');
+  let filtered=expenses.filter(e=>expFilter==='all'||e.cat===expFilter);
+  if(!filtered.length){list.innerHTML='<div class="exp-empty">尚無消費記錄，點擊「＋ 新增消費」開始</div>';return;}
+  filtered=[...filtered].sort((a,b)=>b.ts-a.ts);
+  list.innerHTML=filtered.map(e=>{
+    const cat=CATS[e.cat]||CATS.other;
+    const isOwn=currentUser&&e.uid===currentUser.id;
+    const color=e.color||avatarColor(e.uname||'?');
+    const isTeam=e.scope==='team';
+    const splitN=isTeam?(e.splitCount||1):1;
+    const perHead=isTeam?Math.ceil(Number(e.amt)/splitN):0;
+    const scopeTag=isTeam
+      ?`<span style="background:#3b82f6;color:#fff;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:600">👥 團隊 ÷${splitN}</span>`
+      :`<span style="background:#10b981;color:#fff;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:600">👤 個人</span>`;
+    return`<div class="exp-item">
+      <div class="exp-avatar" style="background:${color}">${avatarInitial(e.uname||'?')}</div>
+      <div class="exp-body">
+        <div class="exp-desc">${esc(e.desc)}</div>
+        <div class="exp-meta" style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:3px">
+          <span class="exp-tag ${cat.cls}" style="color:#fff">${cat.label}</span>
+          ${scopeTag}
+          <span style="font-size:11px;color:var(--muted)">${esc(e.uname)} · ${esc(e.day||'')} · ${esc(e.currency||'TWD')}</span>
+        </div>
+        ${isTeam?`<div style="font-size:11px;color:var(--river);margin-top:3px">每人約 $${perHead.toLocaleString()} ${e.currency||'TWD'}</div>`:''}
+        ${e.note?`<div style="font-size:11px;color:var(--muted);margin-top:2px">📝 ${esc(e.note)}</div>`:''}
+      </div>
+      <div class="exp-right">
+        <div class="exp-amt" style="color:${color}">$${Number(e.amt).toLocaleString()}</div>
+        <div class="exp-currency">${esc(e.currency||'TWD')}</div>
+        ${isOwn?`<div class="exp-acts">
+          <button class="icon-btn" onclick="openExpenseModal('${e.id}')">✏️</button>
+          <button class="icon-btn" onclick="delExpense('${e.id}')">🗑️</button>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSummary(){
+  const byUser={};
+  let grandTotal=0, teamTotal=0, personalTotal=0;
+  // collect all registered users from expenses
+  expenses.forEach(e=>{
+    const amt=Number(e.amt)||0;
+    grandTotal+=amt;
+    if(e.scope==='team') teamTotal+=amt; else personalTotal+=amt;
+    if(!byUser[e.uid])byUser[e.uid]={name:e.uname,color:e.color||avatarColor(e.uname||'?'),paid:0,personal:0,teamShare:0,count:0};
+    byUser[e.uid].paid+=amt;
+    byUser[e.uid].count++;
+    if(e.scope==='team'){
+      // distribute team expenses evenly among splitCount people
+      const n=e.splitCount||1;
+      const share=amt/n;
+      // give each person their share (simplified: payer pays, others owe)
+      byUser[e.uid].teamShare+=share; // payer's own share
+    } else {
+      byUser[e.uid].personal+=amt;
+    }
+  });
+  const users=Object.values(byUser).sort((a,b)=>b.paid-a.paid);
+
+  const sumEl=document.getElementById('acc-summary');
+  sumEl.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px">
+      <div class="acc-sum-card total">
+        <div class="acc-sum-icon">💰</div>
+        <div class="acc-sum-name">團隊總消費</div>
+        <div class="acc-sum-amt">$${grandTotal.toLocaleString()}</div>
+        <div class="acc-sum-cnt">${expenses.length} 筆</div>
+      </div>
+      <div class="acc-sum-card" style="border-color:#3b82f6;background:#f0f7ff">
+        <div class="acc-sum-icon">👥</div>
+        <div class="acc-sum-name">團隊共同消費</div>
+        <div class="acc-sum-amt" style="color:#3b82f6">$${teamTotal.toLocaleString()}</div>
+        <div class="acc-sum-cnt">${expenses.filter(e=>e.scope==='team').length} 筆</div>
+      </div>
+      <div class="acc-sum-card" style="border-color:#10b981;background:#f0fdf4">
+        <div class="acc-sum-icon">👤</div>
+        <div class="acc-sum-name">個人消費</div>
+        <div class="acc-sum-amt" style="color:#10b981">$${personalTotal.toLocaleString()}</div>
+        <div class="acc-sum-cnt">${expenses.filter(e=>e.scope!=='team').length} 筆</div>
+      </div>
+      ${users.map(u=>`
+      <div class="acc-sum-card">
+        <div class="acc-sum-icon"><span style="width:30px;height:30px;border-radius:50%;background:${u.color};color:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">${avatarInitial(u.name)}</span></div>
+        <div class="acc-sum-name">${esc(u.name)}</div>
+        <div class="acc-sum-amt" style="color:${u.color}">$${u.paid.toLocaleString()}</div>
+        <div class="acc-sum-cnt">已付 · ${u.count} 筆</div>
+      </div>`).join('')}
+    </div>`;
+
+  // Per-person breakdown
+  const splitEl=document.getElementById('acc-split');
+  const barsEl=document.getElementById('split-bars');
+  if(users.length>0&&grandTotal>0){
+    splitEl.style.display='';
+    barsEl.innerHTML=`
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">以下為各人「實際付出金額」佔比（含代墊團費）</div>
+      ${users.map(u=>{
+        const pct=Math.round(u.paid/grandTotal*100);
+        return`<div class="split-row">
+          <span class="split-name" style="color:${u.color}">${esc(u.name)}</span>
+          <div class="split-bar-wrap"><div class="split-bar" style="width:${pct}%;background:${u.color}"></div></div>
+          <span class="split-pct">${pct}%</span>
+          <span class="split-amt-txt">$${u.paid.toLocaleString()}</span>
+        </div>`;
+      }).join('')}`;
+  } else {
+    splitEl.style.display='none';
+  }
+}
+
+function openExpenseModal(id){
+  if(!currentUser||currentUser.guest)return;
+  const e=id?expenses.find(x=>x.id===id):null;
+  const isTeam=e?e.scope==='team':false;
+  const dayOpts=['D1 4/26','D2 4/27','D3 4/28','D4 4/29','D5 4/30','D6 5/1','D7 5/2','D8 5/3'].map(d=>`<option ${e?.day===d?'selected':''}>${d}</option>`).join('');
+  const catOpts=Object.entries(CATS).map(([k,v])=>`<option value="${k}" ${e?.cat===k?'selected':''}>${v.label}</option>`).join('');
+  const curOpts=['TWD（台幣）','CNY（人民幣）','USD（美元）'].map(c=>`<option ${e?.currency===c?'selected':''}>${c}</option>`).join('');
+  openModal(e?'✏️ 編輯消費':'➕ 新增消費',`
+    <div class="mfield"><label>消費說明 *</label><input id="e-desc" value="${esc(e?.desc||'')}" placeholder="例：火鍋晚餐、滴滴打車"></div>
+    <div class="mrow">
+      <div class="mfield"><label>金額 * （總額）</label><input id="e-amt" type="number" value="${e?.amt||''}" placeholder="0" min="0" oninput="updatePerHead()"></div>
+      <div class="mfield"><label>幣別</label><select id="e-cur">${curOpts}</select></div>
+    </div>
+    <div class="mrow">
+      <div class="mfield"><label>類別</label><select id="e-cat">${catOpts}</select></div>
+      <div class="mfield"><label>旅遊天數</label><select id="e-day"><option value="">不指定</option>${dayOpts}</select></div>
+    </div>
+
+    <div class="mfield" style="margin-top:4px">
+      <label>消費性質</label>
+      <div style="display:flex;gap:0;border:1.5px solid #ddd;border-radius:8px;overflow:hidden;margin-top:4px">
+        <button id="scope-personal" type="button" onclick="setScope('personal')"
+          style="flex:1;padding:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;${!isTeam?'background:var(--gold);color:#fff':'background:#f5f5f5;color:var(--muted)'}">
+          👤 個人消費
+        </button>
+        <button id="scope-team" type="button" onclick="setScope('team')"
+          style="flex:1;padding:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;${isTeam?'background:#3b82f6;color:#fff':'background:#f5f5f5;color:var(--muted)'}">
+          👥 團隊共同
+        </button>
+      </div>
+    </div>
+    <input type="hidden" id="e-scope" value="${isTeam?'team':'personal'}">
+
+    <div id="team-options" style="${isTeam?'':'display:none'}">
+      <div class="mfield">
+        <label>分攤人數（幾個人平分）</label>
+        <input id="e-split" type="number" value="${e?.splitCount||6}" min="1" max="20" oninput="updatePerHead()">
+      </div>
+      <div id="per-head-hint" style="font-size:12px;color:#3b82f6;background:#f0f7ff;border-radius:6px;padding:8px 12px;margin-top:-6px;margin-bottom:10px">
+        每人應付：計算中
+      </div>
+    </div>
+
+    <div class="mfield"><label>備注（選填）</label><input id="e-note" value="${esc(e?.note||'')}" placeholder="額外說明、付款人…"></div>`,
+  async()=>{
+    const desc=val('e-desc'),amt=parseFloat(document.getElementById('e-amt').value||0);
+    if(!desc||!amt){return;}
+    const scope=document.getElementById('e-scope').value;
+    const splitCount=scope==='team'?parseInt(document.getElementById('e-split').value||6):1;
+    const exp={
+      id:e?e.id:uid(), desc, amt, scope, splitCount,
+      currency:val('e-cur')||'TWD（台幣）',
+      cat:val('e-cat')||'other',
+      day:val('e-day'),
+      note:val('e-note'),
+      uid:currentUser.id, uname:currentUser.name, color:currentUser.color,
+      ts:e?e.ts:Date.now()
+    };
+    if(e){const idx=expenses.findIndex(x=>x.id===id);expenses[idx]=exp;}
+    else expenses.push(exp);
+    await fbSet('expenses',expenses);
+    renderExpenses();renderSummary();
+  });
+  // init per-head hint after modal renders
+  setTimeout(updatePerHead,80);
+}
+
+function setScope(s){
+  document.getElementById('e-scope').value=s;
+  document.getElementById('scope-personal').style.cssText=`flex:1;padding:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;${s==='personal'?'background:var(--gold);color:#fff':'background:#f5f5f5;color:var(--muted)'}`;
+  document.getElementById('scope-team').style.cssText=`flex:1;padding:10px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;${s==='team'?'background:#3b82f6;color:#fff':'background:#f5f5f5;color:var(--muted)'}`;
+  document.getElementById('team-options').style.display=s==='team'?'':'none';
+  updatePerHead();
+}
+
+function updatePerHead(){
+  const amt=parseFloat((document.getElementById('e-amt')||{}).value||0);
+  const n=parseInt((document.getElementById('e-split')||{}).value||6);
+  const hint=document.getElementById('per-head-hint');
+  const cur=(document.getElementById('e-cur')||{}).value||'TWD';
+  if(hint&&amt&&n){
+    const ph=Math.ceil(amt/n);
+    hint.textContent=`每人應付：$${ph.toLocaleString()} ${cur.split('（')[0]}（總額 $${amt.toLocaleString()} ÷ ${n} 人）`;
+  }
+}
+
+async function delExpense(id){
+  if(!confirm('確定刪除此消費記錄？'))return;
+  expenses=expenses.filter(e=>e.id!==id);
+  await fbSet('expenses',expenses);
+  renderExpenses();renderSummary();
+}
+
+// ═══ INIT (override) ═══
+(async()=>{
+  // Check saved session
+  const saved=localStorage.getItem('trip-user');
+  if(saved){try{setCurrentUser(JSON.parse(saved));}catch{}}
+  await Promise.all([loadDays(),loadPacking(),loadDriver()]);
+  badge('✓ 已連線',false);
+  startPoll();
+})();
+
+</script>
 </body>
 </html>

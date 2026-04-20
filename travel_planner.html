@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>川渝·九黃 旅遊行程規劃</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1008;
+    --parchment: #f5efe6;
+    --cream: #fdf8f0;
+    --red: #c0392b;
+    --gold: #c9882a;
+    --gold-light: #e8b84b;
+    --moss: #4a6741;
+    --river: #2980b9;
+    --muted: #8b7355;
+    --card-bg: #fffdf8;
+    --shadow: 0 4px 24px rgba(26,16,8,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 32px 24px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(201,136,42,0.06) 40px, rgba(201,136,42,0.06) 41px
+    );
+  }
+  .header-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .header-dates {
+    margin-top: 10px;
+    color: var(--gold-light);
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+  .header-tags {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    background: rgba(201,136,42,0.18);
+    border: 1px solid rgba(201,136,42,0.4);
+    color: var(--gold-light);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* NAV TABS */
+  .nav {
+    display: flex;
+    background: var(--ink);
+    border-top: 1px solid rgba(201,136,42,0.25);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex: none;
+    padding: 12px 20px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    color: rgba(245,239,230,0.55);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+  }
+  .nav-btn.active, .nav-btn:hover {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+  }
+
+  /* MAIN */
+  .main { max-width: 860px; margin: 0 auto; padding: 28px 16px 48px; }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ITINERARY */
+  .day-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(201,136,42,0.15);
+    transition: box-shadow 0.2s;
+  }
+  .day-card:hover { box-shadow: 0 8px 32px rgba(26,16,8,0.14); }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+  .day-num {
+    background: var(--gold);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    width: 64px;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .day-num small { font-size: 10px; font-family: 'Noto Sans TC', sans-serif; font-weight: 400; opacity: 0.8; letter-spacing: 1px; margin-top: 2px; }
+  .day-info { flex: 1; padding: 14px 16px; }
+  .day-date { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 3px; }
+  .day-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .day-location { font-size: 12px; color: var(--river); margin-top: 4px; }
+  .day-chevron { padding: 14px 16px; color: var(--muted); font-size: 18px; transition: transform 0.25s; }
+  .day-card.open .day-chevron { transform: rotate(90deg); }
+
+  .day-body { display: none; padding: 0 20px 20px; }
+  .day-card.open .day-body { display: block; }
+
+  .info-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .info-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--parchment);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .info-pill.hotel { color: var(--moss); }
+  .info-pill.meal { color: var(--red); }
+
+  .spots-title { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .spots-list { list-style: none; }
+  .spots-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px dashed rgba(201,136,42,0.2);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .spots-list li:last-child { border-bottom: none; }
+  .spot-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* WEATHER */
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .weather-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(201,136,42,0.15);
+    text-align: center;
+  }
+  .weather-city { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .weather-period { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .weather-icon { font-size: 36px; margin-bottom: 6px; }
+  .weather-temp { font-size: 20px; font-weight: 600; color: var(--gold); margin-bottom: 4px; }
+  .weather-desc { font-size: 12px; color: var(--muted); }
+  .weather-note {
+    background: #fff8e8;
+    border-left: 3px solid var(--gold);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  /* OUTFIT */
+  .outfit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .outfit-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(201,136,42,0.15);
+  }
+  .outfit-city { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .outfit-subtitle { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+  .outfit-list { list-style: none; }
+  .outfit-list li { font-size: 13px; padding: 4px 0; display: flex; gap: 8px; align-items: center; line-height: 1.5; }
+  .outfit-list li::before { content: '·'; color: var(--gold); font-size: 18px; line-height: 0; margin-top: 2px; }
+
+  /* PACKING */
+  .packing-section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .packing-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,136,42,0.25);
+  }
+  .packing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .pack-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: border-color 0.18s, background 0.18s;
+    user-select: none;
+    box-shadow: 0 1px 4px rgba(26,16,8,0.06);
+  }
+  .pack-item:hover { border-color: rgba(201,136,42,0.3); }
+  .pack-item.checked { background: #f0f7ee; border-color: var(--moss); color: var(--moss); }
+  .pack-cb {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid #ccc;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .pack-item.checked .pack-cb { background: var(--moss); border-color: var(--moss); color: #fff; }
+  .pack-done-badge {
+    display: inline-block;
+    font-size: 10px;
+    background: rgba(74,103,65,0.12);
+    color: var(--moss);
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    font-weight: 500;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .pack-progress {
+    background: var(--parchment);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .pack-progress-bar-wrap { flex: 1; background: rgba(201,136,42,0.15); border-radius: 20px; height: 8px; overflow: hidden; }
+  .pack-progress-bar { height: 8px; background: var(--gold); border-radius: 20px; transition: width 0.4s; }
+  .pack-progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; min-width: 60px; text-align: right; }
+
+  /* TIPS */
+  .tip-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(201,136,42,0.15);
+    margin-bottom: 14px;
+  }
+  .tip-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .tip-body { font-size: 13px; color: #4a3c28; line-height: 1.8; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 0; margin-top: 4px; }
+  .tl-block {
+    display: grid;
+    grid-template-columns: 44px 20px 1fr;
+    gap: 0 10px;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .tl-block::before {
+    content: '';
+    position: absolute;
+    left: 52px;
+    top: 20px;
+    bottom: -4px;
+    width: 2px;
+    background: rgba(201,136,42,0.18);
+  }
+  .tl-block:last-child::before { display: none; }
+  .tl-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    text-align: right;
+    padding-top: 5px;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .tl-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px currentColor;
+    align-self: start;
+  }
+  .tl-dot.arrived { color: var(--river); background: var(--river); }
+  .tl-dot.spot { color: var(--gold); background: var(--gold); }
+  .tl-dot.transport { color: var(--muted); background: var(--muted); }
+  .tl-dot.food { color: var(--red); background: var(--red); }
+  .tl-dot.night { color: #7c3aed; background: #7c3aed; }
+  .tl-dot.alt { color: #aaa; background: #aaa; }
+  .tl-content {
+    padding: 4px 0 16px;
+  }
+  .tl-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .tl-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 5px;
+  }
+  .tl-link {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--river);
+    text-decoration: none;
+    background: rgba(41,128,185,0.08);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin: 2px 4px 2px 0;
+    border: 1px solid rgba(41,128,185,0.2);
+    transition: background 0.15s;
+  }
+  .tl-link:hover { background: rgba(41,128,185,0.18); }
+
+  /* DRIVER */
+  .driver-hero {
+    background: var(--ink);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .driver-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 30px,
+      rgba(201,136,42,0.07) 30px, rgba(201,136,42,0.07) 31px
+    );
+  }
+  .driver-badge {
+    font-size: 36px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .driver-hero-info { flex: 1; z-index: 1; }
+  .driver-hero-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .driver-hero-sub { font-size: 12px; color: var(--gold-light); margin-top: 3px; }
+  .driver-status {
+    background: #16a34a;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  .driver-plate-banner {
+    background: #1e293b;
+    color: #fff;
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .plate-label { font-size: 11px; color: #94a3b8; letter-spacing: 1px; }
+  .plate-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 4px;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 2px 14px;
+    border-radius: 6px;
+  }
+  .plate-color { font-size: 13px; color: #94a3b8; }
+
+  .driver-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .driver-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(201,136,42,0.15);
+    box-shadow: var(--shadow);
+  }
+  .driver-card.highlight { border-color: rgba(201,136,42,0.45); background: #fffbf0; }
+  .dc-icon { font-size: 22px; margin-bottom: 6px; }
+  .dc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .dc-value { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .dc-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  .driver-section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .driver-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,136,42,0.25);
+  }
+
+  .driver-contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: filter 0.15s;
+    border: 1px solid transparent;
+  }
+  .contact-btn:hover { filter: brightness(0.93); }
+  .contact-btn.tel { background: #dcfce7; border-color: #86efac; color: #15803d; }
+  .contact-btn.sms { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+  .contact-icon { font-size: 26px; flex-shrink: 0; }
+  .contact-label { font-size: 11px; opacity: 0.7; }
+  .contact-val { font-size: 15px; font-weight: 600; }
+
+  .order-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(201,136,42,0.15);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .order-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 18px;
+    border-bottom: 1px solid rgba(201,136,42,0.10);
+    gap: 12px;
+  }
+  .order-row:last-of-type { border-bottom: none; }
+  .order-key { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .order-val { font-size: 13px; font-weight: 500; color: var(--ink); text-align: right; }
+  .order-val.mono { font-family: monospace; font-size: 14px; letter-spacing: 0.5px; color: var(--river); }
+  .query-btn {
+    display: block;
+    background: var(--ink);
+    color: var(--gold-light);
+    text-align: center;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background 0.15s;
+  }
+  .query-btn:hover { background: #2d1f0e; }
+
+  .rules-block {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid rgba(201,136,42,0.15);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .rules-title {
+    background: var(--parchment);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(201,136,42,0.15);
+    letter-spacing: 0.5px;
+  }
+  .rules-list {
+    padding: 12px 18px 12px 36px;
+    margin: 0;
+  }
+  .rules-list li {
+    font-size: 13px;
+    color: #4a3c28;
+    line-height: 1.75;
+    padding: 3px 0;
+  }
+  .rules-list li strong { color: var(--red); }
+
+  /* TRANSFER BLOCKS */
+  .transfer-block {
+    border-radius: 14px;
+    border: 2px solid transparent;
+    padding: 18px;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+  }
+  .transfer-block.pickup {
+    background: #f0f7ff;
+    border-color: #93c5fd;
+  }
+  .transfer-block.dropoff {
+    background: #fffbeb;
+    border-color: #fcd34d;
+  }
+  .transfer-block-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .transfer-type-badge {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .pickup-badge { background: #1d4ed8; color: #fff; }
+  .dropoff-badge { background: #d97706; color: #fff; }
+  .transfer-datetime {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .transfer-route {
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .transfer-point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tp-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .tp-from { background: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.2); }
+  .tp-to { background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.2); }
+  .tp-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .tp-place { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .transfer-arrow {
+    font-size: 20px;
+    color: var(--muted);
+    padding: 4px 0 4px 26px;
+    line-height: 1;
+  }
+  .transfer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .transfer-meta span {
+    background: rgba(255,255,255,0.8);
+    border-radius: 6px;
+    padding: 3px 10px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .meta-price { color: var(--gold) !important; font-weight: 700; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 32px 16px 16px; font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+
+  @media (max-width: 480px) {
+    .day-title { font-size: 14px; }
+    .day-num { width: 52px; font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-subtitle">高端品质游 · 2026</div>
+  <div class="header-title">川渝·九黃 旅遊行程</div>
+  <div class="header-dates">4月26日 — 5月3日 · 8天7晚</div>
+  <div class="header-tags">
+    <span class="tag">🏙️ 重慶</span>
+    <span class="tag">⛰️ 武隆</span>
+    <span class="tag">🌊 乌江</span>
+    <span class="tag">🏯 成都</span>
+    <span class="tag">🏔️ 黃龍</span>
+    <span class="tag">🏞️ 九寨溝</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showTab('itinerary')">📅 行程規劃</button>
+  <button class="nav-btn" onclick="showTab('weather')">🌤️ 天氣預報</button>
+  <button class="nav-btn" onclick="showTab('outfit')">👗 穿搭建議</button>
+  <button class="nav-btn" onclick="showTab('packing')">🧳 攜帶清單</button>
+  <button class="nav-btn" onclick="showTab('tips')">💡 旅遊貼士</button>
+  <button class="nav-btn" onclick="showTab('driver')">🚗 接送司機</button>
+</div>
+
+<div class="main">
+
+  <!-- ITINERARY TAB -->
+  <div id="tab-itinerary" class="section active">
+
+    <div class="day-card open" id="day1">
+      <div class="day-header" onclick="toggleDay('day1')">
+        <div class="day-num">1<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">4月26日（日）</div>
+          <div class="day-title">抵達重慶 · 山城探索 · 兩江夜遊</div>
+          <div class="day-location">📍 重慶市區（自由行詳細版）</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 重慶市區酒店</span>
+          <span class="info-pill meal">🍱 自由用餐</span>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline">
+
+          <div class="tl-block">
+            <div class="tl-time">13:50</div>
+            <div class="tl-dot arrived"></div>
+            <div class="tl-content">
+              <div class="tl-title">✈️ 重慶江北國際機場抵達</div>
+              <div class="tl-desc">出關後打車前往飯店，車程約 30–40 分鐘</div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">14:50</div>
+            <div class="tl-dot spot"></div>
+            <div class="tl-content">
+              <div class="tl-title">🏮 洪崖洞（白天先看外觀）</div>
+              <div class="tl-desc">距解放碑僅 3 分鐘步行 → 166m → 八一路美食街</div>
+              <a class="tl-link" href="https://surl.amap.com/klibbA21od7b" target="_blank">📍 高德地圖導航</a>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">15:00</div>
+            <div class="tl-dot spot"></div>
+            <div class="tl-content">
+              <div class="tl-title">🏙️ 解放碑 → 打車6分鐘 → 山城巷</div>
+              <div class="tl-desc">山城步道（領事巷）→ 山城步道（山城巷）→ 佳實養老院出發路線<br>全程下坡路，步行約 10 分鐘至十八梯，再步行 10 分鐘至長江索道北站</div>
+              <a class="tl-link" href="https://surl.amap.com/tr3TtoO4De" target="_blank">📍 山城巷地圖</a>
+              <a class="tl-link" href="https://www.instagram.com/reel/DBnJn_GzyhJ/?igsh=MWExb3NiN3drZDUwMQ==" target="_blank">🎬 山城步道 Reel 1</a>
+              <a class="tl-link" href="https://www.instagram.com/reel/DIs5v2YTLki/?igsh=MXg3emViYXg0bGIwNQ==" target="_blank">🎬 山城步道 Reel 2</a>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">16:00</div>
+            <div class="tl-dot transport"></div>
+            <div class="tl-content">
+              <div class="tl-title">🚠 長江索道北站 → 南站（5分鐘）</div>
+              <div class="tl-desc">步行 724m 至北站 → 搭乘長江索道 → 抵達南站<br>白象居 — 24F 無電梯公寓打卡</div>
+              <a class="tl-link" href="https://surl.amap.com/wCSVjA43mg" target="_blank">📍 長江索道北站</a>
+              <a class="tl-link" href="https://www.instagram.com/reel/DWn_aX6DTIR/?igsh=aDU3Y29vcG42d3Fk" target="_blank">🎬 上新街南站 Reel</a>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">16:05</div>
+            <div class="tl-dot spot"></div>
+            <div class="tl-content">
+              <div class="tl-title">🏘️ 龍門浩老街 → 步行5分鐘 → 下浩里</div>
+              <div class="tl-desc">「這很重慶」機位打卡 · 雲悅南濱圍爐煮茶體驗</div>
+              <a class="tl-link" href="https://www.instagram.com/reel/DV9n3d4klcA/?igsh=MXNobWozNjF0NjY3ZQ==" target="_blank">🎬 圍爐煮茶 Reel</a>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">16:40</div>
+            <div class="tl-dot transport"></div>
+            <div class="tl-content">
+              <div class="tl-title">🚕 打車15分鐘 → 枇杷園食為鮮火鍋（總店）</div>
+              <div class="tl-desc">離一棵樹觀景台最近、夜景最強的火鍋店！</div>
+              <a class="tl-link" href="https://surl.amap.com/cV77hw5apG" target="_blank">📍 火鍋店地圖</a>
+              <a class="tl-link" href="https://www.instagram.com/reel/DBBQ9E1vlJt/?igsh=ejJ1djBwZWdvemdi" target="_blank">🎬 枇杷園介紹 Reel</a>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">17:00</div>
+            <div class="tl-dot food"></div>
+            <div class="tl-content">
+              <div class="tl-title">🍲 枇杷園食為鮮火鍋 — 晚餐</div>
+              <div class="tl-desc">夜景火鍋體驗，預計用餐至 19:00<br>⚠️ 洪崖洞 18:30 開始點燈，用餐完可直接前往</div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">19:00</div>
+            <div class="tl-dot transport"></div>
+            <div class="tl-content">
+              <div class="tl-title">🚕 打車23分鐘 → 洪崖洞碼頭兩江輪渡站</div>
+              <a class="tl-link" href="https://surl.amap.com/amo3Bgx7vR" target="_blank">📍 洪崖洞碼頭地圖</a>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">19:30</div>
+            <div class="tl-dot night"></div>
+            <div class="tl-content">
+              <div class="tl-title">🚢 洪崖洞兩江夜遊（遊船約1小時）</div>
+              <div class="tl-desc">夜晚在江上欣賞洪崖洞燈火輝煌全景，為D1畫上完美句號！</div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">備選</div>
+            <div class="tl-dot alt"></div>
+            <div class="tl-content">
+              <div class="tl-title">🥩 黃玉明烤肉（備選方案）</div>
+              <div class="tl-desc">若時間充裕或改換火鍋，距長江索道南站僅 741m</div>
+              <a class="tl-link" href="https://surl.amap.com/BKhGySnbXt" target="_blank">📍 黃玉明地圖</a>
+              <a class="tl-link" href="https://www.instagram.com/reel/DXEbtuEkxzC/?igsh=MXRxenUyand1NGpoag==" target="_blank">🎬 黃玉明 Reel</a>
+            </div>
+          </div>
+
+        </div><!-- end timeline -->
+
+        <div class="weather-note" style="margin-top:16px;">
+          💡 <strong>D1 小提醒：</strong>山城步道全程下坡，建議穿防滑鞋。長江索道人氣高，週末建議提早排隊。兩江夜遊建議提前現場購票或查詢官方訂票管道。
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card" id="day2">
+      <div class="day-header" onclick="toggleDay('day2')">
+        <div class="day-num">2<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">4月27日（一）</div>
+          <div class="day-title">仙女山 · 天生三橋</div>
+          <div class="day-location">📍 武隆</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 武隆住宿</span>
+          <span class="info-pill meal">🍱 早中晚餐</span>
+        </div>
+        <ul class="spots-list">
+          <li><span class="spot-icon">🌲</span>仙女山國家森林公園（5A景區）— 重慶的天然草原</li>
+          <li><span class="spot-icon">🌉</span>天生三橋（5A世界自然遺産）— 《變形金剛4》、《滿城盡帶黃金甲》取景地</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="day-card" id="day3">
+      <div class="day-header" onclick="toggleDay('day3')">
+        <div class="day-num">3<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">4月28日（二）</div>
+          <div class="day-title">蚩尤九黎城 · 烏江畫廊</div>
+          <div class="day-location">📍 長壽</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 長壽住宿</span>
+          <span class="info-pill meal">🍱 早中晚餐</span>
+        </div>
+        <ul class="spots-list">
+          <li><span class="spot-icon">🗺️</span>蚩尤九黎城 — 苗族文化特色景區</li>
+          <li><span class="spot-icon">🌊</span>千里烏江百里畫廊 — 峽谷山水絕景</li>
+          <li><span class="spot-icon">🛶</span>烏江畫廊遊覽</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="day-card" id="day4">
+      <div class="day-header" onclick="toggleDay('day4')">
+        <div class="day-num">4<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">4月29日（三）</div>
+          <div class="day-title">磁器口 · 洪崖洞 → 成都</div>
+          <div class="day-location">📍 重慶 → 成都市區</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 成都市區酒店</span>
+          <span class="info-pill meal">🍱 早中餐</span>
+        </div>
+        <ul class="spots-list">
+          <li><span class="spot-icon">🏛️</span>磁器口千年古鎮 — 重慶歷史文化名鎮</li>
+          <li><span class="spot-icon">🚇</span>李子壩輕軌穿樓 — 空中列車穿樓而過奇景</li>
+          <li><span class="spot-icon">🏮</span>洪崖洞 — 現實版「千與千尋」懸崖吊腳樓</li>
+          <li><span class="spot-icon">🚄</span>乘坐高鐵前往成都，安排接站</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="day-card" id="day5">
+      <div class="day-header" onclick="toggleDay('day5')">
+        <div class="day-num">5<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">4月30日（四）</div>
+          <div class="day-title">黃龍景區 · 藏家體驗</div>
+          <div class="day-location">📍 阿壩州 → 川主寺</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 川主寺/九寨溝口酒店</span>
+          <span class="info-pill meal">🍱 早中晚餐</span>
+        </div>
+        <ul class="spots-list">
+          <li><span class="spot-icon">🏔️</span>黃龍景區（人間瑤池）— 海拔約3000-3400m</li>
+          <li><span class="spot-icon">🌈</span>精華景點：迎賓彩池、飛瀑流輝、金沙鋪底地、爭艷池、明鏡倒影、梭羅映彩、黃龍寺、五彩池</li>
+          <li><span class="spot-icon">🎵</span>藏家歡樂頌心靈盛宴 — 體驗藏族生活方式與飲食文化</li>
+        </ul>
+        <div class="weather-note" style="margin-top:10px;">⚠️ 高海拔注意：黃龍景區海拔3000m以上，建議備好高原反應藥物，行動放慢，多補水。</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="day6">
+      <div class="day-header" onclick="toggleDay('day6')">
+        <div class="day-num">6<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">5月1日（五）</div>
+          <div class="day-title">九寨溝全天遊覽</div>
+          <div class="day-location">📍 九寨溝</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 九寨溝住宿</span>
+          <span class="info-pill meal">🍱 早晚餐</span>
+        </div>
+        <ul class="spots-list">
+          <li><span class="spot-icon">🌊</span>樹正景區、日則景區、長海景區</li>
+          <li><span class="spot-icon">🌲</span>寶鏡岩景區、原始森林生態景區</li>
+          <li><span class="spot-icon">💧</span>精華景點：諾日朗瀑布、扎如寺、五彩池、珍珠灘瀑布</li>
+          <li><span class="spot-icon">🏞️</span>樹正群海、五花海、長海等標誌性景觀</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="day-card" id="day7">
+      <div class="day-header" onclick="toggleDay('day7')">
+        <div class="day-num">7<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">5月2日（六）</div>
+          <div class="day-title">藏寨文化 · 川主寺 → 成都</div>
+          <div class="day-location">📍 成都市區</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill hotel">🏨 成都市區住宿</span>
+          <span class="info-pill meal">🍱 早中餐</span>
+        </div>
+        <ul class="spots-list">
+          <li><span class="spot-icon">🏕️</span>藏文化村寨 — 解說員導覽，少數民族飾品欣賞</li>
+          <li><span class="spot-icon">🎭</span>觀賞藏族表演、飄揚的經幡、屹立的白塔</li>
+          <li><span class="spot-icon">🪡</span>藏族老工匠絕世手工藝體驗</li>
+          <li><span class="spot-icon">🚌</span>川主寺民族小鎮 → 返回成都</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="day-card" id="day8">
+      <div class="day-header" onclick="toggleDay('day8')">
+        <div class="day-num">8<small>DAY</small></div>
+        <div class="day-info">
+          <div class="day-date">5月3日（日）</div>
+          <div class="day-title">返程 · 機場接送回台</div>
+          <div class="day-location">📍 成都 → 桃園機場 → 新竹新豐</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="info-row">
+          <span class="info-pill meal">🍱 早餐</span>
+          <span class="info-pill" style="color:#7c3aed;">🛫 返台日</span>
+        </div>
+
+        <div class="timeline">
+
+          <div class="tl-block">
+            <div class="tl-time">早上</div>
+            <div class="tl-dot spot"></div>
+            <div class="tl-content">
+              <div class="tl-title">😴 一覺睡到自然醒</div>
+              <div class="tl-desc">輕鬆收行李，享用早餐，整理行程回憶</div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">依班機</div>
+            <div class="tl-dot transport"></div>
+            <div class="tl-content">
+              <div class="tl-title">🚕 送站服務 → 成都機場出發</div>
+              <div class="tl-desc">依返程班機時間安排送站，請提前確認航班時刻</div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">飛行中</div>
+            <div class="tl-dot transport"></div>
+            <div class="tl-content">
+              <div class="tl-title">✈️ 成都 → 臺灣桃園國際機場</div>
+              <div class="tl-desc">飛行約 3–3.5 小時，保持手機暢通準備入境</div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time" style="color:#7c3aed;font-weight:700;">21:40</div>
+            <div class="tl-dot night"></div>
+            <div class="tl-content">
+              <div class="tl-title">🚗 機場快綫接機 — 林胤強師傅</div>
+              <div class="tl-desc">桃園機場出口等候 · 黑色舒適九人座 · 車牌 <strong>RFB-9267</strong><br>6人 / 6件行李 / 嬰兒座椅（0–1歲）× 1</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                <a class="tl-link" href="tel:0932031624">📱 司機 0932-031-624</a>
+                <a class="tl-link" href="https://airportfrstcar.com/zh-TW//Reserve/GetOrderSearchDriver?Id=TD3439" target="_blank">🔗 即時查詢司機</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-block">
+            <div class="tl-time">抵達</div>
+            <div class="tl-dot arrived"></div>
+            <div class="tl-content">
+              <div class="tl-title">🏠 送達新竹縣新豐鄉埔頂</div>
+              <div class="tl-desc">愉快的川渝·九黃之旅圓滿結束！</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="weather-note" style="margin-top:12px;">
+          ⚠️ <strong>接機提醒：</strong>入境後立即開機，司機將主動聯繫。若班機延誤超過60分鐘，請確認是否更換司機（點上方即時查詢）。如有問題請聯繫客服 <strong>0906-146-632</strong>。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WEATHER TAB -->
+  <div id="tab-weather" class="section">
+    <div class="weather-note">
+      📅 以下為 <strong>4月下旬至5月初</strong> 各地平均氣候參考（即時天氣請出發前查詢天氣APP）。本次行程海拔落差大，請特別注意高原地區保暖！
+    </div>
+
+    <div class="weather-grid">
+      <div class="weather-card">
+        <div class="weather-city">重慶</div>
+        <div class="weather-period">4/26–4/29</div>
+        <div class="weather-icon">🌦️</div>
+        <div class="weather-temp">19–26°C</div>
+        <div class="weather-desc">多雲間陰，偶有小雨<br>濕度高，悶熱感強</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">武隆</div>
+        <div class="weather-period">4/27</div>
+        <div class="weather-icon">🌧️</div>
+        <div class="weather-temp">15–22°C</div>
+        <div class="weather-desc">山區多雨霧<br>比市區涼爽</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">長壽 / 烏江</div>
+        <div class="weather-period">4/30</div>
+        <div class="weather-icon">⛅</div>
+        <div class="weather-temp">18–25°C</div>
+        <div class="weather-desc">多雲，偶有降雨<br>江邊濕潤</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">成都</div>
+        <div class="weather-period">4/29, 5/3</div>
+        <div class="weather-icon">🌦️</div>
+        <div class="weather-temp">18–24°C</div>
+        <div class="weather-desc">陰天為主，小雨頻繁<br>「蜀犬吠日」多雲</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">黃龍景區</div>
+        <div class="weather-period">4/30</div>
+        <div class="weather-icon">🌨️</div>
+        <div class="weather-temp">4–14°C</div>
+        <div class="weather-desc">⚠️ 海拔3000–3400m<br>早晚極冷，可能降雪</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-city">九寨溝</div>
+        <div class="weather-period">5/1–5/2</div>
+        <div class="weather-icon">⛅</div>
+        <div class="weather-temp">8–18°C</div>
+        <div class="weather-desc">日夜溫差大<br>晴天湖色最美</div>
+      </div>
+    </div>
+
+    <div class="weather-note">
+      🌡️ <strong>溫差警告：</strong>本次行程最大溫差可達 <strong>22°C</strong>（成都26°C vs 黃龍4°C）。請務必採用「洋蔥式穿搭」，備齊厚薄各式衣物。
+    </div>
+  </div>
+
+  <!-- OUTFIT TAB -->
+  <div id="tab-outfit" class="section">
+    <div class="weather-note" style="margin-bottom:20px;">
+      👗 建議採用 <strong>洋蔥式穿搭法</strong>：基礎層 + 保暖中間層 + 防水外層，便於依據各地天氣自由增減。
+    </div>
+
+    <div class="outfit-grid">
+      <div class="outfit-card">
+        <div class="outfit-city">🏙️ 重慶</div>
+        <div class="outfit-subtitle">4/26–4/29 · 19–26°C</div>
+        <ul class="outfit-list">
+          <li>短袖T恤或薄長袖</li>
+          <li>薄款長褲或牛仔褲</li>
+          <li>輕薄防風外套（備雨用）</li>
+          <li>運動鞋或休閒鞋</li>
+          <li>摺疊小雨傘（必備）</li>
+          <li>防曬乳 + 墨鏡</li>
+        </ul>
+      </div>
+
+      <div class="outfit-card">
+        <div class="outfit-city">⛰️ 武隆山區</div>
+        <div class="outfit-subtitle">4/27 · 15–22°C</div>
+        <ul class="outfit-list">
+          <li>長袖上衣 + 薄外套</li>
+          <li>防潑水長褲</li>
+          <li>包覆性運動鞋（防滑）</li>
+          <li>摺疊雨衣（景區多雨霧）</li>
+          <li>登山杖（可選）</li>
+        </ul>
+      </div>
+
+      <div class="outfit-card">
+        <div class="outfit-city">🏯 成都</div>
+        <div class="outfit-subtitle">4/29 + 5/3 · 18–24°C</div>
+        <ul class="outfit-list">
+          <li>輕薄長袖或外套</li>
+          <li>舒適長褲</li>
+          <li>防雨外套或雨衣</li>
+          <li>舒適步行鞋</li>
+          <li>傘（成都常陰雨）</li>
+        </ul>
+      </div>
+
+      <div class="outfit-card" style="border-color: rgba(41,128,185,0.4);">
+        <div class="outfit-city" style="color:#2980b9;">🏔️ 黃龍景區</div>
+        <div class="outfit-subtitle">4/30 · ⚠️ 4–14°C 高海拔</div>
+        <ul class="outfit-list">
+          <li>保暖內衣褲（必備）</li>
+          <li>羽絨外套或厚夾克（必備）</li>
+          <li>防風防水衝鋒衣</li>
+          <li>手套、毛帽、圍巾</li>
+          <li>保暖登山褲</li>
+          <li>防滑登山鞋或厚底鞋</li>
+          <li>護唇膏 + 防曬（紫外線強）</li>
+        </ul>
+      </div>
+
+      <div class="outfit-card">
+        <div class="outfit-city">🏞️ 九寨溝</div>
+        <div class="outfit-subtitle">5/1–5/2 · 8–18°C</div>
+        <ul class="outfit-list">
+          <li>長袖保暖上衣</li>
+          <li>中厚外套或薄羽絨</li>
+          <li>舒適步行長褲</li>
+          <li>運動鞋（景區步道多）</li>
+          <li>隨身防水背包</li>
+          <li>防曬用品（高海拔必備）</li>
+        </ul>
+      </div>
+
+      <div class="outfit-card">
+        <div class="outfit-city">🎭 藏寨文化村</div>
+        <div class="outfit-subtitle">5/2 · 觀光活動</div>
+        <ul class="outfit-list">
+          <li>舒適輕鬆穿著</li>
+          <li>可穿藏族體驗服（景區提供）</li>
+          <li>好走的平底鞋</li>
+          <li>防曬帽</li>
+          <li>相機 / 手機（拍照）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKING TAB -->
+  <div id="tab-packing" class="section">
+
+    <div class="pack-progress">
+      <div style="font-size:13px;color:var(--muted);white-space:nowrap;">打包進度</div>
+      <div class="pack-progress-bar-wrap">
+        <div class="pack-progress-bar" id="progressBar" style="width:0%"></div>
+      </div>
+      <div class="pack-progress-label" id="progressLabel">0 / 0</div>
+    </div>
+
+    <div class="packing-section-title">✅ 出發前準備</div>
+    <div class="packing-grid" id="pack-prep"></div>
+
+    <div class="packing-section-title">🎒 隨身攜帶</div>
+    <div class="packing-grid" id="pack-carry"></div>
+
+    <div class="packing-section-title">💊 醫藥保健</div>
+    <div class="packing-grid" id="pack-med"></div>
+
+    <div class="packing-section-title">👗 衣物</div>
+    <div class="packing-grid" id="pack-clothes2"></div>
+
+    <div class="packing-section-title">👶 妹妹專區</div>
+    <div class="packing-grid" id="pack-baby"></div>
+
+  </div>
+
+  <!-- TIPS TAB -->
+  <div id="tab-tips" class="section">
+
+    <div class="tip-card">
+      <div class="tip-title">🏔️ 高原反應注意事項</div>
+      <div class="tip-body">黃龍景區海拔約3000–3400m，九寨溝溝口約2000m。初次到高海拔地區的人，建議：抵達前一晚充分休息，當天行動放緩，不要跑跳；自備高原反應藥（紅景天建議提前3天服用）；景區備有吸氧站，不適請立即就醫。有高血壓、心肺疾病者建議諮詢醫生。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🌧️ 應對多雨氣候</div>
+      <div class="tip-body">重慶、成都4–5月為多雨季節，濕度高。建議攜帶輕便摺疊雨衣（比雨傘更適合景區步行）。山區景點（武隆、黃龍）霧氣重，早上更易起霧，可以提早出發或晚些再進景區。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">🍜 飲食注意</div>
+      <div class="tip-body">重慶火鍋以麻辣著稱，初次嘗試建議選擇鴛鴦鍋（一半清湯）。四川料理辣度不一，可請店家「微辣」或「不辣」。藏區飲食以酥油茶、糌粑為主，口味特殊可先小嚐。注意飲用水最好選擇瓶裝水。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">💰 消費與支付</div>
+      <div class="tip-body">中國大陸主要以微信支付和支付寶為主，建議出發前綁定銀行卡開通境外版。部分景區及餐廳接受現金，建議換取適量人民幣備用。九寨溝、黃龍景區門票需提前在官方平台預訂（身分驗證）。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">📱 通訊與網路</div>
+      <div class="tip-body">中國大陸網路需使用VPN才能訪問Google、LINE等台灣常用APP，建議出發前安裝好VPN（在台灣先設定完成，到陸後無法直接下載）。也可考慮購買當地電話卡或境外上網卡。偏遠景區（九寨溝、黃龍）訊號可能不穩，請事先下載離線地圖。</div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-title">📷 拍攝技巧</div>
+      <div class="tip-body">洪崖洞夜景最美，建議傍晚6–8點前往。九寨溝五花海等彩色湖泊在晴天正午陽光下最為鮮豔。黃龍五彩池建議上午前往避開人潮。磁器口古鎮拍照最好在早上9點前或下午4點後光線較柔和。</div>
+    </div>
+
+  <!-- DRIVER TAB -->
+  <div id="tab-driver" class="section">
+
+    <!-- 司機資訊 -->
+    <div class="driver-hero">
+      <div class="driver-badge">🚗</div>
+      <div class="driver-hero-info">
+        <div class="driver-hero-name">林胤強 師傅</div>
+        <div class="driver-hero-sub">機場快綫 · 5月3日 接機</div>
+      </div>
+      <div class="driver-status">已預約</div>
+    </div>
+
+    <div class="driver-plate-banner">
+      <span class="plate-label">車牌號碼</span>
+      <span class="plate-num">RFB-9267</span>
+      <span class="plate-color">● 黑色 舒適九人座</span>
+    </div>
+
+    <!-- 聯絡按鈕 -->
+    <div class="driver-contact-row">
+      <a class="contact-btn tel" href="tel:0932031624">
+        <span class="contact-icon">📱</span>
+        <div><div class="contact-label">司機直撥</div><div class="contact-val">0932-031-624</div></div>
+      </a>
+      <a class="contact-btn sms" href="sms:0932031624">
+        <span class="contact-icon">💬</span>
+        <div><div class="contact-label">傳送簡訊</div><div class="contact-val">0932-031-624</div></div>
+      </a>
+    </div>
+    <div class="driver-contact-row" style="margin-top:10px;">
+      <a class="contact-btn" style="background:#fef9c3;border-color:#fde047;color:#854d0e;" href="tel:0906146632">
+        <span class="contact-icon">🎧</span>
+        <div><div class="contact-label">客服（手機）</div><div class="contact-val">0906-146-632</div></div>
+      </a>
+      <a class="contact-btn" style="background:#fef9c3;border-color:#fde047;color:#854d0e;" href="tel:033857180">
+        <span class="contact-icon">☎️</span>
+        <div><div class="contact-label">客服（市話）</div><div class="contact-val">03-3857180</div></div>
+      </a>
+    </div>
+    <div style="margin-top:10px;">
+      <a class="contact-btn" style="background:#dcfce7;border-color:#86efac;color:#15803d;display:flex;width:100%;" href="https://line.me/ti/p/@airportcar" target="_blank">
+        <span class="contact-icon">💚</span>
+        <div><div class="contact-label">LINE 官方客服</div><div class="contact-val">@airportcar</div></div>
+      </a>
+    </div>
+
+    <!-- ═══════════════════════════════ -->
+    <!-- 接機區塊 -->
+    <!-- ═══════════════════════════════ -->
+    <div class="transfer-block pickup">
+      <div class="transfer-block-header">
+        <span class="transfer-type-badge pickup-badge">✈️ 接機</span>
+        <span class="transfer-datetime">2026年5月3日　21:40</span>
+      </div>
+
+      <div class="transfer-route">
+        <div class="transfer-point">
+          <div class="tp-dot tp-from"></div>
+          <div>
+            <div class="tp-label">上車地點</div>
+            <div class="tp-place">臺灣桃園國際機場</div>
+          </div>
+        </div>
+        <div class="transfer-arrow">↓</div>
+        <div class="transfer-point">
+          <div class="tp-dot tp-to"></div>
+          <div>
+            <div class="tp-label">送達地點</div>
+            <div class="tp-place">新竹縣新豐鄉埔頂</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="transfer-meta">
+        <span>👥 6人</span>
+        <span>🧳 6件行李</span>
+        <span>👶 嬰兒座椅 × 1</span>
+        <span class="meta-price">💰 NT$1,650</span>
+      </div>
+      <div class="transfer-meta" style="margin-top:6px;">
+        <span>📋 AR12260402518EE</span>
+        <span>🔑 TD3439</span>
+        <span style="color:#ef4444;">⚠️ 勞動節加成</span>
+      </div>
+
+      <a class="query-btn" style="margin-top:14px;border-radius:8px;display:block;text-align:center;text-decoration:none;" href="https://airportfrstcar.com/zh-TW//Reserve/GetOrderSearchDriver?Id=TD3439" target="_blank">
+        🔗 即時查詢司機資訊
+      </a>
+
+      <div class="rules-block" style="margin-top:14px;">
+        <div class="rules-title">✈️ 接機注意事項</div>
+        <ol class="rules-list">
+          <li>飛機抵達後保持手機暢通，司機將主動聯繫。</li>
+          <li>本次為<strong>『依航班時間』</strong>接機，預約時間依實際抵達調整，無需聯繫客服。</li>
+          <li>司機等待超過 <strong>60 分鐘</strong>，可能更換司機，請再次確認司機資訊。</li>
+          <li>臨時更換目的地，請通知客服重新計費。</li>
+          <li>司機遲到，請立即通知客服確認狀態。</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════ -->
+    <!-- 送機區塊（出發時備用參考） -->
+    <!-- ═══════════════════════════════ -->
+    <div class="transfer-block dropoff">
+      <div class="transfer-block-header">
+        <span class="transfer-type-badge dropoff-badge">🛫 送機</span>
+        <span class="transfer-datetime">出發日　依班機時間</span>
+      </div>
+
+      <div class="transfer-route">
+        <div class="transfer-point">
+          <div class="tp-dot tp-from" style="background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,0.2);"></div>
+          <div>
+            <div class="tp-label">出發地點</div>
+            <div class="tp-place">新竹縣新豐鄉埔頂</div>
+          </div>
+        </div>
+        <div class="transfer-arrow">↓</div>
+        <div class="transfer-point">
+          <div class="tp-dot tp-to" style="background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,0.2);"></div>
+          <div>
+            <div class="tp-label">目的地</div>
+            <div class="tp-place">臺灣桃園國際機場</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rules-block" style="margin-top:14px;">
+        <div class="rules-title">🚗 送機注意事項</div>
+        <ol class="rules-list">
+          <li>司機抵達後將主動聯繫，亦可主動憑司機資訊聯繫。</li>
+          <li>等待超過 <strong>30 分鐘</strong>，每逾半小時加收 <strong>$100 元</strong>。</li>
+          <li>等待 30 分鐘仍無法聯繫，視為空趟，酌收 <strong>空趟費 $200 元</strong>。</li>
+          <li>臨時更換地點請上車後告知司機，依新地點重新計費。</li>
+          <li>司機遲到，請盡快通知客服聯繫車行。</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+</div>川渝·九黃 8天7晚 · 2026年4月26日—5月3日<br>出發前請再次確認各景區最新開放資訊</div>
+
+<script>
+// Tab switching
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Day accordion
+function toggleDay(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+// Packing list data  { label, done }
+const packingData = {
+  'pack-prep': [
+    { label: '機場接送', done: true },
+    { label: '羿潔高鐵票', done: true },
+    { label: '護照／台胞證效期確認', done: true },
+    { label: '機票', done: true },
+    { label: '支付寶／微信認證', done: true },
+    { label: '人民幣兌換', done: true },
+    { label: '旅遊保險', done: false },
+    { label: 'SIM 卡', done: true },
+  ],
+  'pack-carry': [
+    { label: '充電寶 × 每人2顆（隨身）', done: true },
+    { label: '夾鏈袋', done: true },
+    { label: '電火布（膠帶）', done: true },
+    { label: '購物袋', done: true },
+    { label: '雨衣', done: true },
+    { label: '雨具（雨傘）', done: false },
+    { label: '剪刀', done: false },
+  ],
+  'pack-med': [
+    { label: '退燒藥', done: false },
+    { label: '喉嚨痛藥', done: false },
+    { label: '止瀉藥／腹瀉用藥', done: false },
+    { label: '高原反應藥（紅景天）', done: false },
+    { label: '暈車藥', done: false },
+    { label: 'OK繃／創可貼', done: false },
+  ],
+  'pack-clothes2': [
+    { label: '衣物（各式）', done: false },
+  ],
+  'pack-baby': [
+    { label: '奶粉罐', done: false },
+    { label: '奶粉外出分裝罐', done: false },
+    { label: '尿布（足量）', done: false },
+    { label: '餐具', done: false },
+    { label: '食物剪', done: false },
+    { label: '車上哄騙糖果餅乾', done: false },
+    { label: '背巾', done: false },
+    { label: '被被', done: false },
+  ]
+};
+
+let allItems = [];
+
+function initPacking() {
+  for (const [containerId, items] of Object.entries(packingData)) {
+    const container = document.getElementById(containerId);
+    if (!container) continue;
+    items.forEach((item, index) => {
+      const key = containerId + '-' + index;
+      allItems.push(key);
+      const label = typeof item === 'object' ? item.label : item;
+      const defaultDone = typeof item === 'object' ? item.done : false;
+      // Use localStorage if touched before, else use default
+      const storedVal = localStorage.getItem('pack-' + key);
+      const isChecked = storedVal !== null ? storedVal === '1' : defaultDone;
+      if (storedVal === null && defaultDone) {
+        localStorage.setItem('pack-' + key, '1');
+      }
+      const div = document.createElement('div');
+      div.className = 'pack-item' + (isChecked ? ' checked' : '');
+      div.dataset.key = key;
+      const badge = defaultDone ? '<span class="pack-done-badge">已完成</span>' : '';
+      div.innerHTML = `<div class="pack-cb">${isChecked ? '✓' : ''}</div><span>${label}${badge}</span>`;
+      div.addEventListener('click', () => togglePack(div, key));
+      container.appendChild(div);
+    });
+  }
+  updateProgress();
+}
+
+function togglePack(el, key) {
+  const isChecked = el.classList.toggle('checked');
+  el.querySelector('.pack-cb').textContent = isChecked ? '✓' : '';
+  localStorage.setItem('pack-' + key, isChecked ? '1' : '0');
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = allItems.length;
+  let done = 0;
+  allItems.forEach(key => {
+    if (localStorage.getItem('pack-' + key) === '1') done++;
+  });
+  document.getElementById('progressBar').style.width = (done / total * 100) + '%';
+  document.getElementById('progressLabel').textContent = done + ' / ' + total;
+}
+
+initPacking();
+</script>
+</body>
+</html>
